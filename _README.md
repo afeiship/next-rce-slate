@@ -28,3 +28,6 @@ $react-rce-slate-options:(
 ```jsx
 BACKUP_USAGE
 ```
+
+## resources:
+- https://docs.slatejs.org/walkthroughs/installing-slate
