@@ -1,7 +1,9 @@
-$react-rce-slate-options:(
+$react-rce-slate-options: () !default;
 
-)!default;
-
-.react-rce-slate{
-  color:#000;
+.react-rce-slate {
+  color: #000;
+  &-editor {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
 }
