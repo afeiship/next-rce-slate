@@ -58,7 +58,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     const { className, value, onChange, ...props } = this.props;
     const _value = this.state.value;
     return (
-      <div data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
+      <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
         <Toolbar>
           <ButtonGroup>
             <Button>B</Button>
@@ -68,14 +68,16 @@ export default class ReactRteSlate extends Component<Props, any> {
             <Button>D</Button>
           </ButtonGroup>
         </Toolbar>
-        <Slate
-          editor={this.editor}
-          value={_value}
-          onChange={this.handleChange}
-        >
-          <Editable />
-        </Slate>
-      </div>
+        <div className={`${CLASS_NAME}__body`}>
+          <Slate
+            editor={this.editor}
+            value={_value}
+            onChange={this.handleChange}
+          >
+            <Editable />
+          </Slate>
+        </div>
+      </section>
     );
   }
 }
