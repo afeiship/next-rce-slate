@@ -10,13 +10,15 @@
   }
 
   &__toolbar {
-    padding: 5px;
+    padding: 5px 10px;
     border: 1px solid #ccc;
     background: #eee;
     margin: -1px;
   }
 
   &__button-group {
+    display: inline-block;
+    margin-right: 10px;
     #{$root}__button {
       margin-left: -1px;
     }
@@ -41,6 +43,15 @@
     outline: none;
     font-weight: bold;
 
+    &[data-format="strikethrough"] {
+      text-decoration: line-through;
+    }
+
+    &[data-format="underline"] {
+      text-decoration: underline;
+    }
+
+    &.is-active,
     &:hover {
       background: none #d8d8d8;
     }
