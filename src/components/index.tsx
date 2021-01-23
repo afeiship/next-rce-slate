@@ -2,12 +2,15 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Slate, Editable, withReact } from 'slate-react'
+import { createEditor } from 'slate'
 
-export type Props = { className: string; value: object; onChange: Function };
+
+export type Props = { className: string; value: Array<any>; onChange: Function };
 
 const CLASS_NAME = 'react-rte-slate';
 
-export default class ReactRteSlate extends Component<Props> {
+export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
   static version = '__VERSION__';
   static propTypes = {
@@ -18,7 +21,7 @@ export default class ReactRteSlate extends Component<Props> {
     /**
      * Default value.
      */
-    value: PropTypes.object,
+    value: PropTypes.array,
     /**
      * The change handler.
      */
@@ -26,27 +29,38 @@ export default class ReactRteSlate extends Component<Props> {
   };
 
   static defaultProps = {
-    value: null,
+    value: [],
     onChange: noop
   };
 
-  handleClick = () => {
-    console.log('click me!');
+  private editor: any = null;
+
+  constructor(inProps) {
+    super(inProps);
+    const { value } = inProps;
+    this.editor = withReact(createEditor());
+    this.state = {
+      value
+    };
+  }
+
+  handleChange = (inValue) => {
+    console.log('editor change:', inValue);
+    this.setState({ value: inValue });
   };
 
   render() {
     const { className, value, onChange, ...props } = this.props;
+    const _value = this.state.value;
     return (
-      <div data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
-        <p>
-          <button
-            style={{ padding: 20, width: '100%' }}
-            onClick={this.handleClick}
-            className="icon-play">
-            Enjoy coding.
-          </button>
-        </p>
-      </div>
+      <Slate
+        editor={this.editor}
+        value={_value}
+        onChange={this.handleChange}
+        data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}
+      >
+        <Editable />
+      </Slate>
     );
   }
 }
