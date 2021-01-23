@@ -12,6 +12,7 @@ import ButtonGroup from './atomics/button-group';
 import Toolbar from './atomics/toolbar';
 
 import { withImage, ImageElement } from './plugins/image';
+import { withLatex, LatexElement } from './plugins/latex';
 
 export type Props = { className: string; value: Array<any>; onChange: Function };
 
@@ -63,7 +64,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   constructor(inProps) {
     super(inProps);
     const { value } = inProps;
-    this.editor = withImage(withReact(createEditor()));
+    this.editor = withLatex(withImage(withReact(createEditor())));
     this.state = {
       value
     };
@@ -131,6 +132,16 @@ export default class ReactRteSlate extends Component<Props, any> {
     Transforms.insertNodes(this.editor, image);
   };
 
+  handlelLatex = (inEvent) => {
+    const text = { text: '' }
+    const image = {
+      type: 'latex',
+      value: 'a^2+b^2',
+      children: [text]
+    };
+    Transforms.insertNodes(this.editor, image);
+  };
+
   renderLeaf = ({ attributes, children, leaf }) => {
     if (leaf.bold) {
       children = <strong>{children}</strong>
@@ -161,6 +172,8 @@ export default class ReactRteSlate extends Component<Props, any> {
         return <h2 {...attributes}>{children}</h2>
       case 'image':
         return <ImageElement {...attributes}>{children}</ImageElement>
+      case 'latex':
+        return <LatexElement {...attributes}>{children}</LatexElement>
       default:
         return <p {...attributes}>{children}</p>
     }
@@ -191,6 +204,7 @@ export default class ReactRteSlate extends Component<Props, any> {
           </ButtonGroup>
           <ButtonGroup>
             <Button onClick={this.handleImage}>Image</Button>
+            <Button onClick={this.handlelLatex}>Latex</Button>
           </ButtonGroup>
         </Toolbar>
         <div className={`${CLASS_NAME}__body`}>
