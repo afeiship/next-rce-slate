@@ -11,6 +11,8 @@ import Button from './atomics/button';
 import ButtonGroup from './atomics/button-group';
 import Toolbar from './atomics/toolbar';
 
+import { withImage, ImageElement } from './plugins/image';
+
 export type Props = { className: string; value: Array<any>; onChange: Function };
 
 const CLASS_NAME = 'react-rte-slate';
@@ -27,6 +29,10 @@ const BLOCK_ITEMS = [
   { label: 'H1', value: 'h1' },
   { label: 'H2', value: 'h2' },
   { label: 'Blockquote', value: 'blockquote' }
+];
+
+const DEFAULT_VALUE = [
+  { type: 'paragraph', children: [{ text: '' }] }
 ];
 
 export default class ReactRteSlate extends Component<Props, any> {
@@ -48,9 +54,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   static defaultProps = {
-    value: [
-      { type: 'paragraph', children: [{ text: '' }] }
-    ],
+    value: DEFAULT_VALUE,
     onChange: noop
   };
 
@@ -59,7 +63,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   constructor(inProps) {
     super(inProps);
     const { value } = inProps;
-    this.editor = withReact(createEditor());
+    this.editor = withImage(withReact(createEditor()));
     this.state = {
       value
     };
@@ -95,7 +99,6 @@ export default class ReactRteSlate extends Component<Props, any> {
 
   toggleMark = (inFormat) => {
     const isActive = this.isMarkActive(inFormat)
-
     if (isActive) {
       Editor.removeMark(this.editor, inFormat);
     } else {
@@ -119,6 +122,17 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.toggleMark(format);
   };
 
+
+  handleImage = (inEvent) => {
+    const text = { text: '' }
+    const image = {
+      type: 'image',
+      url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
+      children: [text]
+    };
+    Transforms.insertNodes(this.editor, image);
+  };
+
   renderLeaf = ({ attributes, children, leaf }) => {
     if (leaf.bold) {
       children = <strong>{children}</strong>
@@ -140,7 +154,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   renderElement = ({ attributes, children, element }) => {
-    console.log('element:', element);
+    console.log('element:', attributes, element);
     switch (element.type) {
       case 'blockquote':
         return <blockquote {...attributes}>{children}</blockquote>
@@ -148,6 +162,8 @@ export default class ReactRteSlate extends Component<Props, any> {
         return <h1 {...attributes}>{children}</h1>
       case 'h2':
         return <h2 {...attributes}>{children}</h2>
+      case 'image':
+        return <ImageElement {...attributes}>{children}</ImageElement>
       default:
         return <p {...attributes}>{children}</p>
     }
@@ -175,6 +191,9 @@ export default class ReactRteSlate extends Component<Props, any> {
 
           <ButtonGroup>
             <ReactSelect items={BLOCK_ITEMS} onChange={this.handleBlockChange} />
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button onClick={this.handleImage}>Image</Button>
           </ButtonGroup>
         </Toolbar>
         <div className={`${CLASS_NAME}__body`}>
