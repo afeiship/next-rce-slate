@@ -1,3 +1,41 @@
-.react-rte-slate{
-  color: red;
+.react-rte-slate {
+  $root: &;
+
+  border: 1px solid #ccc;
+
+  &__toolbar {
+    padding: 5px;
+    border: 1px solid #ccc;
+    background: #eee;
+    margin: -1px;
+  }
+
+  &__button-group {
+    #{$root}__button {
+      margin-left: -1px;
+    }
+  }
+
+  &__button {
+    display: inline-block;
+    padding: 3px 8px;
+    min-width: 30px;
+    height: 30px;
+    line-height: 22px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #fdfdfd 0, #f6f7f8);
+    border: 1px solid #999;
+    border-radius: 2px;
+    color: #333;
+    text-decoration: none;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    outline: none;
+
+    &:hover {
+      background: none #d8d8d8;
+    }
+  }
 }

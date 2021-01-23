@@ -6,6 +6,11 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { createEditor } from 'slate'
 
 
+// inner components
+import Button from './atomics/button';
+import ButtonGroup from './atomics/button-group';
+import Toolbar from './atomics/toolbar';
+
 export type Props = { className: string; value: Array<any>; onChange: Function };
 
 const CLASS_NAME = 'react-rte-slate';
@@ -53,14 +58,24 @@ export default class ReactRteSlate extends Component<Props, any> {
     const { className, value, onChange, ...props } = this.props;
     const _value = this.state.value;
     return (
-      <Slate
-        editor={this.editor}
-        value={_value}
-        onChange={this.handleChange}
-        data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}
-      >
-        <Editable />
-      </Slate>
+      <div data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
+        <Toolbar>
+          <ButtonGroup>
+            <Button>B</Button>
+            <Button>I</Button>
+            <Button>S</Button>
+            <Button>U</Button>
+            <Button>D</Button>
+          </ButtonGroup>
+        </Toolbar>
+        <Slate
+          editor={this.editor}
+          value={_value}
+          onChange={this.handleChange}
+        >
+          <Editable />
+        </Slate>
+      </div>
     );
   }
 }
