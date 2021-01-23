@@ -72,6 +72,7 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
+    "@feizheng/react-select": "^1.0.1",
     "@jswork/noop": "^1.0.0",
     "classnames": "^2.2.6",
     "slate": "^0.59.0",

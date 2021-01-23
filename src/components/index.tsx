@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Slate, Editable, withReact } from 'slate-react'
-import { Editor, createEditor } from 'slate'
-
+import { Transforms, Editor, Element, createEditor } from 'slate'
+import ReactSelect from '@feizheng/react-select';
 
 // inner components
 import Button from './atomics/button';
@@ -21,6 +21,13 @@ const MARK_FORMATS = [
   { label: 'U', value: 'underline', hotkey: 'mod+u' },
   { label: 'S', value: 'strikethrough', hotkey: 'mod+s' },
 ]
+
+const BLOCK_ITEMS = [
+  { label: 'P', value: 'paragraph' },
+  { label: 'H1', value: 'h1' },
+  { label: 'H2', value: 'h2' },
+  { label: 'Blockquote', value: 'blockquote' }
+];
 
 export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
@@ -61,6 +68,29 @@ export default class ReactRteSlate extends Component<Props, any> {
     return marks ? marks[inFormat] === true : false
   };
 
+  isBlockActive = (inFormat) => {
+    const [match] = Editor.nodes(this.editor, {
+      match: n =>
+        !Editor.isEditor(n) && Element.isElement(n) && n.type === inFormat,
+    });
+    return !!match;
+  };
+
+  toggleBlock = (inFormat) => {
+    console.log(inFormat);
+
+    const isActive = this.isBlockActive(inFormat)
+    const newProperties: Partial<Element> = {
+      type: isActive ? 'paragraph' : inFormat,
+    }
+
+    Transforms.setNodes(
+      this.editor,
+      newProperties,
+      { match: n => Editor.isBlock(this.editor, n) }
+    )
+  };
+
   toggleMark = (inFormat) => {
     const isActive = this.isMarkActive(inFormat)
 
@@ -75,6 +105,12 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.setState({ value: inValue });
   };
 
+
+  handleBlockChange = (inEvent) => {
+    const { value } = inEvent.target;
+    this.toggleBlock(value);
+  };
+
   handleMark = (inEvent) => {
     const target = inEvent.target;
     const { format } = target.dataset;
@@ -82,8 +118,6 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   renderLeaf = ({ attributes, children, leaf }) => {
-    console.log('leaf:', leaf);
-
     if (leaf.bold) {
       children = <strong>{children}</strong>
     }
@@ -104,19 +138,14 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   renderElement = ({ attributes, children, element }) => {
+    console.log('element:', element);
     switch (element.type) {
-      case 'block-quote':
+      case 'blockquote':
         return <blockquote {...attributes}>{children}</blockquote>
-      case 'bulleted-list':
-        return <ul {...attributes}>{children}</ul>
-      case 'heading-one':
+      case 'h1':
         return <h1 {...attributes}>{children}</h1>
-      case 'heading-two':
+      case 'h2':
         return <h2 {...attributes}>{children}</h2>
-      case 'list-item':
-        return <li {...attributes}>{children}</li>
-      case 'numbered-list':
-        return <ol {...attributes}>{children}</ol>
       default:
         return <p {...attributes}>{children}</p>
     }
@@ -132,21 +161,18 @@ export default class ReactRteSlate extends Component<Props, any> {
             {MARK_FORMATS.map(item => {
               return (
                 <Button
-                  className={classNames({ 'is-active': this.isMarkActive(item.value) })}
+                  key={item.value}
+                  active={this.isMarkActive(item.value)}
                   onClick={this.handleMark}
                   data-format={item.value}>
-                    {item.label}
+                  {item.label}
                 </Button>
               )
             })}
           </ButtonGroup>
 
           <ButtonGroup>
-            <Button>h1</Button>
-            <Button>h2</Button>
-            <Button>h3</Button>
-            <Button>h4</Button>
-            <Button>h5</Button>
+            <ReactSelect items={BLOCK_ITEMS} onChange={this.handleBlockChange} />
           </ButtonGroup>
         </Toolbar>
         <div className={`${CLASS_NAME}__body`}>
