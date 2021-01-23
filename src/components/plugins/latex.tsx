@@ -17,17 +17,26 @@ export const withLatex = (editor) => {
 };
 
 export const LatexElement = class extends React.Component<any>{
-  handleLatexEdit = () => {
-    const { element, editor } = this.props;
-    const pmt = window.prompt('edit?', element.value);
-    const path = ReactEditor.findPath(editor, element)
-    const newProperties: Partial<SlateElement> = { value: pmt, };
-    // console.log(newProperties);
-    Transforms.setNodes(editor, newProperties, { at: path })
+  constructor(inProps) {
+    super(inProps);
+    const { value } = inProps.element;
+    this.state = { value };
+  }
+
+  handleLatexEdit = (inEvent) => {
+    const { value } = inEvent.target.dataset;
+    // const { element, editor } = this.props;
+    const pmt = window.prompt('edit?', value);
+    // const path = ReactEditor.findPath(editor, element)
+    // const newProperties: Partial<SlateElement> = { value: pmt, };
+    // // console.log(newProperties);
+    // Transforms.setNodes(editor, newProperties, { at: path })
+    this.setState({ value: pmt });
   };
 
   render() {
-    const { value } = this.props.element;
+    // const { value } = this.props.element;
+    const value = this.state.value;
     console.log('value:', value);
     return (
       <Viewer
