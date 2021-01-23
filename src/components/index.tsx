@@ -48,7 +48,9 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   static defaultProps = {
-    value: [],
+    value: [
+      { type: 'paragraph', children: [{ text: '' }] }
+    ],
     onChange: noop
   };
 
