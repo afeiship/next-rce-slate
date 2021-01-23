@@ -12,12 +12,7 @@ npm install -S @jswork/react-rte-slate
 ```
 
 ## properties
-| Name      | Type   | Required | Default | Description                           |
-| --------- | ------ | -------- | ------- | ------------------------------------- |
-| className | string | true     | -       | The extended className for component. |
-| value     | object | true     | -       | Default value.                        |
-| onChange  | func   | true     | -       | The change handler.                   |
-
+__GENERATE_DOCS__
 
 ## usage
 1. import css
