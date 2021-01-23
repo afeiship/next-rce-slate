@@ -134,9 +134,10 @@ export default class ReactRteSlate extends Component<Props, any> {
 
   handlelLatex = (inEvent) => {
     const text = { text: '' }
+    const value = window.prompt('input latex?')
     const image = {
       type: 'latex',
-      value: 'a^2+b^2',
+      value,
       children: [text]
     };
     Transforms.insertNodes(this.editor, image);
@@ -162,7 +163,10 @@ export default class ReactRteSlate extends Component<Props, any> {
     return <span {...attributes}>{children}</span>
   };
 
-  renderElement = ({ attributes, children, element }) => {
+  renderElement = (props) => {
+    const { attributes, children, element } = props;
+    console.log("element:->", element);
+
     switch (element.type) {
       case 'blockquote':
         return <blockquote {...attributes}>{children}</blockquote>
@@ -171,9 +175,9 @@ export default class ReactRteSlate extends Component<Props, any> {
       case 'h2':
         return <h2 {...attributes}>{children}</h2>
       case 'image':
-        return <ImageElement {...attributes}>{children}</ImageElement>
+        return <ImageElement {...attributes} />
       case 'latex':
-        return <LatexElement {...attributes}>{children}</LatexElement>
+        return <LatexElement editor={this.editor} {...props} />
       default:
         return <p {...attributes}>{children}</p>
     }

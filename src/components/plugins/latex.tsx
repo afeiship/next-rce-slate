@@ -1,6 +1,10 @@
 import React from 'react';
 import { Viewer } from '@jswork/keypad-quizizz';
 
+import { Transforms, Element as SlateElement } from 'slate';
+import { ReactEditor } from 'slate-react';
+
+
 export const withLatex = (editor) => {
   const { isInline, isVoid } = editor;
   editor.isInline = element => {
@@ -13,13 +17,25 @@ export const withLatex = (editor) => {
 };
 
 export const LatexElement = class extends React.Component<any>{
+  handleLatexEdit = () => {
+    const { element, editor } = this.props;
+    const pmt = window.prompt('edit?', element.value);
+    const path = ReactEditor.findPath(editor, element)
+    const newProperties: Partial<SlateElement> = { value: pmt, };
+    // console.log(newProperties);
+    Transforms.setNodes(editor, newProperties, { at: path })
+  };
+
   render() {
-    const { attributes, children, element } = this.props;
+    const { value } = this.props.element;
+    console.log('value:', value);
     return (
-      <span {...attributes} contentEditable={false}>
-        <Viewer value="a^2+b^2" />
-        { children}
-      </span>
+      <Viewer
+        contentEditable={false}
+        value={value}
+        data-value={value}
+        onClick={this.handleLatexEdit}
+      />
     )
   }
 }
