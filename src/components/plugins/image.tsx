@@ -14,6 +14,9 @@ export const ImageElement = ({ attributes, children, element }) => {
   return (
     <span {...attributes} >
       <img
+        onClick={e => {
+          console.log('click image');
+        }}
         contentEditable={false} src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg" />
       { children}
     </span>

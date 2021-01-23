@@ -83,8 +83,6 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   toggleBlock = (inFormat) => {
-    console.log(inFormat);
-
     const isActive = this.isBlockActive(inFormat)
     const newProperties: Partial<Element> = {
       type: isActive ? 'paragraph' : inFormat,
@@ -154,7 +152,6 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   renderElement = ({ attributes, children, element }) => {
-    console.log('element:', attributes, element);
     switch (element.type) {
       case 'blockquote':
         return <blockquote {...attributes}>{children}</blockquote>
