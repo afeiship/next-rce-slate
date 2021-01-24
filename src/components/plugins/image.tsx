@@ -3,10 +3,10 @@ import React from 'react';
 export const withImage = (editor) => {
   const { isInline, isVoid } = editor;
   editor.isInline = element => {
-    return element.type === 'image' ? true : isInline(element)
+    return element.type === 'image' || isInline(element)
   };
   editor.isVoid = element => {
-    return element.type === 'image' ? true : isVoid(element)
+    return element.type === 'image' || isVoid(element)
   };
   return editor;
 
