@@ -32,6 +32,7 @@ export const LatexElement = class extends React.Component<any>{
     const { value } = inEvent.target.dataset;
     console.log(':inEvent.target.dataset', inEvent.target.dataset);
 
+    // 这段应该放在外面
     const { element, editor } = this.props;
     const pmt = window.prompt('edit?', value);
     const path = ReactEditor.findPath(editor, element)
