@@ -11,6 +11,14 @@
 npm install -S @jswork/react-rte-slate
 ```
 
+## features
+- [x] b/i/u/s
+- [x] h1/h2/h3/p
+- [x] Image
+- [x] latex
+- [ ] toHTML
+- [ ] fromHtml
+
 ## properties
 __GENERATE_DOCS__
 
