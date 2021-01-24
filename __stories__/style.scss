@@ -1,5 +1,8 @@
 @import "../src/components/style.scss";
 @import "../node_modules/@jswork/keypad-quizizz/dist/style.css";
 @import "../node_modules/katex/dist/katex.css";
-.app {
+
+
+.keypad-quizizz__viewer > *{
+  pointer-events: none;
 }

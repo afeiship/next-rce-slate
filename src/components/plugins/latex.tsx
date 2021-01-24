@@ -25,6 +25,8 @@ export const LatexElement = class extends React.Component<any>{
 
   handleLatexEdit = (inEvent) => {
     const { value } = inEvent.target.dataset;
+    console.log(':inEvent.target.dataset', inEvent.target.dataset);
+
     // const { element, editor } = this.props;
     const pmt = window.prompt('edit?', value);
     // const path = ReactEditor.findPath(editor, element)
