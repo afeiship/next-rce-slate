@@ -23,11 +23,6 @@ export const LatexElement = class extends React.Component<any>{
     this.state = { value };
   }
 
-  shouldComponentUpdate(inProps) {
-    console.log('should update:', inProps);
-    return true;
-  }
-
   handleLatexEdit = (inEvent) => {
     const { value } = inEvent.target.dataset;
     const _value = this.state.value;

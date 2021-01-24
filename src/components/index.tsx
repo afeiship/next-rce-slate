@@ -10,6 +10,7 @@ import ReactSelect from '@feizheng/react-select';
 import Button from './atomics/button';
 import ButtonGroup from './atomics/button-group';
 import Toolbar from './atomics/toolbar';
+import { toHtml, fromHtml } from './utilities/to-html';
 
 import { withImage, ImageElement } from './plugins/image';
 import { withLatex, LatexElement } from './plugins/latex';
@@ -107,6 +108,8 @@ export default class ReactRteSlate extends Component<Props, any> {
 
   handleChange = (inValue) => {
     this.setState({ value: inValue });
+    const html = toHtml(inValue);
+    console.log('value:->', inValue, toHtml(inValue), fromHtml(html));
   };
 
 

@@ -74,9 +74,12 @@
   "dependencies": {
     "@feizheng/react-select": "^1.0.1",
     "@jswork/keypad-quizizz": "^1.0.4",
+    "@jswork/next-slate-serialize": "^1.0.1",
     "@jswork/noop": "^1.0.0",
     "classnames": "^2.2.6",
+    "escape-html": "^1.0.3",
     "slate": "^0.59.0",
+    "slate-hyperscript": "^0.59.0",
     "slate-react": "^0.59.0"
   },
   "publishConfig": {

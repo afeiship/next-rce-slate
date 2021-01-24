@@ -6,7 +6,15 @@ import './style.scss';
 
 ## showtime
 
-<ReactRteSlate value={[{
-  type: 'paragraph',
-  children: [{ text: 'A line of text in a paragraph.' }],
-}]}/>
+<ReactRteSlate
+  value={[
+    {
+      type: 'paragraph',
+      children: [
+        { text: 'A line of text in a paragraph.' },
+        { type: 'latex', value: 'a^2+b^2', children: [{ text: '' }] },
+        { text: '' }
+      ]
+    }
+  ]}
+/>
