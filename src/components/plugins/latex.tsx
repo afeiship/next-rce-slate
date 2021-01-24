@@ -23,16 +23,20 @@ export const LatexElement = class extends React.Component<any>{
     this.state = { value };
   }
 
+  shouldComponentUpdate(inProps){
+    console.log('should update:',inProps);
+    return true;
+  }
+
   handleLatexEdit = (inEvent) => {
     const { value } = inEvent.target.dataset;
     console.log(':inEvent.target.dataset', inEvent.target.dataset);
 
-    // const { element, editor } = this.props;
+    const { element, editor } = this.props;
     const pmt = window.prompt('edit?', value);
-    // const path = ReactEditor.findPath(editor, element)
-    // const newProperties: Partial<SlateElement> = { value: pmt, };
-    // // console.log(newProperties);
-    // Transforms.setNodes(editor, newProperties, { at: path })
+    const path = ReactEditor.findPath(editor, element)
+    const newProperties: Partial<SlateElement> = { value: pmt, };
+    Transforms.setNodes(editor, newProperties, { at: path })
     this.setState({ value: pmt });
   };
 
