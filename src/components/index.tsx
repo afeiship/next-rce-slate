@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { Transforms, Editor, Element, createEditor } from 'slate';
 import ReactSelect from '@feizheng/react-select';
-import EventMitt from '@jswork/event-mitt';
 
 // inner components
 import Button from './atomics/button';
@@ -66,7 +65,6 @@ export default class ReactRteSlate extends Component<Props, any> {
   constructor(inProps) {
     super(inProps);
     const { value } = inProps;
-    Object.assign(this, EventMitt);
     this.editor = withLatex(withImage(withReact(createEditor())));
     this.state = {
       value
