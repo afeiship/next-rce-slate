@@ -1,8 +1,13 @@
 @import "../src/components/style.scss";
 @import "../node_modules/@jswork/keypad-quizizz/dist/style.css";
+@import "../node_modules/@jswork/wsui-rte-icons/dist/style.css";
 @import "../node_modules/katex/dist/katex.css";
+@import "../node_modules/balloon-css/balloon.css";
 
-
-.keypad-quizizz__viewer > *{
+.keypad-quizizz__viewer > * {
   pointer-events: none;
+}
+
+.mr10_ > * {
+  margin-right: 10px;
 }

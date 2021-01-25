@@ -2,9 +2,10 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Slate, Editable, withReact } from 'slate-react'
-import { Transforms, Editor, Element, createEditor } from 'slate'
+import { Slate, Editable, withReact } from 'slate-react';
+import { Transforms, Editor, Element, createEditor } from 'slate';
 import ReactSelect from '@feizheng/react-select';
+import EventMitt from '@jswork/event-mitt';
 
 // inner components
 import Button from './atomics/button';
@@ -14,17 +15,19 @@ import { toHtml, fromHtml } from './utilities/to-html';
 
 import { withImage, ImageElement } from './plugins/image';
 import { withLatex, LatexElement } from './plugins/latex';
+import leaf from 'slate-react/dist/components/leaf';
 
 export type Props = { className: string; value: Array<any>; onChange: Function };
 
 const CLASS_NAME = 'react-rte-slate';
 
 const MARK_FORMATS = [
-  { label: 'B', value: 'bold', hotkey: 'mod+b' },
-  { label: 'I', value: 'italic', hotkey: 'mod+i' },
-  { label: 'U', value: 'underline', hotkey: 'mod+u' },
-  { label: 'S', value: 'strikethrough', hotkey: 'mod+s' },
-]
+  { label: 'B', value: 'bold' },
+  { label: 'I', value: 'italic' },
+  { label: 'U', value: 'underline' },
+  { label: 'S', value: 'strikethrough' },
+  { label: 'BLANK', value: 'blank' }
+];
 
 const BLOCK_ITEMS = [
   { label: 'P', value: 'paragraph' },
@@ -33,9 +36,7 @@ const BLOCK_ITEMS = [
   { label: 'Blockquote', value: 'blockquote' }
 ];
 
-const DEFAULT_VALUE = [
-  { type: 'paragraph', children: [{ text: '' }] }
-];
+const DEFAULT_VALUE = [{ type: 'paragraph', children: [{ text: '' }] }];
 
 export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
@@ -65,6 +66,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   constructor(inProps) {
     super(inProps);
     const { value } = inProps;
+    Object.assign(this, EventMitt);
     this.editor = withLatex(withImage(withReact(createEditor())));
     this.state = {
       value
@@ -72,46 +74,46 @@ export default class ReactRteSlate extends Component<Props, any> {
   }
 
   isMarkActive = (inFormat) => {
-    const marks = Editor.marks(this.editor)
-    return marks ? marks[inFormat] === true : false
+    const marks = Editor.marks(this.editor);
+    return marks ? marks[inFormat] === true : false;
   };
 
   isBlockActive = (inFormat) => {
     const [match] = Editor.nodes(this.editor, {
-      match: n =>
-        !Editor.isEditor(n) && Element.isElement(n) && n.type === inFormat,
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === inFormat
     });
     return !!match;
   };
 
   toggleBlock = (inFormat) => {
-    const isActive = this.isBlockActive(inFormat)
+    const isActive = this.isBlockActive(inFormat);
     const newProperties: Partial<Element> = {
-      type: isActive ? 'paragraph' : inFormat,
-    }
+      type: isActive ? 'paragraph' : inFormat
+    };
 
-    Transforms.setNodes(
-      this.editor,
-      newProperties,
-      { match: n => Editor.isBlock(this.editor, n) }
-    )
+    Transforms.setNodes(this.editor, newProperties, {
+      match: (n) => Editor.isBlock(this.editor, n)
+    });
   };
 
   toggleMark = (inFormat) => {
-    const isActive = this.isMarkActive(inFormat)
+    const isActive = this.isMarkActive(inFormat);
     if (isActive) {
       Editor.removeMark(this.editor, inFormat);
     } else {
       Editor.addMark(this.editor, inFormat, true);
     }
-  }
+  };
 
   handleChange = (inValue) => {
-    this.setState({ value: inValue });
+    const { onChange } = this.props;
+    const target = { from: 'editor', value: inValue };
+    this.setState(target, () => {
+      onChange({ target });
+    });
     const html = toHtml(inValue);
     console.log('value:->', inValue, toHtml(inValue), fromHtml(html));
   };
-
 
   handleBlockChange = (inEvent) => {
     const { value } = inEvent.target;
@@ -124,9 +126,8 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.toggleMark(format);
   };
 
-
   handleImage = (inEvent) => {
-    const text = { text: '' }
+    const text = { text: '' };
     const image = {
       type: 'image',
       url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
@@ -136,8 +137,8 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   handlelLatex = (inEvent) => {
-    const text = { text: '' }
-    const value = window.prompt('input latex?')
+    const text = { text: '' };
+    const value = window.prompt('input latex?');
     const image = {
       type: 'latex',
       value,
@@ -147,42 +148,56 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   renderLeaf = ({ attributes, children, leaf }) => {
+    const { onChange } = this.props;
     if (leaf.bold) {
-      children = <strong>{children}</strong>
+      children = <strong>{children}</strong>;
     }
 
     if (leaf.italic) {
-      children = <em>{children}</em>
+      children = <em>{children}</em>;
     }
 
     if (leaf.strikethrough) {
-      children = <s>{children}</s>
+      children = <s>{children}</s>;
     }
 
     if (leaf.underline) {
-      children = <u>{children}</u>
+      children = <u>{children}</u>;
     }
 
-    return <span {...attributes}>{children}</span>
+    if (leaf.blank) {
+      children = (
+        <span data-plugin="blank" style={{ color: 'white', background: '#000' }}>
+          {children}
+        </span>
+      );
+
+      onChange({
+        target: {
+          from: 'plugin:blank',
+          value: leaf.text
+        }
+      });
+    }
+
+    return <span {...attributes}>{children}</span>;
   };
 
   renderElement = (props) => {
     const { attributes, children, element } = props;
-    console.log("element:->", element);
-
     switch (element.type) {
       case 'blockquote':
-        return <blockquote {...attributes}>{children}</blockquote>
+        return <blockquote {...attributes}>{children}</blockquote>;
       case 'h1':
-        return <h1 {...attributes}>{children}</h1>
+        return <h1 {...attributes}>{children}</h1>;
       case 'h2':
-        return <h2 {...attributes}>{children}</h2>
+        return <h2 {...attributes}>{children}</h2>;
       case 'image':
-        return <ImageElement {...attributes} />
+        return <ImageElement {...attributes} />;
       case 'latex':
-        return <LatexElement editor={this.editor} {...props} />
+        return <LatexElement editor={this.editor} {...props} />;
       default:
-        return <p {...attributes}>{children}</p>
+        return <p {...attributes}>{children}</p>;
     }
   };
 
@@ -193,7 +208,7 @@ export default class ReactRteSlate extends Component<Props, any> {
       <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
         <Toolbar>
           <ButtonGroup>
-            {MARK_FORMATS.map(item => {
+            {MARK_FORMATS.map((item) => {
               return (
                 <Button
                   key={item.value}
@@ -202,7 +217,7 @@ export default class ReactRteSlate extends Component<Props, any> {
                   data-format={item.value}>
                   {item.label}
                 </Button>
-              )
+              );
             })}
           </ButtonGroup>
 
@@ -215,15 +230,8 @@ export default class ReactRteSlate extends Component<Props, any> {
           </ButtonGroup>
         </Toolbar>
         <div className={`${CLASS_NAME}__body`}>
-          <Slate
-            editor={this.editor}
-            value={_value}
-            onChange={this.handleChange}
-          >
-            <Editable
-              renderLeaf={this.renderLeaf}
-              renderElement={this.renderElement}
-            />
+          <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
+            <Editable renderLeaf={this.renderLeaf} renderElement={this.renderElement} />
           </Slate>
         </div>
       </section>

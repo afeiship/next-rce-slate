@@ -1,12 +1,15 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import ReactRteSlate from '../src/main.ts';
+import { Editor } from '../src/main.ts';
 import './style.scss';
 
-<Meta title="Example/app" />
+<Meta title="Example/09-editor" />
 
 ## showtime
 
-<ReactRteSlate
+<Editor
+  onChange={(e) => {
+    console.log('e:', e.target.from, e.target.value);
+  }}
   value={[
     {
       type: 'paragraph',
@@ -18,3 +21,4 @@ import './style.scss';
     }
   ]}
 />
+

@@ -1,3 +1,5 @@
-import Component from './components';
+import Editor from './components';
+import Button from './components/atomics/button';
+import ButtonGroup from './components/atomics/button-group';
 
-export default Component;
+export { Editor, Button, ButtonGroup };

@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ButtonGroup, Button } from '../src/main.ts';
+import './style.scss';
+
+<Meta title="Example/02-button-group" />
+
+## showtime
+
+> 对齐操作
+
+<ButtonGroup className="wsui-rte-icons">
+  <Button tooltip="左对齐">
+    <i className="wsui-icon-align_left" />
+  </Button>
+  <Button tooltip="居中" active>
+    <i className="wsui-icon-align_center" />
+  </Button>
+  <Button tooltip="右对齐">
+    <i className="wsui-icon-align_right" />
+  </Button>
+</ButtonGroup>
+
+
+> 历史操作
+
+<ButtonGroup className="wsui-rte-icons">
+  <Button tooltip="重做">
+    <i className="wsui-icon-redo" />
+  </Button>
+  <Button tooltip="撤销" disabled>
+    <i className="wsui-icon-undo" />
+  </Button>
+</ButtonGroup>

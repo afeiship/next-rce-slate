@@ -42,6 +42,7 @@
     white-space: nowrap;
     outline: none;
     font-weight: bold;
+    transition: all 0.3s;
 
     &[data-format="strikethrough"] {
       text-decoration: line-through;
@@ -51,13 +52,20 @@
       text-decoration: underline;
     }
 
+    &[disabled] {
+      pointer-events: none;
+      > * {
+        opacity: 0.5;
+      }
+    }
+
     &.is-active,
     &:hover {
       background: none #d8d8d8;
     }
   }
 
-  select{
+  select {
     height: 28px;
   }
 

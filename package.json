@@ -73,9 +73,12 @@
   },
   "dependencies": {
     "@feizheng/react-select": "^1.0.1",
+    "@jswork/event-mitt": "^1.0.2",
     "@jswork/keypad-quizizz": "^1.0.4",
     "@jswork/next-slate-serialize": "^1.0.1",
     "@jswork/noop": "^1.0.0",
+    "@jswork/wsui-rte-icons": "^1.0.0",
+    "balloon-css": "^1.2.0",
     "classnames": "^2.2.6",
     "escape-html": "^1.0.3",
     "slate": "^0.59.0",
