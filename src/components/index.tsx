@@ -218,6 +218,7 @@ export default class ReactRteSlate extends Component<Props, any> {
               );
             })}
           </ButtonGroup>
+          {/*
 
           <ButtonGroup>
             <ReactSelect items={BLOCK_ITEMS} onChange={this.handleBlockChange} />
@@ -225,7 +226,8 @@ export default class ReactRteSlate extends Component<Props, any> {
           <ButtonGroup>
             <Button onClick={this.handleImage}>Image</Button>
             <Button onClick={this.handlelLatex}>Latex</Button>
-          </ButtonGroup>
+          </ButtonGroup> */}
+          I am toolbar.
         </Toolbar>
         <div className={`${CLASS_NAME}__body`}>
           <Slate editor={this.editor} value={_value} onChange={this.handleChange}>

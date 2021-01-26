@@ -1,5 +1,6 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
+import noop from '@jswork/noop';
 
 export const withImage = (editor) => {
   const { isInline, isVoid } = editor;
@@ -32,7 +33,9 @@ export const ImageElement = class extends React.Component<any> {
 
 export default {
   name: 'image',
-  hooks: {},
+  hooks: {
+    'create_element': noop
+  },
   decorator: (editor) => {
     const { isInline, isVoid } = editor;
     editor.isInline = (element) => {

@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Editor } from '../src/main.ts';
+import './style.scss';
+
+<Meta title="Example/08-plugins" />
+
+## entities
+```js
+[
+  {
+    name: 'bisd-format',
+    disabled: false,
+    decorator: (context, editor) => {},
+    hooks: {
+      leaf: (contex, props) => {},
+      element: (contex, props) => {}
+    }
+  },
+  // ...
+];
+```
+
+## hooks
+- leaf -> renderLeaf
+- element -> renderElement
+
+## next-rte-plugin
+> Slate rte plugin toolkits.
+
+- register('name', entity);
+- unregister('name');
+- enable('name');
+- disable('name');
+- set('name', entity);
+- get('name');
+- gets();
+- sets({});
+

@@ -30,7 +30,7 @@
       }
     },
     {
-      "files": "*.md",
+      "files": "*.{md,mdx}",
       "options": {
         "trailingComma": "none",
         "tabWidth": 2,
