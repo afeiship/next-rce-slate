@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ButtonGroup, Button, Toolbar } from '../src/main.ts';
+import './style.scss';
+
+<Meta title="Example/03-toolbar" />
+
+## showtime
+
+<Toolbar className="wsui-rte-icons mr10_">
+  <Button tooltip="标识符">标</Button>
+  <Button tooltip="分隔">隔</Button>
+  <Button tooltip="插空">空</Button>
+  <Button tooltip="数学公式">f(x)</Button>
+  <Button tooltip="插入图片">
+    <i className="wsui-icon-image" />
+  </Button>
+</Toolbar>

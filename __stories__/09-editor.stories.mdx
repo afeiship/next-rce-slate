@@ -1,24 +1,30 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Editor } from '../src/main.ts';
+import { Editor, Toolbar } from '../src/main.ts';
 import './style.scss';
 
 <Meta title="Example/09-editor" />
 
 ## showtime
 
-<Editor
-  onChange={(e) => {
-    console.log('e:', e.target.from, e.target.value);
-  }}
-  value={[
-    {
-      type: 'paragraph',
-      children: [
-        { text: 'A line of text in a paragraph.' },
-        { type: 'latex', value: 'a^2+b^2', children: [{ text: '' }] },
-        { text: '' }
-      ]
-    }
-  ]}
-/>
+<section>
+  <Toolbar>
+    Toolbar
+  </Toolbar>
+
+  <Editor
+    onChange={(e) => {
+      console.log('e:', e.target.from, e.target.value);
+    }}
+    value={[
+      {
+        type: 'paragraph',
+        children: [
+          { text: 'A line of text in a paragraph.' },
+          { type: 'latex', value: 'a^2+b^2', children: [{ text: '' }] },
+          { text: '' }
+        ]
+      }
+    ]}
+  />
+</section>
 

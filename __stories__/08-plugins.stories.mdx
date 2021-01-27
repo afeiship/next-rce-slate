@@ -10,10 +10,15 @@ import './style.scss';
   {
     name: 'bisd-format',
     disabled: false,
+    toolbar: ToolBarCompnent,
     decorator: (context, editor) => {},
     hooks: {
       leaf: (contex, props) => {},
       element: (contex, props) => {}
+    },
+    serialize:{
+      stringify: (contex, props) =>{},
+      parse: (contex, props) =>{},
     }
   },
   // ...
@@ -24,15 +29,24 @@ import './style.scss';
 - leaf -> renderLeaf
 - element -> renderElement
 
-## next-rte-plugin
+## @jswork/next-plugin-manager
 > Slate rte plugin toolkits.
 
-- register('name', entity);
-- unregister('name');
-- enable('name');
-- disable('name');
-- set('name', entity);
-- get('name');
-- gets();
-- sets({});
+https://github.com/afeiship/next-plugin-manager
 
+| api        | params           | description                                   |
+| ---------- | ---------------- | --------------------------------------------- |
+| register   | inEntity         | Add a plugin.                                 |
+| unregister | inName           | Remove a plugin by name.                      |
+| enabled    | -                | Get all enabled plugin.                       |
+| disabled   | -                | Get all disabled plugin.                      |
+| enable     | inName           | Active a plugin.                              |
+| disable    | inName           | Deactive a plugin.                            |
+| toggle     | inName           | Active/Deactive a plugin auto.                |
+| update     | inName, inObject | Update a plugin.                              |
+| updates    | inObject         | Update multiple plugins.                      |
+| has        | inName           | Check if a plugin exists.                     |
+| set        | inName, inEntity | Set plugin to new value.                      |
+| get        | inName           | Get a plugin by name.                         |
+| sets       | inObject         | Multiple set.                                 |
+| gets       | -                | Get all registered plugins(include disabled). |
