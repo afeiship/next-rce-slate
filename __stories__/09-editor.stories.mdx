@@ -13,14 +13,13 @@ import './style.scss';
 
   <Editor
     onChange={(e) => {
-      console.log('e:', e.target.from, e.target.value);
+      console.log('e:', e.target.value);
     }}
     value={[
       {
         type: 'paragraph',
         children: [
           { text: 'A line of text in a paragraph.' },
-          { type: 'latex', value: 'a^2+b^2', children: [{ text: '' }] },
           { text: '' }
         ]
       }
