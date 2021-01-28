@@ -39,6 +39,10 @@ export type Props = {
 };
 
 const CLASS_NAME = 'react-rte-slate';
+const DEFAULT_ELEMENTS = {
+  element: DefaultElement,
+  leaf: DefaultLeaf
+};
 
 export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
@@ -69,11 +73,17 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   private editor: any = null;
+  private current: any = null;
 
   private get withDecorators() {
     const { plugins } = this.props;
-    const decorators = plugins.map((plugin) => plugin.decorator);
+    const decorators = plugins.filter((plugin) => plugin.decorator);
     return nxCompose(...decorators, withReact);
+  }
+
+  private get hooks() {
+    const { plugins } = this.props;
+    return plugins.filter((plugin) => plugin.hooks);
   }
 
   constructor(inProps) {
@@ -84,15 +94,25 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.state = {
       value
     };
+
+    // todo: test code
+    window['context'] = this;
   }
 
-  renderElement(inProps: RenderElementProps) {
-    return <DefaultElement {...inProps} />;
+  private renderHooks(inRole: string, inProps: any) {
+    const DefaultComponent = DEFAULT_ELEMENTS[inRole];
+    const handlers = this.hooks.map((item) => item!.hooks![inRole]).filter(Boolean);
+    const handler = handlers.find((fn) => fn(this, inProps));
+    return handler ? handler(this, inProps) : <DefaultComponent {...inProps} />;
   }
 
-  renderLeaf(inProps: RenderLeafProps) {
-    return <DefaultLeaf {...inProps} />;
-  }
+  renderElement = (inProps: RenderElementProps) => {
+    return this.renderHooks('element', inProps);
+  };
+
+  renderLeaf = (inProps: RenderLeafProps) => {
+    return this.renderHooks('leaf', inProps);
+  };
 
   handleChange = (inEvent) => {
     const { onChange } = this.props;
@@ -109,7 +129,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     return (
       <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
-          <Editable renderLeaf={this.renderLeaf} renderElement={this.renderElement} />
+          <Editable renderLeaf={this.renderLeaf} />
         </Slate>
       </section>
     );

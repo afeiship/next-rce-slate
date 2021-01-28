@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default {
-  name: 'latex',
+  name: 'inline-style',
   hooks: {
     leaf: (inContext, inProps) => {
       const { attributes, children, leaf } = inProps;
@@ -10,7 +10,7 @@ export default {
 
       useEffect(() => {
         setInlineStyle({ ...inlineStyle, ...leaf.inlineStyle });
-      }, [leaf.inlineStyle]);
+      }, [ leaf.inlineStyle ]);
 
       return (
         <span {...attributes} style={inlineStyle}>
