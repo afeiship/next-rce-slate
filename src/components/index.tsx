@@ -96,6 +96,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     };
 
     // todo: test code
+    window['Editor'] = Editor;
     window['context'] = this;
   }
 

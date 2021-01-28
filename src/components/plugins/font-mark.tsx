@@ -3,26 +3,28 @@ import React, { useEffect, useState } from 'react';
 export default {
   name: 'font-mark',
   hooks: {
-    leaf: (inContext, inProps) => {
-      const { attributes, children, leaf } = inProps;
-      const fontWeight = leaf.bold ? 'bold' : 'normal';
-      const fontStyle = leaf.italic ? 'italic' : 'normal';
-      let textDecoration = 'normal';
+    leaf: (inContext, { attributes, children, leaf }) => {
+      if (leaf.bold) {
+        children = <strong>{children}</strong>;
+      }
 
-      leaf.strikethrough && (textDecoration = 'line-through');
-      leaf.underline && (textDecoration = 'underline');
+      if (leaf.code) {
+        children = <code>{children}</code>;
+      }
 
-      return (
-        <span
-          {...attributes}
-          style={{
-            fontWeight,
-            fontStyle,
-            textDecoration
-          }}>
-          {children}
-        </span>
-      );
+      if (leaf.italic) {
+        children = <em>{children}</em>;
+      }
+
+      if (leaf.strikethrough) {
+        children = <del>{children}</del>;
+      }
+
+      if (leaf.underline) {
+        children = <u>{children}</u>;
+      }
+
+      return <span {...attributes}>{children}</span>;
     }
   }
 };
