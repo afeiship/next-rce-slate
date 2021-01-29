@@ -2,7 +2,7 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Editor, createEditor } from 'slate';
+import { Editor, Transforms, createEditor } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import { jsx } from 'slate-hyperscript';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
@@ -82,7 +82,7 @@ export default class ReactRteSlate extends Component<Props, any> {
 
   private get withDecorators() {
     const { plugins } = this.props;
-    const decorators = plugins.filter((plugin) => plugin.decorator);
+    const decorators = plugins.map((plugin) => plugin.decorator).filter(Boolean);
     return nxCompose(...decorators, withReact);
   }
 
@@ -131,7 +131,21 @@ export default class ReactRteSlate extends Component<Props, any> {
 
     // todo: test code
     window['Editor'] = Editor;
+    window['Transforms'] = Transforms;
     window['context'] = this;
+  }
+
+  public componentDidMount() {
+    const el = document.querySelector('nav');
+    el!.addEventListener('click', () => {
+      console.log('click.');
+      var element = {
+        type: 'image',
+        url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
+        children: [{ text: '' }]
+      };
+      Transforms.insertNodes(this.editor, element);
+    });
   }
 
   public renderElement = (inProps: RenderElementProps) => {
@@ -171,7 +185,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     return (
       <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
-          <Editable renderLeaf={this.renderLeaf} />
+          <Editable renderLeaf={this.renderLeaf} renderElement={this.renderElement} />
         </Slate>
       </section>
     );
