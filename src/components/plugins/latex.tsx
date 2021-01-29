@@ -5,18 +5,7 @@ import { Transforms, Element } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { jsx } from 'slate-hyperscript';
 
-export const withLatex = (editor) => {
-  const { isInline, isVoid } = editor;
-  editor.isInline = (element) => {
-    return element.type === 'latex' || isInline(element);
-  };
-  editor.isVoid = (element) => {
-    return element.type === 'latex' || isVoid(element);
-  };
-  return editor;
-};
-
-export const LatexElement = class extends React.Component<any> {
+class LatexElement extends React.Component<any> {
   constructor(inProps) {
     super(inProps);
     const { value } = inProps.element;
@@ -72,9 +61,9 @@ export default {
     const nodeName = el.nodeName.toLowerCase();
     switch (nodeName) {
       case 'span':
-        if (el.getAttribute('data-latex')) {
-          const value = el.getAttribute('data-latex');
-          return jsx('element', { type: 'latex', value }, children);
+        const value = el.getAttribute('data-latex');
+        if (value) {
+          return jsx('element', { type: 'latex', value }, [{ text: '' }]);
         }
         return null;
     }

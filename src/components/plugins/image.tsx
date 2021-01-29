@@ -49,14 +49,13 @@ export default {
   importer: (el, children) => {
     const nodeName = el.nodeName.toLowerCase();
     switch (nodeName) {
-      case 'image':
+      case 'img':
         const url = el.getAttribute('src');
-        return jsx('element', { type: 'image', url }, children);
+        return jsx('element', { type: 'image', url }, [{ text: '' }]);
     }
   },
   exporter: (node, children) => {
     if (Element.isElement(node) && node.type === 'image') {
-      console.log('image:', node, children);
       return `<img src="${node.url}" alt=""/>${children}`;
     }
   }

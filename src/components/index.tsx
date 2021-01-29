@@ -140,6 +140,8 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.editor = composite(createEditor());
     this.state = { value: this.handleSerialize('importer', value) };
 
+    console.log(this.state);
+
     // todo: test code
     window['Editor'] = Editor;
     window['Transforms'] = Transforms;
