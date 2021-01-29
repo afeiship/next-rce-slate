@@ -1,8 +1,9 @@
 import React from 'react';
 import { Viewer } from '@jswork/keypad-quizizz';
 
-import { Transforms, Element as SlateElement } from 'slate';
+import { Transforms, Element } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { jsx } from 'slate-hyperscript';
 
 export const withLatex = (editor) => {
   const { isInline, isVoid } = editor;
@@ -24,13 +25,10 @@ export const LatexElement = class extends React.Component<any> {
 
   handleLatexEdit = (inEvent) => {
     const { value } = inEvent.target.dataset;
-    const _value = this.state.value;
-    // 这段应该放在外面
     const { element, editor } = this.props;
     const pmt = window.prompt('edit?', value);
     const path = ReactEditor.findPath(editor, element);
-    const newProperties: Partial<SlateElement> = { value: pmt };
-    Transforms.setNodes(editor, newProperties, { at: path });
+    Transforms.setNodes(editor, { value: pmt }, { at: path });
     this.setState({ value: pmt || value });
   };
 
@@ -49,5 +47,48 @@ export const LatexElement = class extends React.Component<any> {
 };
 
 export default {
-  name: 'latex'
+  name: 'latex',
+  hooks: {
+    element: (inContext, inProps) => {
+      const { element } = inProps;
+      switch (element.type) {
+        case 'latex':
+          return <LatexElement editor={inContext.editor} {...inProps} />;
+      }
+      // return null;
+    }
+  },
+  decorator: (editor) => {
+    const { isInline, isVoid } = editor;
+    editor.isInline = (element) => {
+      return element.type === 'latex' || isInline(element);
+    };
+    editor.isVoid = (element) => {
+      return element.type === 'latex' || isVoid(element);
+    };
+    return editor;
+  },
+  importer: (el, children) => {
+    const nodeName = el.nodeName.toLowerCase();
+    switch (nodeName) {
+      case 'latex':
+        const url = el.getAttribute('src');
+        return jsx('element', { type: 'latex', url }, children);
+    }
+  },
+  exporter: (node, children) => {
+    if (Element.isElement(node) && node.type === 'latex') {
+      return `<span data-latex="${node.value}"></span>`;
+    }
+  }
 };
+
+/**
+
+const element = {
+  type: 'latex',
+  value:'a^2+b^2',
+  children: [{ text: '' }]
+};
+Transforms.insertNodes(this.editor, element);
+ */

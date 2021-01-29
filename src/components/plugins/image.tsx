@@ -57,11 +57,10 @@ export default {
 
 /**
 
-const text = { text: '' };
-const image = {
+const element = {
   type: 'image',
   url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
-  children: [text]
+  children: [{ text: '' }]
 };
-Transforms.insertNodes(this.editor, image);
+Transforms.insertNodes(this.editor, element);
  */

@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Editor, Toolbar } from '../src/main.ts';
-import InlineStyle from '../src/components/plugins/inline-style';
 import FontMark from '../src/components/plugins/font-mark';
 import Image from '../src/components/plugins/image';
+import Latex from '../src/components/plugins/latex';
 import './style.scss';
 
 <Meta title="Example/09-editor" />
@@ -14,7 +14,7 @@ import './style.scss';
   </Toolbar>
 
   <Editor
-    plugins={[ FontMark, Image ]}
+    plugins={[ FontMark, Image, Latex ]}
     onChange={e=>{
       console.log(e.target);
     }}

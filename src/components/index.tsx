@@ -139,9 +139,9 @@ export default class ReactRteSlate extends Component<Props, any> {
     const el = document.querySelector('nav');
     el!.addEventListener('click', () => {
       console.log('click.');
-      var element = {
-        type: 'image',
-        url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
+      const element = {
+        type: 'latex',
+        value: 'a^2+b^2',
         children: [{ text: '' }]
       };
       Transforms.insertNodes(this.editor, element);
