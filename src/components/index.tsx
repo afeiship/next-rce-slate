@@ -39,7 +39,7 @@ export interface EventTarget {
 
 export type Props = {
   className?: string;
-  value: Array<any>;
+  value: string;
   onChange: (event: EventTarget) => void;
   plugins: Array<Entity>;
 };
@@ -61,7 +61,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     /**
      * Default value.
      */
-    value: PropTypes.array,
+    value: PropTypes.string,
     /**
      * The change handler.
      */
@@ -73,7 +73,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   static defaultProps = {
-    value: [{ type: 'paragraph', children: [{ text: '' }] }],
+    value: '',
     onChange: noop,
     plugins: []
   };
@@ -115,8 +115,6 @@ export default class ReactRteSlate extends Component<Props, any> {
         return jsx('fragment', {}, inChildren);
       case 'br':
         return '\n';
-      case 'blockquote':
-        return jsx('element', { type: 'quote' }, inChildren);
       case 'p':
         return jsx('element', { type: 'paragraph' }, inChildren);
       default:
@@ -129,7 +127,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     const { value } = inProps;
     const composite = this.withDecorators;
     this.editor = composite(createEditor());
-    this.state = { value };
+    this.state = { value: this.handleSerialize('importer', value) };
 
     // todo: test code
     window['Editor'] = Editor;
@@ -145,21 +143,20 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   // to-html/from-html
-  public handleSerialize(inRole) {
+  public handleSerialize(inRole, inValue) {
     const { plugins } = this.props;
-    const { value } = this.state;
-    const handlers = plugins.map((plugin) => plugin[inRole]);
+    const handlers = plugins.map((plugin) => plugin[inRole]).filter(Boolean);
     const Parser = inRole === 'exporter' ? NxSlateSerialize : NxDeslateSerialize;
     const process = (node, children) => {
       const handler = handlers.find((fn) => fn(node, children));
       return handler ? handler(node, children) : this[inRole](node, children);
     };
-    return Parser.parse(value, { process });
+    return Parser.parse(inValue, { process });
   }
 
   public handleChange = (inEvent) => {
     const { onChange } = this.props;
-    const html = this.handleSerialize('exporter');
+    const html = this.handleSerialize('exporter', inEvent);
     const target = { value: inEvent, html };
 
     this.setState(target, () => {

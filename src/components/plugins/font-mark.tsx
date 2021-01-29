@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { jsx } from 'slate-hyperscript';
 
 export default {
   name: 'font-mark',
+  importer: (el, children) => {
+    const nodeName = el.nodeName.toLowerCase();
+    switch (true) {
+      case nodeName === 'span' && el.style.fontWeight === 'bold':
+        return jsx('text', { bold: true }, children);
+      case nodeName === 'span' && el.style.fontStyle === 'italic':
+        return jsx('text', { italic: true }, children);
+      case nodeName === 'span' && el.style.textDecoration === 'line-through':
+        return jsx('text', { strikethrough: true }, children);
+    }
+    return null;
+  },
   // to-html
   exporter: (node, children) => {
     if (!children) {

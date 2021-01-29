@@ -8,7 +8,6 @@ import './style.scss';
 <Meta title="Example/09-editor" />
 
 ## showtime
-
 <section>
   <Toolbar>
     Toolbar
@@ -19,15 +18,7 @@ import './style.scss';
     onChange={e=>{
       console.log(e.target);
     }}
-    value={[
-      {
-        type: 'paragraph',
-        children: [
-          { text: 'A line of text in a paragraph.' },
-          { text: '' }
-        ]
-      }
-    ]}
+    value={`<p>A <span style="text-decoration: line-through;">line</span> of <span style="font-weight: bold;">text</span> in a <span style="font-weight: bold;">paragraph</span>.</p><p>sldfjsdfjsdf</p><p>sldflsdjsdf</p>`}
   />
 </section>
 
