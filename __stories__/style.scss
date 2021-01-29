@@ -8,8 +8,8 @@
   pointer-events: none;
 }
 
-.mr10_ > * {
-  margin-right: 10px;
+[data-slate-void="true"] {
+  display: inline-block;
 }
 
 select {

@@ -1,18 +1,22 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 import { Element } from 'slate';
+import { useSelected, useFocused } from 'slate-react';
 
 class ImageElement extends React.Component<any> {
   render() {
     const { attributes, children, element } = this.props;
+    console.log('element.url', element.url);
     return (
-      <span {...attributes} contentEditable={false}>
-        <img
-          onClick={(e) => {
-            console.log('click image~');
-          }}
-          src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg"
-        />
+      <span {...attributes}>
+        <span contentEditable={false}>
+          <img
+            onClick={(e) => {
+              console.log('click image~');
+            }}
+            src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg"
+          />
+        </span>
         {children}
       </span>
     );
@@ -22,10 +26,12 @@ class ImageElement extends React.Component<any> {
 export default {
   name: 'image',
   hooks: {
-    element: (inContext, { attributes, children, element }) => {
+    element: (inContext, inProps) => {
+      const { element } = inProps;
+
       switch (element.type) {
         case 'image':
-          return <ImageElement {...attributes} />;
+          return <ImageElement {...inProps} />;
       }
       // return null;
     }
@@ -33,10 +39,10 @@ export default {
   decorator: (editor) => {
     const { isInline, isVoid } = editor;
     editor.isInline = (element) => {
-      return element.type === 'image' || isInline(element);
+      return element.type === 'image' ? true : isInline(element);
     };
     editor.isVoid = (element) => {
-      return element.type === 'image' || isVoid(element);
+      return element.type === 'image' ? true : isVoid(element);
     };
     return editor;
   },
@@ -50,6 +56,7 @@ export default {
   },
   exporter: (node, children) => {
     if (Element.isElement(node) && node.type === 'image') {
+      console.log('image:', node, children);
       return `<img src="${node.url}" alt=""/>${children}`;
     }
   }

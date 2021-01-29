@@ -50,6 +50,17 @@ const DEFAULT_ELEMENTS = {
   leaf: DefaultLeaf
 };
 
+const withImages = (editor) => {
+  const { isInline, isVoid } = editor;
+  editor.isInline = (element) => {
+    return element.type === 'image' ? true : isInline(element);
+  };
+  editor.isVoid = (element) => {
+    return element.type === 'image' ? true : isVoid(element);
+  };
+  return editor;
+};
+
 export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
   static version = '__VERSION__';
@@ -83,7 +94,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   private get withDecorators() {
     const { plugins } = this.props;
     const decorators = plugins.map((plugin) => plugin.decorator).filter(Boolean);
-    return nxCompose(...decorators, withReact);
+    return nxCompose(withReact, ...decorators);
   }
 
   private get hooks() {
@@ -140,8 +151,9 @@ export default class ReactRteSlate extends Component<Props, any> {
     el!.addEventListener('click', () => {
       console.log('click.');
       const element = {
-        type: 'latex',
-        value: 'a^2+b^2',
+        type: 'image',
+        url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
+        // value: 'a^2+b^2',
         children: [{ text: '' }]
       };
       Transforms.insertNodes(this.editor, element);
