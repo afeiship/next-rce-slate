@@ -2,6 +2,24 @@ import React, { useEffect, useState } from 'react';
 
 export default {
   name: 'font-mark',
+  // to-html
+  exporter: (node, children) => {
+    if (!children) {
+      let cssText = '';
+      if (node.bold) {
+        cssText = 'font-weight: bold;';
+      }
+
+      if (node.italic) {
+        cssText += 'font-style: italic;';
+      }
+
+      if (node.strikethrough) {
+        cssText += 'text-decoration: line-through;';
+      }
+      return cssText ? `<span style="${cssText}">${node.text}</span>` : node.text;
+    }
+  },
   hooks: {
     leaf: (inContext, { attributes, children, leaf }) => {
       if (leaf.bold) {
@@ -18,10 +36,6 @@ export default {
 
       if (leaf.strikethrough) {
         children = <del>{children}</del>;
-      }
-
-      if (leaf.underline) {
-        children = <u>{children}</u>;
       }
 
       return <span {...attributes}>{children}</span>;

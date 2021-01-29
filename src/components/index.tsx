@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Editor, createEditor } from 'slate';
 import nxCompose from '@jswork/next-compose';
+import { jsx } from 'slate-hyperscript';
+import NxSlateSerialize from '@jswork/next-slate-serialize';
+import NxDeslateSerialize from '@jswork/next-slate-deserialize';
+
 import {
   Slate,
   Editable,
@@ -18,6 +22,8 @@ export interface Entity {
   name: string;
   disabled?: boolean;
   decorator?: (editor: Editor) => Editor;
+  importer?: any;
+  exporter?: any;
   hooks?: {
     leaf: (context: any, editor: Editor) => JSX.Element | null;
     element: (context: any, editor: Editor) => JSX.Element | null;
@@ -73,7 +79,6 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   private editor: any = null;
-  private current: any = null;
 
   private get withDecorators() {
     const { plugins } = this.props;
@@ -86,20 +91,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     return plugins.filter((plugin) => plugin.hooks);
   }
 
-  constructor(inProps) {
-    super(inProps);
-    const { value } = inProps;
-    const composite = this.withDecorators;
-    this.editor = composite(createEditor());
-    this.state = {
-      value
-    };
-
-    // todo: test code
-    window['Editor'] = Editor;
-    window['context'] = this;
-  }
-
   private renderHooks(inRole: string, inProps: any) {
     const DefaultComponent = DEFAULT_ELEMENTS[inRole];
     const handlers = this.hooks.map((item) => item!.hooks![inRole]).filter(Boolean);
@@ -107,23 +98,76 @@ export default class ReactRteSlate extends Component<Props, any> {
     return handler ? handler(this, inProps) : <DefaultComponent {...inProps} />;
   }
 
-  renderElement = (inProps: RenderElementProps) => {
+  protected exporter(inNode, inChildren) {
+    if (!inChildren) return inNode.text;
+    switch (inNode.type) {
+      case 'paragraph':
+        return `<p>${inChildren}</p>`;
+      default:
+        return inChildren;
+    }
+  }
+
+  protected importer(inElement, inChildren) {
+    const nodeName = inElement.nodeName.toLowerCase();
+    switch (nodeName) {
+      case 'body':
+        return jsx('fragment', {}, inChildren);
+      case 'br':
+        return '\n';
+      case 'blockquote':
+        return jsx('element', { type: 'quote' }, inChildren);
+      case 'p':
+        return jsx('element', { type: 'paragraph' }, inChildren);
+      default:
+        return inElement.textContent;
+    }
+  }
+
+  public constructor(inProps) {
+    super(inProps);
+    const { value } = inProps;
+    const composite = this.withDecorators;
+    this.editor = composite(createEditor());
+    this.state = { value };
+
+    // todo: test code
+    window['Editor'] = Editor;
+    window['context'] = this;
+  }
+
+  public renderElement = (inProps: RenderElementProps) => {
     return this.renderHooks('element', inProps);
   };
 
-  renderLeaf = (inProps: RenderLeafProps) => {
+  public renderLeaf = (inProps: RenderLeafProps) => {
     return this.renderHooks('leaf', inProps);
   };
 
-  handleChange = (inEvent) => {
+  // to-html/from-html
+  public handleSerialize(inRole) {
+    const { plugins } = this.props;
+    const { value } = this.state;
+    const handlers = plugins.map((plugin) => plugin[inRole]);
+    const Parser = inRole === 'exporter' ? NxSlateSerialize : NxDeslateSerialize;
+    const process = (node, children) => {
+      const handler = handlers.find((fn) => fn(node, children));
+      return handler ? handler(node, children) : this[inRole](node, children);
+    };
+    return Parser.parse(value, { process });
+  }
+
+  public handleChange = (inEvent) => {
     const { onChange } = this.props;
-    const target = { value: inEvent };
+    const html = this.handleSerialize('exporter');
+    const target = { value: inEvent, html };
+
     this.setState(target, () => {
       onChange({ target });
     });
   };
 
-  render() {
+  public render() {
     const { className, value, onChange, ...props } = this.props;
     const _value = this.state.value;
 
