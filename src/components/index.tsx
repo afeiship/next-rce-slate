@@ -158,6 +158,16 @@ export default class ReactRteSlate extends Component<Props, any> {
       };
       Transforms.insertNodes(this.editor, element);
     });
+
+    el!.addEventListener('contextmenu', () => {
+      const element = {
+        type: 'latex',
+        value: 'a^2+b^2',
+        children: [{ text: '' }]
+      };
+
+      Transforms.insertNodes(this.editor, element);
+    });
   }
 
   public renderElement = (inProps: RenderElementProps) => {

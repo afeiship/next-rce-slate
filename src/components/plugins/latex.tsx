@@ -71,9 +71,12 @@ export default {
   importer: (el, children) => {
     const nodeName = el.nodeName.toLowerCase();
     switch (nodeName) {
-      case 'latex':
-        const url = el.getAttribute('src');
-        return jsx('element', { type: 'latex', url }, children);
+      case 'span':
+        if (el.getAttribute('data-latex')) {
+          const value = el.getAttribute('data-latex');
+          return jsx('element', { type: 'latex', value }, children);
+        }
+        return null;
     }
   },
   exporter: (node, children) => {
