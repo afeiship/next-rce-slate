@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Editor, Toolbar } from '../src/main.ts';
-import FontMark from '../src/components/plugins/font-mark';
 import Image from '../src/components/plugins/image';
 import Latex from '../src/components/plugins/latex';
+import InlineStyle from '@jswork/slate-plugin-inline-style';
 import './style.scss';
 
 <Meta title="Example/09-editor" />
@@ -14,11 +14,11 @@ import './style.scss';
   </Toolbar>
 
   <Editor
-    plugins={[ FontMark, Image, Latex ]}
+    plugins={[ InlineStyle, Latex, Image ]}
     onChange={e=>{
       console.log(e.target);
     }}
-    value={`<p>A <span style="text-decoration: line-through;">line</span> of <span style="font-weight: bold;">text</span> insdf</p><p>a <span style="font-weight: bold;">paragraph</span> <img src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg" alt=""/><span data-latex="a^2+b^2+c"></span>sdfssdfsf</p>`}
+    value={`<p>A <span style="color: #f00; font-style: italic;">line</span> of <span style="font-weight: bold;">text</span> insdf</p><p>a <span style="font-style: italic;">paragraph</span> <img src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg" alt=""/><span data-latex="a^2+b^2+c"></span>sdfssdfsf</p>`}
   />
 </section>
 

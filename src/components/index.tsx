@@ -2,12 +2,12 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Editor, Transforms, createEditor } from 'slate';
+import { createEditor } from 'slate';
 import nxCompose from '@jswork/next-compose';
-import { jsx } from 'slate-hyperscript';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
+import deepEqual from 'fast-deep-equal';
 
 import {
   Slate,
@@ -19,37 +19,13 @@ import {
   DefaultLeaf
 } from 'slate-react';
 
-export interface Entity {
-  name: string;
-  disabled?: boolean;
-  decorator?: (editor: Editor) => Editor;
-  importer?: any;
-  exporter?: any;
-  hooks?: {
-    leaf: (context: any, editor: Editor) => JSX.Element | null;
-    element: (context: any, editor: Editor) => JSX.Element | null;
-  };
-}
-
-export interface EventTarget {
-  target: {
-    path?: string;
-    value: Array<any>;
-  };
-}
-
-export type Props = {
-  className?: string;
-  value: string;
-  onChange: (event: EventTarget) => void;
-  plugins: Array<Entity>;
-};
-
 const CLASS_NAME = 'react-rte-slate';
 const DEFAULT_ELEMENTS = {
   element: DefaultElement,
   leaf: DefaultLeaf
 };
+
+import { Props } from './types';
 
 export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
@@ -80,6 +56,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   private editor: any = null;
+  private initialValue: Array<any> = [];
 
   private get withDecorators() {
     const { plugins } = this.props;
@@ -99,41 +76,25 @@ export default class ReactRteSlate extends Component<Props, any> {
     return handler ? handler(this, inProps) : <DefaultComponent {...inProps} />;
   }
 
+  private toSlateNodes(inValue) {
+    return this.handleSerialize('importer', inValue)
+  }
+
   public constructor(inProps) {
     super(inProps);
     const { value } = inProps;
     const composite = this.withDecorators;
+    this.initialValue = this.toSlateNodes(value);
     this.editor = composite(createEditor());
-    this.state = { value: this.handleSerialize('importer', value) };
-
-    // todo: test code
-    window['Editor'] = Editor;
-    window['Transforms'] = Transforms;
-    window['context'] = this;
+    this.state = { value: this.initialValue };
   }
 
-  public componentDidMount() {
-    const el = document.querySelector('nav');
-    el!.addEventListener('click', () => {
-      console.log('click.');
-      const element = {
-        type: 'image',
-        url: 'https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg',
-        // value: 'a^2+b^2',
-        children: [{ text: '' }]
-      };
-      Transforms.insertNodes(this.editor, element);
-    });
-
-    el!.addEventListener('contextmenu', () => {
-      const element = {
-        type: 'latex',
-        value: 'a^2+b^2',
-        children: [{ text: '' }]
-      };
-
-      Transforms.insertNodes(this.editor, element);
-    });
+  public shouldComponentUpdate(inProps) {
+    const value = this.toSlateNodes(inProps.value);
+    if (!deepEqual(value, this.initialValue)) {
+      this.setState({ value })
+    }
+    return true;
   }
 
   public renderElement = (inProps: RenderElementProps) => {
@@ -144,7 +105,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     return this.renderHooks('leaf', inProps);
   };
 
-  // to-html/from-html
   public handleSerialize(inRole, inValue) {
     const { plugins } = this.props;
     const handlers = plugins.map((plugin) => plugin[inRole]).filter(Boolean);
