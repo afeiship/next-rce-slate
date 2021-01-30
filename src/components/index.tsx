@@ -7,6 +7,7 @@ import nxCompose from '@jswork/next-compose';
 import { jsx } from 'slate-hyperscript';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
+import NxSlateDefaults from '@jswork/next-slate-defaults';
 
 import {
   Slate,
@@ -48,17 +49,6 @@ const CLASS_NAME = 'react-rte-slate';
 const DEFAULT_ELEMENTS = {
   element: DefaultElement,
   leaf: DefaultLeaf
-};
-
-const withImages = (editor) => {
-  const { isInline, isVoid } = editor;
-  editor.isInline = (element) => {
-    return element.type === 'image' ? true : isInline(element);
-  };
-  editor.isVoid = (element) => {
-    return element.type === 'image' ? true : isVoid(element);
-  };
-  return editor;
 };
 
 export default class ReactRteSlate extends Component<Props, any> {
@@ -109,38 +99,12 @@ export default class ReactRteSlate extends Component<Props, any> {
     return handler ? handler(this, inProps) : <DefaultComponent {...inProps} />;
   }
 
-  protected exporter(inNode, inChildren) {
-    if (!inChildren) return inNode.text;
-    switch (inNode.type) {
-      case 'paragraph':
-        return `<p>${inChildren}</p>`;
-      default:
-        return inChildren;
-    }
-  }
-
-  protected importer(inElement, inChildren) {
-    const nodeName = inElement.nodeName.toLowerCase();
-    switch (nodeName) {
-      case 'body':
-        return jsx('fragment', {}, inChildren);
-      case 'br':
-        return '\n';
-      case 'p':
-        return jsx('element', { type: 'paragraph' }, inChildren);
-      default:
-        return inElement.textContent;
-    }
-  }
-
   public constructor(inProps) {
     super(inProps);
     const { value } = inProps;
     const composite = this.withDecorators;
     this.editor = composite(createEditor());
     this.state = { value: this.handleSerialize('importer', value) };
-
-    console.log(this.state);
 
     // todo: test code
     window['Editor'] = Editor;
@@ -187,7 +151,7 @@ export default class ReactRteSlate extends Component<Props, any> {
     const Parser = inRole === 'exporter' ? NxSlateSerialize : NxDeslateSerialize;
     const process = (node, children) => {
       const handler = handlers.find((fn) => fn(node, children));
-      return handler ? handler(node, children) : this[inRole](node, children);
+      return handler ? handler(node, children) : NxSlateDefaults[inRole](node, children);
     };
     return Parser.parse(inValue, { process });
   }

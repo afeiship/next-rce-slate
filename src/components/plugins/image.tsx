@@ -6,16 +6,10 @@ import { useSelected, useFocused } from 'slate-react';
 class ImageElement extends React.Component<any> {
   render() {
     const { attributes, children, element } = this.props;
-    console.log('element.url', element.url);
     return (
       <span {...attributes}>
         <span contentEditable={false}>
-          <img
-            onClick={(e) => {
-              console.log('click image~');
-            }}
-            src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg"
-          />
+          <img src={element.url} />
         </span>
         {children}
       </span>
