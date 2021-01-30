@@ -1,7 +1,7 @@
 import React, { DetailedHTMLProps } from 'react';
 import classNames from 'classnames';
 
-type Props = DetailedHTMLProps & {};
+type Props = DetailedHTMLProps<any, any> & {};
 
 const CLASS_NAME = 'react-rte-slate__button-group';
 
