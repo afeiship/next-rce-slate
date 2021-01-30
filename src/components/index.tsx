@@ -8,7 +8,6 @@ import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
 import deepEqual from 'fast-deep-equal';
-
 import {
   Slate,
   Editable,
@@ -18,14 +17,13 @@ import {
   DefaultElement,
   DefaultLeaf
 } from 'slate-react';
+import { Props } from './types';
 
 const CLASS_NAME = 'react-rte-slate';
 const DEFAULT_ELEMENTS = {
   element: DefaultElement,
   leaf: DefaultLeaf
 };
-
-import { Props } from './types';
 
 export default class ReactRteSlate extends Component<Props, any> {
   static displayName = CLASS_NAME;
