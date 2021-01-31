@@ -95,5 +95,11 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  }
+  },
+  "keywords": [
+    "react",
+    "rich-editor",
+    "slate",
+    "slatejs"
+  ]
 }
