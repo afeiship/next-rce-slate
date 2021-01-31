@@ -59,6 +59,10 @@
     transition: all 0.3s;
     vertical-align: middle;
 
+    > * {
+      pointer-events: none;
+    }
+
     &[data-format="strikethrough"] {
       text-decoration: line-through;
     }

@@ -42,6 +42,10 @@ export default class ReactRteSlate extends Component<Props, any> {
      */
     onChange: PropTypes.func,
     /**
+    * The hanlder when editor init.
+    */
+    onInit: PropTypes.func,
+    /**
      * Plugin list.
      */
     plugins: PropTypes.array
@@ -50,6 +54,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   static defaultProps = {
     value: '',
     onChange: noop,
+    onInit: noop,
     plugins: []
   };
 
@@ -80,11 +85,12 @@ export default class ReactRteSlate extends Component<Props, any> {
 
   public constructor(inProps) {
     super(inProps);
-    const { value } = inProps;
+    const { value, onInit } = inProps;
     const composite = this.withDecorators;
     this.initialValue = this.toSlateNodes(value);
     this.editor = composite(createEditor());
     this.state = { value: this.initialValue };
+    onInit({ target: { value: this.editor } })
   }
 
   public shouldComponentUpdate(inProps) {

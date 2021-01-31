@@ -14,7 +14,7 @@ export interface Entity {
 
 export interface EventTarget {
   target: {
-    value: string;
+    value: any;
   };
 }
 
@@ -22,6 +22,7 @@ export type Props = {
   className?: string;
   value?: string;
   placeholder?: string;
+  onInit?: (event: EventTarget) => void;
   onChange?: (event: EventTarget) => void;
   plugins: Array<Entity>;
 };
