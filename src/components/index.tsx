@@ -7,7 +7,7 @@ import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
-import deepEqual from 'fast-deep-equal';
+// import deepEqual from 'fast-deep-equal';
 import {
   Slate,
   Editable,
@@ -91,14 +91,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.editor = composite(createEditor());
     this.state = { value: this.initialValue };
     onInit({ target: { value: this.editor } })
-  }
-
-  public shouldComponentUpdate(inProps) {
-    const value = this.toSlateNodes(inProps.value);
-    if (!deepEqual(value, this.initialValue)) {
-      this.setState({ value })
-    }
-    return true;
   }
 
   public renderElement = (inProps: RenderElementProps) => {

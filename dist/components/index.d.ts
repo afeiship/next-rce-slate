@@ -40,7 +40,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     private renderHooks;
     private toSlateNodes;
     constructor(inProps: any);
-    shouldComponentUpdate(inProps: any): boolean;
     renderElement: (inProps: RenderElementProps) => any;
     renderLeaf: (inProps: RenderLeafProps) => any;
     handleSerialize(inRole: any, inValue: any): any;
