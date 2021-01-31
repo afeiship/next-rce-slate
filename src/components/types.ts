@@ -18,12 +18,19 @@ export interface EventTarget {
   };
 }
 
+export interface EventPluginTarget {
+  target: {
+    from: string;
+    value: any;
+  };
+}
+
 export type Props = {
   className?: string;
   value?: string;
   placeholder?: string;
   onInit?: (event: EventTarget) => void;
   onChange?: (event: EventTarget) => void;
-  onPluginChange?: (event: EventTarget) => void;
+  onPluginChange?: (event: EventPluginTarget) => void;
   plugins: Array<Entity>;
 };

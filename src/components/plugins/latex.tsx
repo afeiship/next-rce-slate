@@ -24,13 +24,18 @@ class LatexElement extends React.Component<any> {
   render() {
     // const { value } = this.props.element;
     const value = this.state.value;
+    const { attributes, element, children } = this.props;
     return (
-      <Viewer
-        contentEditable={false}
-        value={value}
-        data-value={value}
-        onClick={this.handleLatexEdit}
-      />
+      <span {...attributes}>
+        <span contentEditable={false}>
+          <Viewer
+            value={value}
+            data-value={value}
+            onClick={this.handleLatexEdit}
+          />
+        </span>
+        {children}
+      </span>
     );
   }
 };
@@ -52,13 +57,12 @@ export default {
     editor.isInline = (element) => {
       return element.type === 'latex' || isInline(element);
     };
-    editor.isVoid = (element) => {
-      return element.type === 'latex' || isVoid(element);
-    };
     return editor;
   },
   importer: (el, children) => {
     const nodeName = el.nodeName.toLowerCase();
+    console.log(el, children);
+
     switch (nodeName) {
       case 'span':
         const value = el.getAttribute('data-latex');
@@ -70,7 +74,7 @@ export default {
   },
   exporter: (node, children) => {
     if (Element.isElement(node) && node.type === 'latex') {
-      return `<span data-latex="${node.value}"></span>`;
+      return `<span data-latex="${node.value}"></span>${children}`;
     }
   }
 };

@@ -138,7 +138,11 @@ export default class ReactRteSlate extends Component<Props, any> {
     return (
       <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
-          <Editable placeholder={placeholder} renderLeaf={this.renderLeaf} renderElement={this.renderElement} />
+          <Editable
+            placeholder={placeholder}
+            renderLeaf={this.renderLeaf}
+            renderElement={this.renderElement}
+          />
         </Slate>
       </section>
     );
