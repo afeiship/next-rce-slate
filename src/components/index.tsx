@@ -42,6 +42,10 @@ export default class ReactRteSlate extends Component<Props, any> {
      */
     onChange: PropTypes.func,
     /**
+     * The plugin changed handler.
+     */
+    onPluginChange: PropTypes.func,
+    /**
     * The hanlder when editor init.
     */
     onInit: PropTypes.func,
@@ -54,6 +58,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   static defaultProps = {
     value: '',
     onChange: noop,
+    onPluginChange: noop,
     onInit: noop,
     plugins: []
   };
@@ -120,7 +125,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.setState(target, () => {
       onChange!({
         target: {
-          from: 'core:editor',
           value: html
         }
       });
