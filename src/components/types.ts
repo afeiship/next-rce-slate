@@ -14,14 +14,14 @@ export interface Entity {
 
 export interface EventTarget {
   target: {
-    path?: string;
-    value: Array<any>;
+    value: string;
   };
 }
 
 export type Props = {
   className?: string;
-  value: string;
-  onChange: (event: EventTarget) => void;
+  value?: string;
+  placeholder?: string;
+  onChange?: (event: EventTarget) => void;
   plugins: Array<Entity>;
 };

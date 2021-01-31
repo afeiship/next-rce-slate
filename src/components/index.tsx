@@ -117,21 +117,21 @@ export default class ReactRteSlate extends Component<Props, any> {
   public handleChange = (inEvent) => {
     const { onChange } = this.props;
     const html = this.handleSerialize('exporter', inEvent);
-    const target = { value: inEvent, html };
+    const target = { value: inEvent };
 
     this.setState(target, () => {
-      onChange({ target });
+      onChange!({ target: { value: html } });
     });
   };
 
   public render() {
-    const { className, value, onChange, ...props } = this.props;
+    const { className, value, onChange, placeholder, ...props } = this.props;
     const _value = this.state.value;
 
     return (
       <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
-          <Editable renderLeaf={this.renderLeaf} renderElement={this.renderElement} />
+          <Editable placeholder={placeholder} renderLeaf={this.renderLeaf} renderElement={this.renderElement} />
         </Slate>
       </section>
     );
