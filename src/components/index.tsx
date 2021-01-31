@@ -132,7 +132,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   public render() {
-    const { className, value, onChange, onInit, placeholder, ...props } = this.props;
+    const { className, value, onChange, onPluginChange, onInit, placeholder, ...props } = this.props;
     const _value = this.state.value;
 
     return (
