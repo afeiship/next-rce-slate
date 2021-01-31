@@ -17,7 +17,7 @@
     "test": "jest",
     "pages": "./bin/docs.rb",
     "release": "release-it",
-    "storybook:build": "build-storybook -o docs"
+    "docs": "build-storybook -o docs"
   },
   "jest": {
     "preset": "ts-jest",
