@@ -2,7 +2,7 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor } from 'slate';
+import { Editor, Transforms, createEditor } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
@@ -95,7 +95,12 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.initialValue = this.toSlateNodes(value);
     this.editor = composite(createEditor());
     this.state = { value: this.initialValue };
-    onInit({ target: { value: this.editor } })
+    onInit({ target: { value: this.editor } });
+
+
+    window['context'] = this;
+    window['Editor'] = Editor;
+    window['Transforms'] = Transforms;
   }
 
   public renderElement = (inProps: RenderElementProps) => {
@@ -119,15 +124,11 @@ export default class ReactRteSlate extends Component<Props, any> {
 
   public handleChange = (inEvent) => {
     const { onChange } = this.props;
-    const html = this.handleSerialize('exporter', inEvent);
+    const value = this.handleSerialize('exporter', inEvent);
     const target = { value: inEvent };
 
     this.setState(target, () => {
-      onChange!({
-        target: {
-          value: html
-        }
-      });
+      onChange!({ target: { value } });
     });
   };
 

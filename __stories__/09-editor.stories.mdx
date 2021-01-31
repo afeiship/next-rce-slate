@@ -2,6 +2,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Editor, Toolbar } from '../src/main.ts';
 import Image from '../src/components/plugins/image';
 import Latex from '../src/components/plugins/latex';
+import Blank from '../src/components/plugins/blank';
 import InlineStyle from '@jswork/slate-plugin-inline-style';
 import './style.scss';
 
@@ -14,11 +15,11 @@ import './style.scss';
   </Toolbar>
 
   <Editor
-    plugins={[ InlineStyle, Latex, Image ]}
+    plugins={[ InlineStyle, Latex, Image, Blank ]}
     onChange={e=>{
       console.log(e.target);
     }}
-    value={`<p>A <span style="color: #f00; font-style: italic;">line</span> of <span style="font-weight: bold;">text</span> insdf</p><p>a <span style="font-style: italic;">paragraph</span> <img src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg" alt=""/><span data-latex="a^2+b^2+c"></span></p>`}
+    value={`<p>A <span style="color: #f00; font-style: italic;">line</span> of <span style="font-weight: bold;">text</span> insdf</p><p>a <span style="font-style: italic;">paragraph</span> <img src="https://himg.bdimg.com/sys/portrait/item/be10475f686d6c73db00.jpg" alt=""/><span data-latex="a^2+b^2+c"></span>sdfsdfdsf <blank>sld</blank>jfsdf</p>`}
   />
 </section>
 
