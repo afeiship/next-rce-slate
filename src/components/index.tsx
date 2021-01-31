@@ -118,7 +118,12 @@ export default class ReactRteSlate extends Component<Props, any> {
     const target = { value: inEvent };
 
     this.setState(target, () => {
-      onChange!({ target: { value: html } });
+      onChange!({
+        target: {
+          from: 'core:editor',
+          value: html
+        }
+      });
     });
   };
 

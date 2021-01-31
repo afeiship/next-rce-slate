@@ -14,6 +14,7 @@ export interface Entity {
 
 export interface EventTarget {
   target: {
+    from?: string,
     value: any;
   };
 }
