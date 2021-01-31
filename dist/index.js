@@ -3,7 +3,7 @@
  *  description: Pure React rich text WYSIWYG editor based on slatejs.
  *  homepage: 
  *  version: 1.0.0
- *  date: 2021-01-31T02:24:50.126Z
+ *  date: 2021-01-31T02:35:02.378Z
  *  license: MIT
  */
 
