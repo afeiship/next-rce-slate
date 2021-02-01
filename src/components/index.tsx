@@ -2,12 +2,11 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Editor, Transforms, createEditor } from 'slate';
+import { createEditor } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
-// import deepEqual from 'fast-deep-equal';
 import {
   Slate,
   Editable,
@@ -96,10 +95,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.editor = composite(createEditor());
     this.state = { value: this.initialValue };
     onInit({ target: { value: this.editor } });
-
-    window['context'] = this;
-    window['Editor'] = Editor;
-    window['Transforms'] = Transforms;
   }
 
   public renderElement = (inProps: RenderElementProps) => {
@@ -145,12 +140,13 @@ export default class ReactRteSlate extends Component<Props, any> {
     const _value = this.state.value;
 
     return (
-      <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)} {...props}>
+      <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
           <Editable
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}
             renderElement={this.renderElement}
+            {...props}
           />
         </Slate>
       </section>

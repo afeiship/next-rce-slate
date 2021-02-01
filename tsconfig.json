@@ -29,7 +29,7 @@
   },
   "include": [
     "src"
-  ],
+, "__stories__/plugins"  ],
   "exclude": [
     "node_modules",
     "dist"

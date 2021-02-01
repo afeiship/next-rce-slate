@@ -68,7 +68,6 @@ export default {
         if (value) {
           return jsx('element', { type: 'latex', value }, [{ text: '' }]);
         }
-        return null;
     }
   },
   exporter: (node, children) => {
