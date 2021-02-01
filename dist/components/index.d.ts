@@ -23,8 +23,8 @@ export default class ReactRteSlate extends Component<Props, any> {
          */
         onPluginChange: PropTypes.Requireable<(...args: any[]) => any>;
         /**
-        * The hanlder when editor init.
-        */
+         * The hanlder when editor init.
+         */
         onInit: PropTypes.Requireable<(...args: any[]) => any>;
         /**
          * Plugin list.
