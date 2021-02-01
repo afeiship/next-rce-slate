@@ -28,17 +28,13 @@ class LatexElement extends React.Component<any> {
     return (
       <span {...attributes}>
         <span contentEditable={false}>
-          <Viewer
-            value={value}
-            data-value={value}
-            onClick={this.handleLatexEdit}
-          />
+          <Viewer value={value} data-value={value} onClick={this.handleLatexEdit} />
         </span>
         {children}
       </span>
     );
   }
-};
+}
 
 export default {
   name: 'latex',
@@ -56,6 +52,9 @@ export default {
     const { isInline, isVoid } = editor;
     editor.isInline = (element) => {
       return element.type === 'latex' || isInline(element);
+    };
+    editor.isVoid = (element) => {
+      return element.type === 'latex' || isVoid(element);
     };
     return editor;
   },

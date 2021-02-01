@@ -46,8 +46,8 @@ export default class ReactRteSlate extends Component<Props, any> {
      */
     onPluginChange: PropTypes.func,
     /**
-    * The hanlder when editor init.
-    */
+     * The hanlder when editor init.
+     */
     onInit: PropTypes.func,
     /**
      * Plugin list.
@@ -85,7 +85,7 @@ export default class ReactRteSlate extends Component<Props, any> {
   }
 
   private toSlateNodes(inValue) {
-    return this.handleSerialize('importer', inValue)
+    return this.handleSerialize('importer', inValue);
   }
 
   public constructor(inProps) {
@@ -96,7 +96,6 @@ export default class ReactRteSlate extends Component<Props, any> {
     this.editor = composite(createEditor());
     this.state = { value: this.initialValue };
     onInit({ target: { value: this.editor } });
-
 
     window['context'] = this;
     window['Editor'] = Editor;
@@ -133,7 +132,16 @@ export default class ReactRteSlate extends Component<Props, any> {
   };
 
   public render() {
-    const { className, value, onChange, onPluginChange, onInit, placeholder, ...props } = this.props;
+    const {
+      className,
+      value,
+      onChange,
+      onPluginChange,
+      onInit,
+      placeholder,
+      plugins,
+      ...props
+    } = this.props;
     const _value = this.state.value;
 
     return (
