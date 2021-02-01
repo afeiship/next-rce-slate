@@ -1,6 +1,6 @@
 {
   "name": "@jswork/react-rte-slate",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Pure React rich text WYSIWYG editor based on slatejs.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -78,7 +78,7 @@
     "@jswork/next-css-text": "^1.0.0",
     "@jswork/next-plugin-manager": "^1.0.3",
     "@jswork/next-slate-defaults": "^1.0.0",
-    "@jswork/next-slate-deserialize": "^1.0.3",
+    "@jswork/next-slate-deserialize": "^1.0.5",
     "@jswork/next-slate-serialize": "^1.0.6",
     "@jswork/noop": "^1.0.0",
     "@jswork/slate-plugin-color": "^1.0.0",

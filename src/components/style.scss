@@ -1,11 +1,19 @@
 .react-rte-slate {
   $root: &;
-
-  border: 1px solid #ccc;
   background: #fff;
-  padding: 10px;
   overflow: hidden;
   position: relative;
+
+  > [role="textbox"] {
+    border: 1px solid #ccc;
+    transition: all 0.3s;
+    box-shadow: 0 0 0 3px transparent;
+    padding: 10px;
+    &:focus {
+      border-color: lighten(#3b99fc, 20%);
+      box-shadow: 0 0 0 3px inset lighten(#3b99fc, 20%);
+    }
+  }
 
   &__toolbar {
     padding: 5px 10px;

@@ -1,9 +1,15 @@
 .react-rte-slate {
-  border: 1px solid #ccc;
   background: #fff;
-  padding: 10px;
   overflow: hidden;
   position: relative; }
+  .react-rte-slate > [role="textbox"] {
+    border: 1px solid #ccc;
+    transition: all 0.3s;
+    box-shadow: 0 0 0 3px transparent;
+    padding: 10px; }
+    .react-rte-slate > [role="textbox"]:focus {
+      border-color: #9fcdfe;
+      box-shadow: 0 0 0 3px inset #9fcdfe; }
   .react-rte-slate__toolbar {
     padding: 5px 10px;
     border: 1px solid #ccc;
