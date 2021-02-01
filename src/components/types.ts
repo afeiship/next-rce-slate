@@ -22,6 +22,8 @@ export interface EventPluginTarget {
   target: {
     from: string;
     value: any;
+    props?: any;
+    context?: any;
   };
 }
 
