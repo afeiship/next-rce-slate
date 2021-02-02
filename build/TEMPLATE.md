@@ -21,6 +21,8 @@ __GENERATE_DOCS__
 
   // or use sass
   @import "~@jswork/react-rte-slate/dist/style.scss";
+  @import "~@jswork/react-rte-ui/dist/style.scss";
+  @import "~@jswork/wsui-rte-icons";
 
   // customize your styles:
   $react-rte-slate-options: ()
