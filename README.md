@@ -12,11 +12,16 @@ npm install -S @jswork/react-rte-slate
 ```
 
 ## properties
-| Name      | Type   | Required | Default | Description                           |
-| --------- | ------ | -------- | ------- | ------------------------------------- |
-| className | string | false    | -       | The extended className for component. |
-| value     | object | false    | null    | The changed value.                    |
-| onChange  | func   | false    | noop    | The change handler.                   |
+| Name           | Type   | Required | Default | Description                           |
+| -------------- | ------ | -------- | ------- | ------------------------------------- |
+| className      | string | false    | -       | The extended className for component. |
+| value          | string | false    | ''      | Default value.                        |
+| header         | any    | false    | -       | Header for editor.                    |
+| footer         | any    | false    | -       | Footer for editor.                    |
+| onChange       | func   | false    | noop    | The change handler.                   |
+| onPluginChange | func   | false    | noop    | The plugin changed handler.           |
+| onInit         | func   | false    | noop    | The hanlder when editor init.         |
+| plugins        | array  | false    | []      | Plugin list.                          |
 
 
 ## usage
@@ -26,6 +31,8 @@ npm install -S @jswork/react-rte-slate
 
   // or use sass
   @import "~@jswork/react-rte-slate/dist/style.scss";
+  @import "~@jswork/react-rte-ui/dist/style.scss";
+  @import "~@jswork/wsui-rte-icons";
 
   // customize your styles:
   $react-rte-slate-options: ()
@@ -36,16 +43,42 @@ npm install -S @jswork/react-rte-slate
   import React from 'react';
   import ReactDOM from 'react-dom';
   import ReactRteSlate from '@jswork/react-rte-slate';
+  import { Toolbar, ButtonGroup, Button } from '@jswork/react-rte-ui';
   import './assets/style.scss';
 
   class App extends React.Component {
+    get headerView() {
+      return (
+        <Toolbar className="wsui-rte-icons">
+          <ButtonGroup>
+            <Button tooltip="左对齐">
+              <i className="wsui-icon-align_left" />
+            </Button>
+            <Button tooltip="居中" active>
+              <i className="wsui-icon-align_center" />
+            </Button>
+            <Button tooltip="右对齐">
+              <i className="wsui-icon-align_right" />
+            </Button>
+            <Button tooltip="右对齐">
+              <i className="wsui-icon-align_justify" />
+            </Button>
+          </ButtonGroup>
+        </Toolbar>
+      );
+    }
+
     render() {
       return (
         <ReactDemokit
           className="p-3 app-container"
           url="https://github.com/afeiship/react-rte-slate">
-          <ReactRteSlate className="mb-5 has-text-white" />
-          <button className="button is-primary is-fullwidth">Start~</button>
+          <ReactRteSlate
+            placeholder="type your text."
+            header={this.headerView}
+            value={``}
+            className="mb-5"
+          />
         </ReactDemokit>
       );
     }
