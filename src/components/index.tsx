@@ -37,6 +37,14 @@ export default class ReactRteSlate extends Component<Props, any> {
      */
     value: PropTypes.string,
     /**
+     * Header for editor.
+     */
+    header: PropTypes.any,
+    /**
+     * Footer for editor.
+     */
+    footer: PropTypes.any,
+    /**
      * The change handler.
      */
     onChange: PropTypes.func,
@@ -130,6 +138,8 @@ export default class ReactRteSlate extends Component<Props, any> {
     const {
       className,
       value,
+      header,
+      footer,
       onChange,
       onPluginChange,
       onInit,
@@ -142,12 +152,14 @@ export default class ReactRteSlate extends Component<Props, any> {
     return (
       <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
+          {header}
           <Editable
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}
             renderElement={this.renderElement}
             {...props}
           />
+          {footer}
         </Slate>
       </section>
     );

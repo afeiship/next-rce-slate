@@ -27,6 +27,8 @@ export interface EventPluginTarget {
 export declare type Props = {
     className?: string;
     value?: string;
+    header?: any;
+    footer?: any;
     placeholder?: string;
     onInit?: (event: EventTarget) => void;
     onChange?: (event: EventTarget) => void;

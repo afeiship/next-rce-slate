@@ -15,6 +15,14 @@ export default class ReactRteSlate extends Component<Props, any> {
          */
         value: PropTypes.Requireable<string>;
         /**
+         * Header for editor.
+         */
+        header: PropTypes.Requireable<any>;
+        /**
+         * Footer for editor.
+         */
+        footer: PropTypes.Requireable<any>;
+        /**
          * The change handler.
          */
         onChange: PropTypes.Requireable<(...args: any[]) => any>;

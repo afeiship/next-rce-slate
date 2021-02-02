@@ -30,6 +30,8 @@ export interface EventPluginTarget {
 export type Props = {
   className?: string;
   value?: string;
+  header?: any,
+  footer?: any,
   placeholder?: string;
   onInit?: (event: EventTarget) => void;
   onChange?: (event: EventTarget) => void;

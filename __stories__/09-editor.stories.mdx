@@ -10,11 +10,14 @@ import './style.scss';
 
 ## showtime
 <section>
-  <Toolbar>
-    Toolbar
-  </Toolbar>
+
 
   <Editor
+    toolbar={
+      <Toolbar>
+        Toolbar
+      </Toolbar>
+    }
     placeholder="请输入文字"
     plugins={[ InlineStyle, Latex, Image, Blank ]}
     onChange={e=>{
