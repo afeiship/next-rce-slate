@@ -1,6 +1,6 @@
 {
   "name": "@jswork/react-rte-slate",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Pure React rich text WYSIWYG editor based on slatejs.",
   "main": "dist/index.js",
   "scripts": {
