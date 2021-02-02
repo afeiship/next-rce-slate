@@ -11,32 +11,28 @@
 npm install -S @jswork/react-rte-slate
 ```
 
-## features
-- [x] b/i/u/s
-- [x] h1/h2/h3/p
-- [x] Image
-- [x] latex
-- [x] toHTML
-- [x] fromHtml
-
 ## properties
 __GENERATE_DOCS__
 
 ## usage
 1. import css
   ```scss
-  @import "~@jswork/boilerplate-react-component/dist/style.css";
+  @import "~@jswork/react-rte-slate/dist/style.css";
 
   // or use sass
-  @import "~@jswork/boilerplate-react-component/dist/style.scss";
+  @import "~@jswork/react-rte-slate/dist/style.scss";
 
   // customize your styles:
-  $boilerplate-react-component-options: ()
+  $react-rte-slate-options: ()
   ```
 2. import js
   ```js
 __GENERATE_DAPP__
   ```
+
+## documentation
+- https://afeiship.github.io/react-rte-slate/
+
 
 ## license
 Code released under [the MIT license](https://github.com/afeiship/react-rte-slate/blob/master/LICENSE.txt).

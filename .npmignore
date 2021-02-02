@@ -1,20 +1,35 @@
 .idea
 .DS_Store
+.prettierrc
+.babelrc
+.editorconfig
+Gemfile
+postcss.config.js
+Rakefile
 **/npm-debug.log
 **/node_modules
-test
-__tests__
-src
-build
-gulpfile.js
-rollup.config.js
 
-.editorconfig
-.prettierrc
+bin
+src
+docs
+build
+docs
+public
+tests
+postcss.config.js
+webpack.config.babel.js
+example
+examples
 
 # vscode
-.vscode
+jsconfig.json
 .history
-.github
-api
-docs
+
+# tests
+test
+__test__
+__tests__
+jest.config.js
+jest.setup.js
+
+.release-it.json
