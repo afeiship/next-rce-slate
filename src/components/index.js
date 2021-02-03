@@ -7,19 +7,9 @@ import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
-import {
-  Slate,
-  Editable,
-  withReact,
-  DefaultElement,
-  DefaultLeaf
-} from 'slate-react';
+import { Slate, Editable, withReact, DefaultElement } from 'slate-react';
 
 const CLASS_NAME = 'react-rte-slate';
-const DEFAULT_ELEMENTS = {
-  element: DefaultElement,
-  leaf: DefaultLeaf
-};
 
 export default class ReactRteSlate extends Component {
   static displayName = CLASS_NAME;
@@ -80,26 +70,18 @@ export default class ReactRteSlate extends Component {
     return plugins.filter((plugin) => plugin.hooks);
   }
 
-  renderHooks(inRole, inProps) {
-    const DefaultComponent = DEFAULT_ELEMENTS[inRole];
-    const handlers = this.hooks
-      .map((item) => item.hooks[inRole])
-      .filter(Boolean);
-    const handler = handlers.find((fn) => fn(this, inProps));
-    return handler ? handler(this, inProps) : <DefaultComponent {...inProps} />;
-  }
-
   toSlateNodes(inValue) {
     return this.handleSerialize('importer', inValue);
   }
 
   constructor(inProps) {
     super(inProps);
-    const { value, onInit } = inProps;
+    const { onInit } = inProps;
+    const html = inProps.value;
     const composite = this.withDecorators;
-    this.initialValue = this.toSlateNodes(value);
+    const value = this.handleSerialize('importer', html);
     this.editor = composite(createEditor());
-    this.state = { value: this.initialValue };
+    this.state = { value };
     onInit({ target: { value: this.editor } });
 
     window.editor = this.editor;
@@ -116,34 +98,41 @@ export default class ReactRteSlate extends Component {
   }
 
   renderElement = (inProps) => {
-    return this.renderHooks('element', inProps);
+    const handlers = this.hooks
+      .map((item) => item.hooks.element)
+      .filter(Boolean);
+    const handler = handlers.find((fn) => fn(this, inProps));
+    return handler ? handler(this, inProps) : <DefaultElement {...inProps} />;
   };
 
   renderLeaf = (inProps) => {
-    const { plugins } = this.props;
     const { attributes, children, leaf } = inProps;
-
-    let formatArr = [];
-
-    for (let key in inProps.leaf) {
-      if (key !== 'text') {
-        let plugin = plugins.find((v) => v.name === key);
-        if (plugin) {
-          formatArr.push(plugin.hooks.leaf);
-        }
-      }
-    }
-
-    console.log('ActiveFormats:', formatArr);
+    const activeMarks = this.getActiveMarks(inProps);
 
     return (
       <span {...attributes}>
-        {formatArr.reduce((child, handler) => {
-          return handler(this, { children: child, leaf, attributes });
+        {activeMarks.reduce((child, mark) => {
+          const { name, fn } = mark;
+          return leaf[name] && fn(this, { ...inProps, children: child });
         }, children)}
       </span>
     );
   };
+
+  getActiveMarks(inProps) {
+    const { plugins } = this.props;
+    const results = [];
+    for (let key in inProps.leaf) {
+      if (key === 'text') continue;
+      const plugin = plugins.find((plugin) => plugin.name === key);
+      plugin &&
+        results.push({
+          name: plugin.name,
+          fn: plugin.hooks.leaf
+        });
+    }
+    return results;
+  }
 
   handleSerialize(inRole, inValue) {
     const { plugins } = this.props;
