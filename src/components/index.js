@@ -83,9 +83,6 @@ export default class ReactRteSlate extends Component {
     this.editor = composite(createEditor());
     this.state = { value };
     onInit({ target: { value: this.editor } });
-
-    window.editor = this.editor;
-    window.Editor = Editor;
   }
 
   shouldComponentUpdate(inProps) {
