@@ -68,15 +68,28 @@ npm install -S @jswork/react-rte-slate
       );
     }
 
+    constructor(inProps) {
+      super(inProps);
+      this.state = { value: '<p>aaa</p>' };
+    }
+
+    handleClick1 = e =>{
+      this.setState({ value:'<p>abcd</p>'})
+    }
+
     render() {
       return (
         <ReactDemokit
           className="p-3 app-container"
           url="https://github.com/afeiship/react-rte-slate">
+          <button className="btn" onClick={this.handleClick1}>Update a value.</button>
           <ReactRteSlate
             placeholder="type your text."
             header={this.headerView}
-            value={``}
+            value={this.state.value}
+            onChange={(e) => {
+              console.log('html:', e.target.value);
+            }}
             className="mb-5"
           />
         </ReactDemokit>
