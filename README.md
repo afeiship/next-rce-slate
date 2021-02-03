@@ -15,7 +15,7 @@ npm install -S @jswork/react-rte-slate
 | Name           | Type   | Required | Default | Description                           |
 | -------------- | ------ | -------- | ------- | ------------------------------------- |
 | className      | string | false    | -       | The extended className for component. |
-| value          | string | false    | ''      | Default value.                        |
+| value          | string | true     | -       | Runtime value.                        |
 | header         | any    | false    | -       | Header for editor.                    |
 | footer         | any    | false    | -       | Footer for editor.                    |
 | onChange       | func   | false    | noop    | The change handler.                   |
@@ -73,21 +73,24 @@ npm install -S @jswork/react-rte-slate
       this.state = { value: '<p>aaa</p>' };
     }
 
-    handleClick1 = e =>{
-      this.setState({ value:'<p>abcd</p>'})
-    }
+    handleClick1 = (e) => {
+      this.setState({ value: '<p>abcd</p>' });
+    };
 
     render() {
       return (
         <ReactDemokit
           className="p-3 app-container"
           url="https://github.com/afeiship/react-rte-slate">
-          <button className="btn" onClick={this.handleClick1}>Update a value.</button>
+          <button className="btn" onClick={this.handleClick1}>
+            Update a value.
+          </button>
           <ReactRteSlate
             placeholder="type your text."
             header={this.headerView}
             value={this.state.value}
             onChange={(e) => {
+              this.setState({ value: e.target.value });
               console.log('html:', e.target.value);
             }}
             className="mb-5"
