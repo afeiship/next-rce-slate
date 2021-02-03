@@ -68,10 +68,11 @@ export default class ReactRteSlate extends Component {
     plugins: []
   };
 
-
   get withDecorators() {
     const { plugins } = this.props;
-    const decorators = plugins.map((plugin) => plugin.decorator).filter(Boolean);
+    const decorators = plugins
+      .map((plugin) => plugin.decorator)
+      .filter(Boolean);
     return nxCompose(withReact, ...decorators);
   }
 
@@ -82,7 +83,9 @@ export default class ReactRteSlate extends Component {
 
   renderHooks(inRole, inProps) {
     const DefaultComponent = DEFAULT_ELEMENTS[inRole];
-    const handlers = this.hooks.map((item) => item.hooks[inRole]).filter(Boolean);
+    const handlers = this.hooks
+      .map((item) => item.hooks[inRole])
+      .filter(Boolean);
     const handler = handlers.find((fn) => fn(this, inProps));
     return handler ? handler(this, inProps) : <DefaultComponent {...inProps} />;
   }
@@ -101,9 +104,9 @@ export default class ReactRteSlate extends Component {
     onInit({ target: { value: this.editor } });
   }
 
-  shouldComponentUpdate(inProps){
+  shouldComponentUpdate(inProps) {
     const value = this.toSlateNodes(inProps.value);
-    if(!deepEqual(this.state.value, value)){
+    if (!deepEqual(value, this.state.value)) {
       this.setState({ value });
     }
     return true;
@@ -120,10 +123,13 @@ export default class ReactRteSlate extends Component {
   handleSerialize(inRole, inValue) {
     const { plugins } = this.props;
     const handlers = plugins.map((plugin) => plugin[inRole]).filter(Boolean);
-    const Parser = inRole === 'exporter' ? NxSlateSerialize : NxDeslateSerialize;
+    const Parser =
+      inRole === 'exporter' ? NxSlateSerialize : NxDeslateSerialize;
     const process = (node, children) => {
       const handler = handlers.find((fn) => fn(node, children));
-      return handler ? handler(node, children) : NxSlateDefaults[inRole](node, children);
+      return handler
+        ? handler(node, children)
+        : NxSlateDefaults[inRole](node, children);
     };
     return Parser.parse(inValue, { process });
   }
@@ -154,7 +160,9 @@ export default class ReactRteSlate extends Component {
     const _value = this.state.value;
 
     return (
-      <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)}>
+      <section
+        data-component={CLASS_NAME}
+        className={classNames(CLASS_NAME, className)}>
         <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
           {header}
           <Editable

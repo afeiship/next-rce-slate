@@ -32,21 +32,24 @@ class App extends React.Component {
     this.state = { value: '<p>aaa</p>' };
   }
 
-  handleClick1 = e =>{
-    this.setState({ value:'<p>abcd</p>'})
-  }
+  handleClick1 = (e) => {
+    this.setState({ value: '<p>abcd</p>' });
+  };
 
   render() {
     return (
       <ReactDemokit
         className="p-3 app-container"
         url="https://github.com/afeiship/react-rte-slate">
-        <button className="btn" onClick={this.handleClick1}>Update a value.</button>
+        <button className="btn" onClick={this.handleClick1}>
+          Update a value.
+        </button>
         <ReactRteSlate
           placeholder="type your text."
           header={this.headerView}
           value={this.state.value}
           onChange={(e) => {
+            this.setState({ value: e.target.value });
             console.log('html:', e.target.value);
           }}
           className="mb-5"
