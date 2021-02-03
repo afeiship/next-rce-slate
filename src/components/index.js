@@ -2,7 +2,7 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor } from 'slate';
+import { createEditor, Editor } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
@@ -30,9 +30,9 @@ export default class ReactRteSlate extends Component {
      */
     className: PropTypes.string,
     /**
-     * Runtime value.
+     * Default value.
      */
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     /**
      * Header for editor.
      */
@@ -44,7 +44,7 @@ export default class ReactRteSlate extends Component {
     /**
      * The change handler.
      */
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     /**
      * The plugin changed handler.
      */
@@ -60,6 +60,7 @@ export default class ReactRteSlate extends Component {
   };
 
   static defaultProps = {
+    value: '',
     onChange: noop,
     onPluginChange: noop,
     onInit: noop,
@@ -94,10 +95,23 @@ export default class ReactRteSlate extends Component {
 
   constructor(inProps) {
     super(inProps);
-    const { onInit } = inProps;
+    const { value, onInit } = inProps;
     const composite = this.withDecorators;
+    this.initialValue = this.toSlateNodes(value);
     this.editor = composite(createEditor());
+    this.state = { value: this.initialValue };
     onInit({ target: { value: this.editor } });
+    // window.editor = this.editor;
+    // window.Editor = Editor;
+  }
+
+  shouldComponentUpdate(inProps) {
+    const html = inProps.value;
+    const value = this.handleSerialize('exporter', this.state.value);
+    if (html !== value) {
+      this.setState({ value: this.handleSerialize('importer', html) });
+    }
+    return true;
   }
 
   renderElement = (inProps) => {
@@ -125,7 +139,10 @@ export default class ReactRteSlate extends Component {
   handleChange = (inEvent) => {
     const { onChange } = this.props;
     const value = this.handleSerialize('exporter', inEvent);
-    onChange({ target: { value } });
+    const target = { value: inEvent };
+    this.setState(target, () => {
+      onChange({ target: { value } });
+    });
   };
 
   render() {
@@ -141,12 +158,13 @@ export default class ReactRteSlate extends Component {
       plugins,
       ...props
     } = this.props;
+    const _value = this.state.value;
 
     return (
       <section
         data-component={CLASS_NAME}
         className={classNames(CLASS_NAME, className)}>
-        <Slate editor={this.editor} value={this.toSlateNodes(value)} onChange={this.handleChange}>
+        <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
           {header}
           <Editable
             placeholder={placeholder}
