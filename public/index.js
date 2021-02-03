@@ -3,6 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactRteSlate from '../src/main';
 import { Toolbar, ButtonGroup, Button } from '@jswork/react-rte-ui';
+import Bold from './plugins/bold';
+import Italic from './plugins/italic';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -29,11 +31,11 @@ class App extends React.Component {
 
   constructor(inProps) {
     super(inProps);
-    this.state = { value: '<p>aaa</p>' };
+    this.state = { value: '<p>hello world</p>' };
   }
 
   handleClick1 = (e) => {
-    this.setState({ value: '<p>abcd</p>' });
+    this.setState({ value: '<p>Are you ok?</p>' });
   };
 
   render() {
@@ -47,6 +49,7 @@ class App extends React.Component {
         <ReactRteSlate
           placeholder="type your text."
           header={this.headerView}
+          plugins={[Bold, Italic]}
           value={this.state.value}
           onChange={(e) => {
             this.setState({ value: e.target.value });

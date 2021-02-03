@@ -101,8 +101,9 @@ export default class ReactRteSlate extends Component {
     this.editor = composite(createEditor());
     this.state = { value: this.initialValue };
     onInit({ target: { value: this.editor } });
-    // window.editor = this.editor;
-    // window.Editor = Editor;
+
+    window.editor = this.editor;
+    window.Editor = Editor;
   }
 
   shouldComponentUpdate(inProps) {
@@ -119,7 +120,29 @@ export default class ReactRteSlate extends Component {
   };
 
   renderLeaf = (inProps) => {
-    return this.renderHooks('leaf', inProps);
+    const { plugins } = this.props;
+    const { attributes, children, leaf } = inProps;
+
+    let formatArr = [];
+
+    for (let key in inProps.leaf) {
+      if (key !== 'text') {
+        let plugin = plugins.find((v) => v.name === key);
+        if (plugin) {
+          formatArr.push(plugin.hooks.leaf);
+        }
+      }
+    }
+
+    console.log('ActiveFormats:', formatArr);
+
+    return (
+      <span {...attributes}>
+        {formatArr.reduce((child, handler) => {
+          return handler(this, { children: child, leaf, attributes });
+        }, children)}
+      </span>
+    );
   };
 
   handleSerialize(inRole, inValue) {
