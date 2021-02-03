@@ -2,7 +2,7 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor, Editor } from 'slate';
+import { createEditor, Editor, Text } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
@@ -83,11 +83,14 @@ export default class ReactRteSlate extends Component {
     this.editor = composite(createEditor());
     this.state = { value };
     onInit({ target: { value: this.editor } });
+
+    window.editor = this.editor;
+    window.Editor = Editor;
   }
 
   shouldComponentUpdate(inProps) {
     const html = inProps.value;
-    const value = this.handleSerialize('exporter', this.state.value);
+    const value = this.handleExporter(this.state.value);
     if (html !== value) {
       this.setState({ value: this.handleSerialize('importer', html) });
     }
@@ -104,11 +107,11 @@ export default class ReactRteSlate extends Component {
 
   renderLeaf = (inProps) => {
     const { attributes, children, leaf } = inProps;
-    const activeMarks = this.getActiveMarks(inProps);
+    const activePlugins = this.getActivePlugins(leaf);
 
     return (
       <span {...attributes}>
-        {activeMarks.reduce((child, mark) => {
+        {activePlugins.reduce((child, mark) => {
           const { name, fn } = mark;
           return leaf[name] && fn(this, { ...inProps, children: child });
         }, children)}
@@ -116,16 +119,18 @@ export default class ReactRteSlate extends Component {
     );
   };
 
-  getActiveMarks(inProps) {
+  getActivePlugins(inNode) {
     const { plugins } = this.props;
     const results = [];
-    for (let key in inProps.leaf) {
+    for (let key in inNode) {
       if (key === 'text') continue;
       const plugin = plugins.find((plugin) => plugin.name === key);
       plugin &&
         results.push({
           name: plugin.name,
-          fn: plugin.hooks.leaf
+          fn: plugin.hooks.leaf,
+          exporter: plugin.exporter,
+          importer: plugin.importer
         });
     }
     return results;
@@ -145,9 +150,29 @@ export default class ReactRteSlate extends Component {
     return Parser.parse(inValue, { process });
   }
 
+  handleExporter = (inValue) => {
+    return NxSlateSerialize.parse(inValue, {
+      process: (node, children) => {
+        const activePlugins = this.getActivePlugins(node);
+        // textNode
+        if (!children) {
+          // pure text:
+          if (!activePlugins.length) return node.text;
+          const el = document.createElement('span'); /** props: serialze:{ tag:'span' } */
+          el.innerText = node.text;
+          activePlugins.reduce((el, mark) => {
+            const { exporter, name } = mark;
+            return node[name] && exporter(el);
+          }, el);
+          return el.outerHTML;
+        }
+        return NxSlateDefaults.exporter(node, children);
+      }
+    });
+  };
   handleChange = (inEvent) => {
     const { onChange } = this.props;
-    const value = this.handleSerialize('exporter', inEvent);
+    const value = this.handleExporter(inEvent);
     const target = { value: inEvent };
     this.setState(target, () => {
       onChange({ target: { value } });
