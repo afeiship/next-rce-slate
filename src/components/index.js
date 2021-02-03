@@ -32,7 +32,7 @@ export default class ReactRteSlate extends Component {
     /**
      * Runtime value.
      */
-    value: PropTypes.string,
+    value: PropTypes.string.isRequired,
     /**
      * Header for editor.
      */
@@ -44,7 +44,7 @@ export default class ReactRteSlate extends Component {
     /**
      * The change handler.
      */
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
     /**
      * The plugin changed handler.
      */
