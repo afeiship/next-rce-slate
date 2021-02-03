@@ -7,7 +7,6 @@ import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
-import deepEqual from 'fast-deep-equal';
 import {
   Slate,
   Editable,
@@ -31,7 +30,7 @@ export default class ReactRteSlate extends Component {
      */
     className: PropTypes.string,
     /**
-     * Default value.
+     * Runtime value.
      */
     value: PropTypes.string,
     /**
@@ -61,7 +60,6 @@ export default class ReactRteSlate extends Component {
   };
 
   static defaultProps = {
-    value: '',
     onChange: noop,
     onPluginChange: noop,
     onInit: noop,
@@ -96,20 +94,10 @@ export default class ReactRteSlate extends Component {
 
   constructor(inProps) {
     super(inProps);
-    const { value, onInit } = inProps;
+    const { onInit } = inProps;
     const composite = this.withDecorators;
-    this.initialValue = this.toSlateNodes(value);
     this.editor = composite(createEditor());
-    this.state = { value: this.initialValue };
     onInit({ target: { value: this.editor } });
-  }
-
-  shouldComponentUpdate(inProps) {
-    const value = this.toSlateNodes(inProps.value);
-    if (!deepEqual(value, this.state.value)) {
-      this.setState({ value });
-    }
-    return true;
   }
 
   renderElement = (inProps) => {
@@ -137,11 +125,7 @@ export default class ReactRteSlate extends Component {
   handleChange = (inEvent) => {
     const { onChange } = this.props;
     const value = this.handleSerialize('exporter', inEvent);
-    const target = { value: inEvent };
-
-    this.setState(target, () => {
-      onChange({ target: { value } });
-    });
+    onChange({ target: { value } });
   };
 
   render() {
@@ -157,13 +141,12 @@ export default class ReactRteSlate extends Component {
       plugins,
       ...props
     } = this.props;
-    const _value = this.state.value;
 
     return (
       <section
         data-component={CLASS_NAME}
         className={classNames(CLASS_NAME, className)}>
-        <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
+        <Slate editor={this.editor} value={this.toSlateNodes(value)} onChange={this.handleChange}>
           {header}
           <Editable
             placeholder={placeholder}
