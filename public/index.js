@@ -10,6 +10,8 @@ import Strikethrough from './plugins/strikethrough';
 import Code from './plugins/code';
 import Heading from './plugins/heading';
 import Blockquote from './plugins/blockquote';
+import Color from './plugins/color';
+import BackgroundColor from './plugins/background-color';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -61,7 +63,9 @@ class App extends React.Component {
             Strikethrough,
             Code,
             Heading,
-            Blockquote
+            Blockquote,
+            Color,
+            BackgroundColor
           ]}
           value={this.state.value}
           onChange={(e) => {

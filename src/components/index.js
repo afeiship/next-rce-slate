@@ -163,9 +163,11 @@ export default class ReactRteSlate extends Component {
           el.innerText = node.text;
           const target = activePlugins.reduce((el, mark) => {
             const { exporter, name } = mark;
-            return node[name] && exporter(el);
+            return node[name] && exporter && exporter(el, node);
           }, el);
-          return target.outerHTML;
+          return target
+            ? target.outerHTML
+            : NxSlateDefaults.exporter(node, children);
         } else {
           // element
           const { plugins } = this.props;
