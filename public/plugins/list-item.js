@@ -19,7 +19,9 @@ export default {
   },
   hooks: {
     element: (_, { attributes, children, element }) => {
-      return <li {...attributes}>{children}</li>;
+      // console.log('list item render.', element);
+      const { alignment } = element;
+      return <li style={{ textAlign: alignment }} {...attributes}>{children}</li>;
     }
   }
 };

@@ -56,7 +56,6 @@ class App extends React.Component {
   }
 
   handleClick1 = (e) => {
-    console.log(editor.children);
     var key = ReactEditor.findKey(editor, {
       type: 'paragraph',
       children: [
@@ -65,18 +64,6 @@ class App extends React.Component {
         }
       ]
     });
-    var path = ReactEditor.findPath(
-      editor,
-      Node({
-        type: 'paragraph',
-        children: [
-          {
-            text: 'Are you ok?'
-          }
-        ]
-      })
-    );
-    console.log(key,path);
     // Transforms.select(editor, [0,0]);
     // ReactEditor.deselect(editor);
     // ReactEditor.focus(editor);

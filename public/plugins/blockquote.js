@@ -19,6 +19,7 @@ export default {
   },
   hooks: {
     element: (_, { attributes, children, element }) => {
+      console.log('element', element, attributes, children);
       return <blockquote {...attributes}>{children}</blockquote>;
     }
   }
