@@ -86,15 +86,24 @@ export default class ReactRteSlate extends Component {
     const { onInit } = inProps;
     const html = inProps.value;
     const composite = this.withDecorators;
+    // 注意这个应该放在比较前面
+    this.initialStatics();
     const value = this.handleSerialize('importer', html);
     this.editor = composite(createEditor());
-    this.editor.context = this;
+    // JSON.string
+    // this.editor.context = this;
     this.state = { value };
     onInit({ target: { value: this.editor } });
 
     window.editor = this.editor;
     window.Editor = Editor;
     window.Transforms = Transforms;
+  }
+
+  initialStatics() {
+    const { plugins } = this.props;
+    const members = plugins.map((plugin) => plugin.statics).filter(Boolean);
+    Object.assign(Editor, ...members);
   }
 
   shouldComponentUpdate(inProps) {

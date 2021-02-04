@@ -39,6 +39,11 @@ __GENERATE_DAPP__
 - [ ] 最后 export 的html里可能会有一个多余的空的 span 标签
 - [ ] paste html 如果<p><blockquote>xxx</p> 会无法成功
 - [ ] mark/block 元素的 exporter 参数暂时不统一
+- [ ] 清空文档
+- [ ] 最近2个为空，即插入一个新行
+- [ ] shift+enter 强行插入新行
+- [ ] 将一个block 分成两个block
+- [ ] 删除的时候，只剩下一个 li 标签，比较奇怪。
 
 ## license
 Code released under [the MIT license](https://github.com/afeiship/react-rte-slate/blob/master/LICENSE.txt).

@@ -17,6 +17,9 @@ import BulletedList from './plugins/bulleted-list';
 import NumberedList from './plugins/numbered-list';
 import ListItem from './plugins/list-item';
 import PasteHtml from './plugins/paste-html';
+import ForceLayout from './plugins/force-layout';
+import BetterDelete from './plugins/better-delete';
+import ExtEditor from './plugins/ext-editor';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -78,12 +81,15 @@ class App extends React.Component {
             NumberedList,
             BulletedList,
             ListItem,
-            // PasteHtml
+            // PasteHtml,
+            ForceLayout,
+            BetterDelete,
+            ExtEditor
           ]}
           value={this.state.value}
           onChange={(e) => {
             this.setState({ value: e.target.value });
-            console.log('html:', e.target.value);
+            // console.log('html:', e.target.value);
           }}
           className="mb-5"
         />
