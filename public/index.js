@@ -1,6 +1,7 @@
 import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Node } from 'slate';
 import ReactRteSlate from '../src/main';
 import { Toolbar, ButtonGroup, Button } from '@jswork/react-rte-ui';
 import Bold from './plugins/bold';
@@ -21,6 +22,8 @@ import ForceLayout from './plugins/force-layout';
 import BetterDelete from './plugins/better-delete';
 import ExtEditor from './plugins/ext-editor';
 import './assets/style.scss';
+import { Transforms } from 'slate';
+import { ReactEditor } from 'slate-react';
 
 class App extends React.Component {
   get headerView() {
@@ -53,7 +56,31 @@ class App extends React.Component {
   }
 
   handleClick1 = (e) => {
-    this.setState({ value: '<p>Are you ok?</p>' });
+    console.log(editor.children);
+    var key = ReactEditor.findKey(editor, {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Are you ok?'
+        }
+      ]
+    });
+    var path = ReactEditor.findPath(
+      editor,
+      Node({
+        type: 'paragraph',
+        children: [
+          {
+            text: 'Are you ok?'
+          }
+        ]
+      })
+    );
+    console.log(key,path);
+    // Transforms.select(editor, [0,0]);
+    // ReactEditor.deselect(editor);
+    // ReactEditor.focus(editor);
+    // this.setState({ value: '<p>Are you ok?</p>' });
   };
 
   render() {
@@ -82,7 +109,7 @@ class App extends React.Component {
             BulletedList,
             ListItem,
             // PasteHtml,
-            ForceLayout,
+            // ForceLayout,
             BetterDelete,
             ExtEditor
           ]}

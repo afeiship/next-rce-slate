@@ -7,7 +7,13 @@ import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
-import { Slate, Editable, withReact, DefaultElement } from 'slate-react';
+import {
+  Slate,
+  Editable,
+  withReact,
+  DefaultElement,
+  ReactEditor
+} from 'slate-react';
 import isHotkey from 'is-hotkey';
 
 const CLASS_NAME = 'react-rte-slate';
@@ -97,6 +103,7 @@ export default class ReactRteSlate extends Component {
 
     window.editor = this.editor;
     window.Editor = Editor;
+    window.ReactEditor = ReactEditor;
     window.Transforms = Transforms;
   }
 

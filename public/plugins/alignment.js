@@ -1,6 +1,13 @@
 import React from 'react';
+import { Path, Node } from 'slate';
 import { jsx } from 'slate-hyperscript';
-
+import {
+  Slate,
+  Editable,
+  withReact,
+  DefaultElement,
+  ReactEditor
+} from 'slate-react';
 /**
  * @usage:
  * Transforms.setNodes(editor, { type:'alignment', value: 'right'});
@@ -21,8 +28,11 @@ export default {
     return `<div style="text-align: ${node.value}">${children}</div>`;
   },
   hooks: {
-    element: (_, { attributes, children, element }) => {
+    element: (inContext, { attributes, children, element }) => {
       const { value } = element;
+      const path = ReactEditor.findPath(inContext.editor, element);
+
+      // console.log( Node.get(Path.parent(path), path));
       return (
         <div style={{ textAlign: value }} {...attributes}>
           {children}

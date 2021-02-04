@@ -44,6 +44,10 @@ __GENERATE_DAPP__
 - [ ] shift+enter 强行插入新行
 - [ ] 将一个block 分成两个block
 - [ ] 删除的时候，只剩下一个 li 标签，比较奇怪。
+- [ ] 如何在不同的标签上添加 style，text-align: left/right/center 类似对齐功能的完美实现
+
+## resources
+- https://stackoverflow.com/questions/65288303/in-slate-styling-an-element-without-changing-his-type
 
 ## license
 Code released under [the MIT license](https://github.com/afeiship/react-rte-slate/blob/master/LICENSE.txt).
