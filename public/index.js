@@ -11,6 +11,7 @@ import Code from './plugins/code';
 import Heading from './plugins/heading';
 import Blockquote from './plugins/blockquote';
 import Color from './plugins/color';
+import Alignment from './plugins/alignment';
 import BackgroundColor from './plugins/background-color';
 import './assets/style.scss';
 
@@ -65,6 +66,7 @@ class App extends React.Component {
             Heading,
             Blockquote,
             Color,
+            Alignment,
             BackgroundColor
           ]}
           value={this.state.value}
