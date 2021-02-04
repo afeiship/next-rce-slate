@@ -52,7 +52,7 @@ class App extends React.Component {
     super(inProps);
     this.state = {
       value:
-        '<p>Are you ok?</p><blockquote>hello <br/> world</blockquote><p>Are you ok?</p><ul><li>thanks</li><li>and you?</li></ul>'
+        '<p style="text-align:right;">Are you ok?</p><blockquote>hello world</blockquote><p style="">Are you ok?</p><ul><li>thanks</li><li>and you?</li></ul>'
     };
   }
 
@@ -105,7 +105,7 @@ class App extends React.Component {
           value={this.state.value}
           onChange={(e) => {
             this.setState({ value: e.target.value });
-            // console.log('html:', e.target.value);
+            console.log('html:', e.target.value);
           }}
           className="mb-5"
         />
