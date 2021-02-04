@@ -13,6 +13,9 @@ import Blockquote from './plugins/blockquote';
 import Color from './plugins/color';
 import Alignment from './plugins/alignment';
 import BackgroundColor from './plugins/background-color';
+import BulletedList from './plugins/bulleted-list';
+import NumberedList from './plugins/numbered-list';
+import ListItem from './plugins/list-item';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -67,7 +70,10 @@ class App extends React.Component {
             Blockquote,
             Color,
             Alignment,
-            BackgroundColor
+            BackgroundColor,
+            NumberedList,
+            BulletedList,
+            ListItem
           ]}
           value={this.state.value}
           onChange={(e) => {
