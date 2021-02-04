@@ -81,6 +81,7 @@ export default class ReactRteSlate extends Component {
     const composite = this.withDecorators;
     const value = this.handleSerialize('importer', html);
     this.editor = composite(createEditor());
+    this.editor.context = this;
     this.state = { value };
     onInit({ target: { value: this.editor } });
 

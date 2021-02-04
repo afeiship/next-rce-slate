@@ -16,6 +16,7 @@ import BackgroundColor from './plugins/background-color';
 import BulletedList from './plugins/bulleted-list';
 import NumberedList from './plugins/numbered-list';
 import ListItem from './plugins/list-item';
+import PasteHtml from './plugins/paste-html';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -76,7 +77,8 @@ class App extends React.Component {
             BackgroundColor,
             NumberedList,
             BulletedList,
-            ListItem
+            ListItem,
+            PasteHtml
           ]}
           value={this.state.value}
           onChange={(e) => {
