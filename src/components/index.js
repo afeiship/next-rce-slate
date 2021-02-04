@@ -160,11 +160,11 @@ export default class ReactRteSlate extends Component {
           if (!activePlugins.length) return node.text;
           const el = document.createElement('span'); /** props: serialze:{ tag:'span' } */
           el.innerText = node.text;
-          activePlugins.reduce((el, mark) => {
+          const target = activePlugins.reduce((el, mark) => {
             const { exporter, name } = mark;
             return node[name] && exporter(el);
           }, el);
-          return el.outerHTML;
+          return target.outerHTML;
         }
         return NxSlateDefaults.exporter(node, children);
       }
