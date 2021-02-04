@@ -8,8 +8,15 @@ import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
 import { Slate, Editable, withReact, DefaultElement } from 'slate-react';
+import isHotkey from 'is-hotkey';
 
 const CLASS_NAME = 'react-rte-slate';
+const HOTKEYS = {
+  'mod+b': 'bold',
+  'mod+i': 'italic',
+  'mod+u': 'underline',
+  'mod+`': 'code'
+};
 
 export default class ReactRteSlate extends Component {
   static displayName = CLASS_NAME;
@@ -214,6 +221,15 @@ export default class ReactRteSlate extends Component {
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}
             renderElement={this.renderElement}
+            onKeyDown={(event) => {
+              for (const hotkey in HOTKEYS) {
+                if (isHotkey(hotkey, event)) {
+                  event.preventDefault();
+                  const mark = HOTKEYS[hotkey];
+                  Editor.addMark(this.editor, mark, true);
+                }
+              }
+            }}
             {...props}
           />
           {footer}

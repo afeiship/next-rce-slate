@@ -1,3 +1,7 @@
+import { createEditor, Editor, Text, Transforms } from 'slate';
+
+// https://github.com/ckeditor/ckeditor5
+
 export default {
   name: 'paste-html',
   decorator: (editor) => {

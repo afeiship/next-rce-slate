@@ -35,6 +35,10 @@ __GENERATE_DAPP__
 ## documentation
 - https://afeiship.github.io/react-rte-slate/
 
+## todo list
+- [ ] 最后 export 的html里可能会有一个多余的空的 span 标签
+- [ ] paste html 如果<p><blockquote>xxx</p> 会无法成功
+- [ ] mark/block 元素的 exporter 参数暂时不统一
 
 ## license
 Code released under [the MIT license](https://github.com/afeiship/react-rte-slate/blob/master/LICENSE.txt).
