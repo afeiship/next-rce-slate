@@ -2,21 +2,21 @@ import React from 'react';
 import { jsx } from 'slate-hyperscript';
 
 export default {
-  name: 'strikethrough',
+  name: 'code',
   importer: (el, children) => {
     const nodeName = el.nodeName.toLowerCase();
-    if (nodeName === 's') {
-      return jsx('text', { strikethrough: true }, children);
+    if (nodeName === 'code') {
+      return jsx('text', { code: true }, children);
     }
   },
   exporter: (el) => {
-    const s = document.createElement('s');
-    s.appendChild(el);
-    return s;
+    const code = document.createElement('code');
+    code.appendChild(el);
+    return code;
   },
   hooks: {
     leaf: (_, { attributes, children, leaf }) => {
-      return <s {...attributes}>{children}</s>;
+      return <code {...attributes}>{children}</code>;
     }
   }
 };

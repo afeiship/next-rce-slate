@@ -158,7 +158,7 @@ export default class ReactRteSlate extends Component {
         if (!children) {
           // pure text:
           if (!activePlugins.length) return node.text;
-          const el = document.createElement('span'); /** props: serialze:{ tag:'span' } */
+          const el = document.createElement('span');
           el.innerText = node.text;
           const target = activePlugins.reduce((el, mark) => {
             const { exporter, name } = mark;
