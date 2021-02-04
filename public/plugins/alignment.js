@@ -10,7 +10,7 @@ import {
 } from 'slate-react';
 /**
  * @usage:
- * Transforms.setNodes(editor, { type:'alignment', value: 'right'});
+ Transforms.setNodes(editor, { alignment: 'right'});
  *
  * <div style="text-align:center">
  *  <p>xxx</p>
