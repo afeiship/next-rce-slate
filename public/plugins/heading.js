@@ -27,9 +27,7 @@ export default {
   },
   hooks: {
     element: (_, { attributes, children, element }) => {
-      if (element.type === 'heading') {
-        return React.createElement(`h${element.value}`, null, children);
-      }
+      return React.createElement(`h${element.value}`, attributes, children);
     }
   }
 };

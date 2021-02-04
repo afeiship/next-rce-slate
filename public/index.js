@@ -9,6 +9,7 @@ import Underline from './plugins/underline';
 import Strikethrough from './plugins/strikethrough';
 import Code from './plugins/code';
 import Heading from './plugins/heading';
+import Blockquote from './plugins/blockquote';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -53,7 +54,15 @@ class App extends React.Component {
         <ReactRteSlate
           placeholder="type your text."
           header={this.headerView}
-          plugins={[Bold, Italic, Underline, Strikethrough, Code, Heading]}
+          plugins={[
+            Bold,
+            Italic,
+            Underline,
+            Strikethrough,
+            Code,
+            Heading,
+            Blockquote
+          ]}
           value={this.state.value}
           onChange={(e) => {
             this.setState({ value: e.target.value });

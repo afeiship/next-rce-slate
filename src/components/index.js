@@ -99,11 +99,11 @@ export default class ReactRteSlate extends Component {
   }
 
   renderElement = (inProps) => {
-    const handlers = this.hooks
-      .map((item) => item.hooks.element)
-      .filter(Boolean);
-    const handler = handlers.find((fn) => fn(this, inProps));
-    return handler ? handler(this, inProps) : <DefaultElement {...inProps} />;
+    const { element } = inProps;
+    const { plugins } = this.props;
+    const plugin = plugins.find((plg) => plg.name === element.type);
+    if (!plugin) return <DefaultElement {...inProps} />;
+    return plugin.hooks.element(this, inProps);
   };
 
   renderLeaf = (inProps) => {
