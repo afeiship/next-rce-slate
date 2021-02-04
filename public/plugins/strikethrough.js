@@ -1,6 +1,11 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 
+/**
+ * @usage:
+ * Editor.addMark(editor,'strikethrough', true)
+ */
+
 export default {
   name: 'strikethrough',
   importer: (el, children) => {

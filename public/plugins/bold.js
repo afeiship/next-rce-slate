@@ -1,6 +1,11 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 
+/**
+ * @usage:
+ * Editor.addMark(editor,'bold', true)
+ */
+
 export default {
   name: 'bold',
   importer: (el, children) => {

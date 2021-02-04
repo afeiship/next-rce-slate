@@ -1,6 +1,12 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 
+/**
+ * @usage:
+ * Editor.addMark(editor,'italic', true)
+ */
+
+
 export default {
   name: 'italic',
   importer: (el, children) => {

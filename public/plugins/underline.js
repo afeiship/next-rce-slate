@@ -1,6 +1,11 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 
+/**
+ * @usage:
+ * Editor.addMark(editor,'underline', true)
+ */
+
 export default {
   name: 'underline',
   importer: (el, children) => {

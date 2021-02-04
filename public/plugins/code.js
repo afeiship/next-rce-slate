@@ -1,6 +1,11 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 
+/**
+ * @usage:
+ * Editor.addMark(editor,'code', true)
+ */
+
 export default {
   name: 'code',
   importer: (el, children) => {

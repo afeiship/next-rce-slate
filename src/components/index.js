@@ -2,7 +2,7 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor, Editor, Text } from 'slate';
+import { createEditor, Editor, Text, Transforms } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
@@ -86,6 +86,7 @@ export default class ReactRteSlate extends Component {
 
     window.editor = this.editor;
     window.Editor = Editor;
+    window.Transforms = Transforms;
   }
 
   shouldComponentUpdate(inProps) {
@@ -165,8 +166,14 @@ export default class ReactRteSlate extends Component {
             return node[name] && exporter(el);
           }, el);
           return target.outerHTML;
+        } else {
+          // element
+          const { plugins } = this.props;
+          const target = plugins.find((plugin) => plugin.name === node.type);
+          return target
+            ? target.exporter(node, children)
+            : NxSlateDefaults.exporter(node, children);
         }
-        return NxSlateDefaults.exporter(node, children);
       }
     });
   };
