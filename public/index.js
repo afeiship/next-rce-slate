@@ -42,7 +42,10 @@ class App extends React.Component {
 
   constructor(inProps) {
     super(inProps);
-    this.state = { value: '<p>hello world</p>' };
+    this.state = {
+      value:
+        '<blockquote>hello world</blockquote><p>Are you ok?</p><ul><li>thanks</li><li>and you?</li></ul>'
+    };
   }
 
   handleClick1 = (e) => {
