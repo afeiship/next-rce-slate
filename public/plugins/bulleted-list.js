@@ -1,5 +1,8 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
+import { Path } from 'slate';
+import { useSelected, ReactEditor, useSlate } from 'slate-react';
+
 
 /**
  * @usage:
@@ -34,8 +37,9 @@ export default {
     return `<ul>${children}</ul>`;
   },
   hooks: {
-    element: (_, { attributes, children, element }) => {
-      return <ul {...attributes}>{children}</ul>;
+    element: (inContext, { attributes, children, element }) => {
+      const path = ReactEditor.findPath(inContext.editor, element);
+      return <ul data-depth={path.length} {...attributes}>{children}</ul>;
     }
   }
 };
