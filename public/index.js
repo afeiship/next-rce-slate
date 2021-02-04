@@ -21,6 +21,7 @@ import PasteHtml from './plugins/paste-html';
 import ForceLayout from './plugins/force-layout';
 import BetterDelete from './plugins/better-delete';
 import ExtEditor from './plugins/ext-editor';
+import Paragraph from './plugins/paragraph';
 import './assets/style.scss';
 import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
@@ -98,7 +99,8 @@ class App extends React.Component {
             // PasteHtml,
             // ForceLayout,
             BetterDelete,
-            ExtEditor
+            ExtEditor,
+            Paragraph
           ]}
           value={this.state.value}
           onChange={(e) => {

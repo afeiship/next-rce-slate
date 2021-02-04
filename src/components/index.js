@@ -124,11 +124,16 @@ export default class ReactRteSlate extends Component {
   }
 
   renderElement = (inProps) => {
-    const { element } = inProps;
+    const { element, children, attributes } = inProps;
     const { plugins } = this.props;
     const plugin = plugins.find((plg) => plg.name === element.type);
-    if (!plugin) return <DefaultElement {...inProps} />;
-    return plugin.hooks.element(this, inProps);
+    const newProps = {
+      element,
+      children,
+      attributes: { ...attributes, style: element.style }
+    };
+    // if (!plugin) return <DefaultElement {...newProps} />;
+    return plugin.hooks.element(this, newProps);
   };
 
   renderLeaf = (inProps) => {

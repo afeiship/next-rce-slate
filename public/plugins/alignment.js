@@ -10,7 +10,7 @@ import {
 } from 'slate-react';
 /**
  * @usage:
- Transforms.setNodes(editor, { alignment: 'right'});
+ Transforms.setNodes(editor, { style: { textAlign: 'right' } });
  *
  * <div style="text-align:center">
  *  <p>xxx</p>
@@ -19,25 +19,5 @@ import {
 
 export default {
   name: 'alignment',
-  importer: (el, children) => {
-    if (el.style.textAlign) {
-      return jsx('element', { textAlign: el.style.textAlign }, children);
-    }
-  },
-  exporter: (node, children) => {
-    return `<div style="text-align: ${node.value}">${children}</div>`;
-  },
-  hooks: {
-    element: (inContext, { attributes, children, element }) => {
-      const { value } = element;
-      const path = ReactEditor.findPath(inContext.editor, element);
-
-      // console.log( Node.get(Path.parent(path), path));
-      return (
-        <div style={{ textAlign: value }} {...attributes}>
-          {children}
-        </div>
-      );
-    }
-  }
+  // 这个不能直接这么实现。
 };
