@@ -122,7 +122,7 @@ export default class ReactRteSlate extends Component {
     const { current } = inRef;
     if (!current) return null;
     const css = current.style.cssText;
-    return NxCssText.css2obj(css);
+    return css ? NxCssText.css2obj(css) : null;
   }
 
   renderElement = (inProps) => {
