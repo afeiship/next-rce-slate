@@ -22,9 +22,7 @@ export default NxSlatePlugin.define({
       return code;
     }
   },
-  hooks: {
-    leaf: (_, { attributes, children, leaf }) => {
-      return <code {...attributes}>{children}</code>;
-    }
+  render: (_, { attributes, children, leaf }) => {
+    return <code {...attributes}>{children}</code>;
   }
 });
