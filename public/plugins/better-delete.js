@@ -1,15 +1,15 @@
 import { createEditor, Editor, Text, Transforms } from 'slate';
 import { Path } from 'slate';
 import { useSelected, ReactEditor, useSlate } from 'slate-react';
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 
-export default {
-  name: 'better-delete',
+export default NxSlatePlugin.define({
+  id: 'better-delete',
   decorator: (editor) => {
     const { deleteBackward } = editor;
     editor.deleteBackward = (...args) => {
       // console.log('args:', args);
       deleteBackward(...args);
-
 
       // const match = Editor.above(editor, {
       //   match: (n) => ['list-item', 'blockquote'].includes(n.type)
@@ -30,4 +30,4 @@ export default {
     };
     return editor;
   }
-};
+});

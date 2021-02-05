@@ -1,5 +1,6 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 
 /**
  * @usage:
@@ -12,22 +13,22 @@ const isHeading = (tag) => {
   return HEADING_RE.test(tag);
 };
 
-export default {
+export default NxSlatePlugin.define({
   name: 'heading',
-  importer: (el, children) => {
-    const nodeName = el.nodeName.toLowerCase();
-    if (isHeading(nodeName)) {
-      const num = HEADING_RE.exec(nodeName);
-      return jsx('element', { type: 'heading', value: num }, children);
+  serialize: {
+    input: (el, children) => {
+      const nodeName = el.nodeName.toLowerCase();
+      if (isHeading(nodeName)) {
+        const num = HEADING_RE.exec(nodeName);
+        return jsx('element', { type: 'heading', value: num }, children);
+      }
+    },
+    output: (node, children) => {
+      const { type, value } = node;
+      return `<h${value}>${children}</h${value}>`;
     }
   },
-  exporter: (node, children) => {
-    const { type, value } = node;
-    return `<h${value}>${children}</h${value}>`;
-  },
-  hooks: {
-    element: (_, { attributes, children, element }) => {
-      return React.createElement(`h${element.value}`, attributes, children);
-    }
+  render: (_, { attributes, children, element }) => {
+    return React.createElement(`h${element.value}`, attributes, children);
   }
-};
+});

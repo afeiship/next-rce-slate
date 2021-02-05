@@ -1,7 +1,6 @@
 import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Node } from 'slate';
 import ReactRteSlate from '../src/main';
 import { Toolbar, ButtonGroup, Button } from '@jswork/react-rte-ui';
 import Bold from './plugins/bold';
@@ -22,8 +21,8 @@ import BetterDelete from './plugins/better-delete';
 import ExtEditor from './plugins/ext-editor';
 import Paragraph from './plugins/paragraph';
 import './assets/style.scss';
-import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { createEditor, Editor, Element, Transforms } from 'slate';
 
 class App extends React.Component {
   get headerView() {
@@ -85,21 +84,29 @@ class App extends React.Component {
             Italic,
             Underline,
             Strikethrough,
-            // Code,
-            // Heading,
+            Code,
+            Heading,
             Blockquote,
-            // Color,
-            // BackgroundColor,
+            Color,
+            BackgroundColor,
             NumberedList,
             BulletedList,
             ListItem,
-            // // PasteHtml,
+            // PasteHtml,
             // // ForceLayout,
             // BetterDelete,
-            // ExtEditor,
+            ExtEditor,
             Paragraph
           ]}
           value={this.state.value}
+          onInit={(e) => {
+            // debug:
+            this.editor = e.target.value;
+            window.editor = this.editor;
+            window.Editor = Editor;
+            window.ReactEditor = ReactEditor;
+            window.Transforms = Transforms;
+          }}
           onChange={(e) => {
             this.setState({ value: e.target.value });
             console.log('html:', e.target.value);

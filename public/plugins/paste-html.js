@@ -1,9 +1,10 @@
 import { createEditor, Editor, Text, Transforms } from 'slate';
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 
 // https://github.com/ckeditor/ckeditor5
 
-export default {
-  name: 'paste-html',
+export default NxSlatePlugin.define({
+  id: 'paste-html',
   decorator: (editor) => {
     console.log(editor);
     const { insertData, isInline, isVoid } = editor;
@@ -27,4 +28,4 @@ export default {
 
     return editor;
   }
-};
+});

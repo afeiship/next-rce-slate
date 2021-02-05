@@ -2,7 +2,7 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor, Editor, Element, Transforms } from 'slate';
+import { createEditor, Editor, Element } from 'slate';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
@@ -80,11 +80,6 @@ export default class ReactRteSlate extends Component {
     this.editor = composite(createEditor());
     this.state = { value };
     onInit({ target: { value: this.editor } });
-
-    // window.editor = this.editor;
-    // window.Editor = Editor;
-    // window.ReactEditor = ReactEditor;
-    // window.Transforms = Transforms;
   }
 
   shouldComponentUpdate(inProps) {
@@ -214,7 +209,10 @@ export default class ReactRteSlate extends Component {
       <section
         data-component={CLASS_NAME}
         className={classNames(CLASS_NAME, className)}>
-        <Slate editor={this.editor} value={this.state.value} onChange={this.handleChange}>
+        <Slate
+          editor={this.editor}
+          value={this.state.value}
+          onChange={this.handleChange}>
           {header}
           <Editable
             placeholder={placeholder}
