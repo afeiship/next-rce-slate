@@ -1,27 +1,27 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
-
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 /**
  * @usage:
  * Editor.addMark(editor,'italic', true)
  */
 
-
-export default {
-  name: 'italic',
-  importer: (el, children) => {
-    const nodeName = el.nodeName.toLowerCase();
-    if (nodeName === 'span' && el.style.fontStyle === 'italic') {
-      return jsx('text', { italic: true }, children);
+export default NxSlatePlugin.define({
+  id: 'italic',
+  serialize: {
+    input: (el, children) => {
+      const nodeName = el.nodeName.toLowerCase();
+      if (nodeName === 'i') {
+        return jsx('text', { italic: true }, children);
+      }
+    },
+    output: ({ el }) => {
+      const i = document.createElement('i');
+      i.appendChild(el);
+      return i;
     }
   },
-  exporter: (el) => {
-    el.style.fontStyle = 'italic';
-    return el;
-  },
-  hooks: {
-    leaf: (_, { attributes, children, leaf }) => {
-      return <em {...attributes}>{children}</em>;
-    }
+  render: (_, { attributes, children, leaf }) => {
+    return <em {...attributes}>{children}</em>;
   }
-};
+});

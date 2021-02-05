@@ -12,7 +12,6 @@ import Code from './plugins/code';
 import Heading from './plugins/heading';
 import Blockquote from './plugins/blockquote';
 import Color from './plugins/color';
-import Alignment from './plugins/alignment';
 import BackgroundColor from './plugins/background-color';
 import BulletedList from './plugins/bulleted-list';
 import NumberedList from './plugins/numbered-list';
@@ -51,8 +50,7 @@ class App extends React.Component {
   constructor(inProps) {
     super(inProps);
     this.state = {
-      value:
-        '<p style="text-align:right;">Are you ok?</p><blockquote>hello world</blockquote><p style="">Are you ok?</p><ul><li>thanks</li><li>and you?</li></ul>'
+      value: `<p style="text-align:right;">Are you ok?</p><blockquote><span style="font-weight: bold;">hello world</span></blockquote><p style=""><i><u><span style="font-weight: bold;">Are</span></u></i> you ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
     };
   }
 
@@ -87,19 +85,18 @@ class App extends React.Component {
             Italic,
             Underline,
             Strikethrough,
-            Code,
-            Heading,
+            // Code,
+            // Heading,
             Blockquote,
-            Color,
-            Alignment,
-            BackgroundColor,
+            // Color,
+            // BackgroundColor,
             NumberedList,
             BulletedList,
             ListItem,
-            // PasteHtml,
-            // ForceLayout,
-            BetterDelete,
-            ExtEditor,
+            // // PasteHtml,
+            // // ForceLayout,
+            // BetterDelete,
+            // ExtEditor,
             Paragraph
           ]}
           value={this.state.value}

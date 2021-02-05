@@ -1,6 +1,6 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
-
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 /**
  * @usage:
  * Active:
@@ -19,20 +19,20 @@ Transforms.unwrapNodes(editor, {
 Transforms.setNodes(editor, { type:'paragraph' })
  */
 
-export default {
-  name: 'numbered-list',
-  importer: (el, children) => {
-    const nodeName = el.nodeName.toLowerCase();
-    if (nodeName === 'ol') {
-      return jsx('element', { type: 'numbered-list' }, children);
+export default NxSlatePlugin.define({
+  id: 'numbered-list',
+  serialize: {
+    input: (el, children) => {
+      const nodeName = el.nodeName.toLowerCase();
+      if (nodeName === 'ol') {
+        return jsx('element', { type: 'numbered-list' }, children);
+      }
+    },
+    output: (node, children) => {
+      return `<ol>${children}</ol>`;
     }
   },
-  exporter: (node, children) => {
-    return `<ol>${children}</ol>`;
-  },
-  hooks: {
-    element: (_, { attributes, children, element }) => {
-      return <ol {...attributes}>{children}</ol>;
-    }
+  render: (_, { attributes, children, element }) => {
+    return <ol {...attributes}>{children}</ol>;
   }
-};
+});

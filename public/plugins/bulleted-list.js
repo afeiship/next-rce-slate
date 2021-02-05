@@ -2,8 +2,7 @@ import React from 'react';
 import { jsx } from 'slate-hyperscript';
 import { Path } from 'slate';
 import { useSelected, ReactEditor, useSlate } from 'slate-react';
-
-
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 /**
  * @usage:
  * Active:
@@ -25,21 +24,25 @@ import { useSelected, ReactEditor, useSlate } from 'slate-react';
 
  */
 
-export default {
-  name: 'bulleted-list',
-  importer: (el, children) => {
-    const nodeName = el.nodeName.toLowerCase();
-    if (nodeName === 'ul') {
-      return jsx('element', { type: 'bulleted-list' }, children);
+export default NxSlatePlugin.define({
+  id: 'bulleted-list',
+  serialize: {
+    input: (el, children) => {
+      const nodeName = el.nodeName.toLowerCase();
+      if (nodeName === 'ul') {
+        return jsx('element', { type: 'bulleted-list' }, children);
+      }
+    },
+    output: (node, children) => {
+      return `<ul>${children}</ul>`;
     }
   },
-  exporter: (node, children) => {
-    return `<ul>${children}</ul>`;
-  },
-  hooks: {
-    element: (inContext, { attributes, children, element }) => {
-      const path = ReactEditor.findPath(inContext.editor, element);
-      return <ul data-depth={path.length} {...attributes}>{children}</ul>;
-    }
+  render: (inContext, { attributes, children, element }) => {
+    const path = ReactEditor.findPath(inContext.editor, element);
+    return (
+      <ul data-depth={path.length} {...attributes}>
+        {children}
+      </ul>
+    );
   }
-};
+});

@@ -1,8 +1,8 @@
 export default {
   name: 'clean-content',
-  statics: {
-    empty: () => {
-      console.log('empty to document');
+  decorator: {
+    classify: (inEditor) => {
+      return inEditor;
     }
   }
 };

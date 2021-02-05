@@ -1,27 +1,27 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
-
+import NxSlatePlugin from '@jswork/next-slate-plugin';
 /**
  * @usage:
  * Editor.addMark(editor,'strikethrough', true)
  */
 
-export default {
+export default NxSlatePlugin.define({
   name: 'strikethrough',
-  importer: (el, children) => {
-    const nodeName = el.nodeName.toLowerCase();
-    if (nodeName === 's') {
-      return jsx('text', { strikethrough: true }, children);
+  serialize: {
+    input: (el, children) => {
+      const nodeName = el.nodeName.toLowerCase();
+      if (nodeName === 's') {
+        return jsx('text', { strikethrough: true }, children);
+      }
+    },
+    output: ({ el }) => {
+      const s = document.createElement('s');
+      s.appendChild(el);
+      return s;
     }
   },
-  exporter: (el) => {
-    const s = document.createElement('s');
-    s.appendChild(el);
-    return s;
-  },
-  hooks: {
-    leaf: (_, { attributes, children, leaf }) => {
-      return <s {...attributes}>{children}</s>;
-    }
+  render: (_, { attributes, children, leaf }) => {
+    return <s {...attributes}>{children}</s>;
   }
-};
+});

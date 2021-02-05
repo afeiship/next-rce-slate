@@ -2,23 +2,18 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor, Editor, Transforms } from 'slate';
+import { createEditor, Editor, Element, Transforms } from 'slate';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
 import NxCssText from '@jswork/next-css-text';
+import NxSlatePlugin from '@jswork/next-slate-plugin';
+
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
-import isHotkey from 'is-hotkey';
 
 const CLASS_NAME = 'react-rte-slate';
-const HOTKEYS = {
-  'mod+b': 'bold',
-  'mod+i': 'italic',
-  'mod+u': 'underline',
-  'mod+`': 'code'
-};
 
 export default class ReactRteSlate extends Component {
   static displayName = CLASS_NAME;
@@ -68,19 +63,8 @@ export default class ReactRteSlate extends Component {
 
   get withDecorators() {
     const { plugins } = this.props;
-    const decorators = plugins
-      .map((plugin) => plugin.decorator)
-      .filter(Boolean);
-    return nxCompose(withReact, ...decorators);
-  }
-
-  get hooks() {
-    const { plugins } = this.props;
-    return plugins.filter((plugin) => plugin.hooks);
-  }
-
-  toSlateNodes(inValue) {
-    return this.handleSerialize('importer', inValue);
+    const instances = plugins.map((plugin) => plugin.decorator.instance);
+    return nxCompose(withReact, ...instances);
   }
 
   constructor(inProps) {
@@ -88,12 +72,8 @@ export default class ReactRteSlate extends Component {
     const { onInit } = inProps;
     const html = inProps.value;
     const composite = this.withDecorators;
-    // 注意这个应该放在比较前面
-    this.initialStatics();
-    const value = this.handleSerialize('importer', html);
+    const value = this.handleImporter(html);
     this.editor = composite(createEditor());
-    // JSON.string
-    // this.editor.context = this;
     this.state = { value };
     onInit({ target: { value: this.editor } });
 
@@ -101,118 +81,92 @@ export default class ReactRteSlate extends Component {
     window.Editor = Editor;
     window.ReactEditor = ReactEditor;
     window.Transforms = Transforms;
-    // window.Node = Node;
-  }
-
-  initialStatics() {
-    const { plugins } = this.props;
-    const members = plugins.map((plugin) => plugin.statics).filter(Boolean);
-    Object.assign(Editor, ...members);
   }
 
   shouldComponentUpdate(inProps) {
     const html = inProps.value;
     const value = this.handleExporter(this.state.value);
     if (html !== value) {
-      this.setState({ value: this.handleSerialize('importer', html) });
+      this.setState({ value: this.handleImporter(html) });
     }
     return true;
   }
 
-  getOldStyle(inRef) {
-    const { current } = inRef;
-    if (!current) return null;
-    const css = current.style.cssText;
-    return css ? NxCssText.css2obj(css) : null;
-  }
-
+  /**
+   * @schema: render(element)
+   * @param {*} inProps
+   */
   renderElement = (inProps) => {
     const { element, children, attributes } = inProps;
     const { plugins } = this.props;
-    const plugin = plugins.find((plg) => plg.name === element.type);
-    const style = this.getOldStyle(attributes.ref);
-    const newProps = {
+    const plugin = plugins.find((plg) => plg.id === element.type);
+    const style = NxCssText.css2obj(
+      nx.get(attributes, 'ref.current.style.cssText')
+    );
+    const props = {
       element,
       children,
-      attributes: { ...attributes, style: { ...style, ...element.style } }
+      attributes: nx.mix(null, attributes, {
+        style: nx.mix(style, element.style)
+      })
     };
-    return plugin.hooks.element(this, newProps);
+    return plugin.render(this, props);
   };
 
+  /**
+   * @schema: render(format)
+   * @param {*} inProps
+   */
   renderLeaf = (inProps) => {
     const { attributes, children, leaf } = inProps;
-    const activePlugins = this.getActivePlugins(leaf);
-
+    const formats = this.getActivePlugin(leaf);
     return (
       <span {...attributes}>
-        {activePlugins.reduce((child, mark) => {
-          const { name, fn } = mark;
-          return leaf[name] && fn(this, { ...inProps, children: child });
+        {formats.reduce((child, plugin) => {
+          const props = nx.mix(inProps, { children: child });
+          return plugin.render(this, props);
         }, children)}
       </span>
     );
   };
 
-  getActivePlugins(inNode) {
+  getActivePlugin(inNode) {
     const { plugins } = this.props;
-    const results = [];
-    for (let key in inNode) {
-      if (key === 'text') continue;
-      const plugin = plugins.find((plugin) => plugin.name === key);
-      plugin &&
-        results.push({
-          name: plugin.name,
-          fn: plugin.hooks.leaf,
-          exporter: plugin.exporter,
-          importer: plugin.importer
-        });
-    }
-    return results;
+    return NxSlatePlugin.actived(inNode, plugins);
   }
 
-  handleSerialize(inRole, inValue) {
+  handleImporter(inValue) {
     const { plugins } = this.props;
-    const handlers = plugins.map((plugin) => plugin[inRole]).filter(Boolean);
-    const Parser =
-      inRole === 'exporter' ? NxSlateSerialize : NxDeslateSerialize;
+    const handlers = plugins.map((plugin) => plugin.serialize.input);
     const process = (node, children) => {
       const handler = handlers.find((fn) => fn(node, children));
-      return handler
-        ? handler(node, children)
-        : NxSlateDefaults[inRole](node, children);
+      const input = handler || NxSlateDefaults.importer;
+      return input(node, children);
     };
-    return Parser.parse(inValue, { process });
+    return NxDeslateSerialize.parse(inValue, { process });
   }
 
   handleExporter = (inValue) => {
     return NxSlateSerialize.parse(inValue, {
       process: (node, children) => {
-        const activePlugins = this.getActivePlugins(node);
-        // textNode
-        if (!children) {
-          // pure text:
-          if (!activePlugins.length) return node.text;
+        const actived = this.getActivePlugin(node);
+        if (!Element.isElement(node)) {
+          if (!actived.length) return node.text;
           const el = document.createElement('span');
           el.innerText = node.text;
-          const target = activePlugins.reduce((el, mark) => {
-            const { exporter, name } = mark;
-            return node[name] && exporter && exporter(el, node);
+
+          const target = actived.reduce((el, plugin) => {
+            return plugin.serialize.output({ ...node, el }, children);
           }, el);
-          return target
-            ? target.outerHTML
-            : NxSlateDefaults.exporter(node, children);
-        } else {
-          // element
-          const { plugins } = this.props;
-          const target = plugins.find((plugin) => plugin.name === node.type);
-          return target
-            ? target.exporter(node, children)
-            : NxSlateDefaults.exporter(node, children);
+          return target.outerHTML;
         }
+        return actived.serialize.output(node, children);
       }
     });
   };
+
   handleChange = (inEvent) => {
+    console.log('event:', inEvent);
     const { onChange } = this.props;
     const value = this.handleExporter(inEvent);
     const target = { value: inEvent };
@@ -246,15 +200,6 @@ export default class ReactRteSlate extends Component {
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}
             renderElement={this.renderElement}
-            onKeyDown={(event) => {
-              for (const hotkey in HOTKEYS) {
-                if (isHotkey(hotkey, event)) {
-                  event.preventDefault();
-                  const mark = HOTKEYS[hotkey];
-                  Editor.addMark(this.editor, mark, true);
-                }
-              }
-            }}
             {...props}
           />
           {footer}
