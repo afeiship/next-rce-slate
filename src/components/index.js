@@ -3,15 +3,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { createEditor, Editor, Element } from 'slate';
+import { Slate, Editable, withReact } from 'slate-react';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
+import nxCompactObject from '@jswork/next-compact-object';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxSlateDeserialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
 import NxCssText from '@jswork/next-css-text';
 import NxSlatePlugin from '@jswork/next-slate-plugin';
-
-import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 
 const CLASS_NAME = 'react-rte-slate';
 
@@ -27,14 +27,6 @@ export default class ReactRteSlate extends Component {
      * Default value.
      */
     value: PropTypes.string,
-    /**
-     * Header for editor.
-     */
-    header: PropTypes.any,
-    /**
-     * Footer for editor.
-     */
-    footer: PropTypes.any,
     /**
      * The change handler.
      */
@@ -122,9 +114,13 @@ export default class ReactRteSlate extends Component {
     const props = {
       element,
       children,
-      attributes: nx.mix(null, attributes, {
-        style: nx.mix(style, element.style)
-      })
+      attributes: nx.mix(
+        null,
+        attributes,
+        nxCompactObject({
+          style: nx.mix(style, element.style)
+        })
+      )
     };
     return plugin.render(this, props);
   };
@@ -195,8 +191,6 @@ export default class ReactRteSlate extends Component {
     const {
       className,
       value,
-      header,
-      footer,
       onChange,
       onPluginChange,
       onInit,
@@ -213,14 +207,12 @@ export default class ReactRteSlate extends Component {
           editor={this.editor}
           value={this.state.value}
           onChange={this.handleChange}>
-          {header}
           <Editable
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}
             renderElement={this.renderElement}
             {...props}
           />
-          {footer}
         </Slate>
       </section>
     );

@@ -7,7 +7,7 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
  */
 
 export default NxSlatePlugin.define({
-  name: 'strikethrough',
+  id: 'strikethrough',
   serialize: {
     input: (el, children) => {
       const nodeName = el.nodeName.toLowerCase();

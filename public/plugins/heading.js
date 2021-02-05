@@ -14,7 +14,7 @@ const isHeading = (tag) => {
 };
 
 export default NxSlatePlugin.define({
-  name: 'heading',
+  id: 'heading',
   serialize: {
     input: (el, children) => {
       const nodeName = el.nodeName.toLowerCase();

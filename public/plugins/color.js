@@ -16,8 +16,8 @@ export default NxSlatePlugin.define({
         return jsx('text', { color: el.style.color }, children);
       }
     },
-    output: ({ el }, node) => {
-      el.style.color = node.color;
+    output: ({ el, color }) => {
+      el.style.color = color;
       return el;
     }
   },

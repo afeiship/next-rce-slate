@@ -24,6 +24,7 @@ import './assets/style.scss';
 import { ReactEditor } from 'slate-react';
 import { createEditor, Editor, Element, Transforms } from 'slate';
 
+// Alignment: Transforms.setNodes(editor, { style: { textAlign: 'right' } });
 class App extends React.Component {
   get headerView() {
     return (
@@ -49,23 +50,20 @@ class App extends React.Component {
   constructor(inProps) {
     super(inProps);
     this.state = {
-      value: `<p style="text-align:right;">Are <code>you</code> ok?</p><blockquote><span style="font-weight: bold;">hello world</span></blockquote><p style=""><i><u><span style="font-weight: bold;">Are</span></u></i> you ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
+      value: `<p style="text-align:right;">Are <code>you</code> ok?</p><blockquote><span style="font-weight: bold;">hello world</span></blockquote><p style=""><i><u><span style="font-weight: bold;">Are</span></u></i> <span style="color: rgb(255, 0, 0);">you</span> ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
     };
   }
 
-  handleClick1 = (e) => {
-    var key = ReactEditor.findKey(editor, {
-      type: 'paragraph',
-      children: [
-        {
-          text: 'Are you ok?'
-        }
-      ]
-    });
-    // Transforms.select(editor, [0,0]);
-    // ReactEditor.deselect(editor);
-    // ReactEditor.focus(editor);
-    // this.setState({ value: '<p>Are you ok?</p>' });
+  handleInit = (e) => {
+    this.editor = e.target.value;
+    window.editor = this.editor;
+    window.Editor = Editor;
+    window.ReactEditor = ReactEditor;
+    window.Transforms = Transforms;
+  };
+
+  handleClick = (e) => {
+    this.setState({ value: '<p>Are you ok?</p>' });
   };
 
   render() {
@@ -73,12 +71,12 @@ class App extends React.Component {
       <ReactDemokit
         className="p-3 app-container"
         url="https://github.com/afeiship/react-rte-slate">
-        <button className="btn" onClick={this.handleClick1}>
+        <button className="button is-primary mb-2" onClick={this.handleClick}>
           Update a value.
         </button>
+        {this.headerView}
         <ReactRteSlate
           placeholder="type your text."
-          header={this.headerView}
           plugins={[
             Bold,
             Italic,
@@ -99,17 +97,10 @@ class App extends React.Component {
             Paragraph
           ]}
           value={this.state.value}
-          onInit={(e) => {
-            // debug:
-            this.editor = e.target.value;
-            window.editor = this.editor;
-            window.Editor = Editor;
-            window.ReactEditor = ReactEditor;
-            window.Transforms = Transforms;
-          }}
+          onInit={this.handleInit}
           onChange={(e) => {
             this.setState({ value: e.target.value });
-            console.log('html:', e.target.value);
+            // console.log('html:', e.target.value);
           }}
           className="mb-5"
         />

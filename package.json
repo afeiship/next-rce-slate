@@ -88,10 +88,12 @@
     "slate-react": "^0.59.0"
   },
   "dependencies": {
+    "@jswork/next-compact-object": "^1.0.0",
     "@jswork/next-compose": "^1.0.0",
     "@jswork/next-css-text": "^1.0.0",
-    "@jswork/next-slate-defaults": "^1.0.1",
+    "@jswork/next-slate-defaults": "^1.0.2",
     "@jswork/next-slate-deserialize": "^1.0.7",
+    "@jswork/next-slate-plugin": "^1.0.6",
     "@jswork/next-slate-serialize": "^1.0.6",
     "@jswork/noop": "^1.0.0"
   },
