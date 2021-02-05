@@ -8,6 +8,12 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 
 export default NxSlatePlugin.define({
   id: 'italic',
+  hotkey: 'mod+i',
+  commands: {
+    activate: () => {
+      Editor.addMark(editor, 'italic', true);
+    }
+  },
   serialize: {
     input: (el, children) => {
       const nodeName = el.nodeName.toLowerCase();

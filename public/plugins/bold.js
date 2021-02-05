@@ -1,6 +1,7 @@
 import React from 'react';
 import { jsx } from 'slate-hyperscript';
 import NxSlatePlugin from '@jswork/next-slate-plugin';
+// import isHotkey from 'is-hotkey';
 /**
  * @usage:
  * Editor.addMark(editor,'bold', true)
@@ -8,6 +9,15 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 
 export default NxSlatePlugin.define({
   id: 'bold',
+  hotkey: 'mod+b',
+  events: {
+    keydown(sender, event) {
+      const cmd = sender.commands['bold'];
+      if (cmd.isHotkey(event)) {
+        cmd.toggle(true);
+      }
+    }
+  },
   serialize: {
     input: (el, children) => {
       const nodeName = el.nodeName.toLowerCase();

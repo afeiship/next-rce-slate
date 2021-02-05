@@ -14,6 +14,10 @@ export default NxSlatePlugin.define({
       if (!selection) return null;
       const [node, _] = Editor.above(inEditor, selection.anchor.path);
       return node;
+    },
+    isActiveMark: (inEditor, inMark) => {
+      const marks = Editor.marks(inEditor);
+      return marks ? marks[inMark] : false;
     }
   }
 });

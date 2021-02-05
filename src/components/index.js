@@ -6,6 +6,7 @@ import { createEditor, Editor, Element } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
+import nxDeepAssign from '@jswork/next-deep-assign';
 import nxCompactObject from '@jswork/next-compact-object';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxSlateDeserialize from '@jswork/next-slate-deserialize';
@@ -69,8 +70,10 @@ export default class ReactRteSlate extends Component {
     const html = inProps.value;
     const composite = this.withDecorator;
     const value = this.fromHtml(html);
+    this.commands = {};
     this.editor = composite(createEditor());
     this.state = { value };
+    this.initialCommands();
     onInit({ target: { value: this.editor } });
   }
 
@@ -99,6 +102,20 @@ export default class ReactRteSlate extends Component {
   initialStatics() {
     const { plugins } = this.props;
     plugins.forEach((plugin) => nx.mix(Editor, plugin.statics));
+  }
+
+  /**
+   * @schema: commands
+   */
+  initialCommands() {
+    const { plugins } = this.props;
+    plugins.forEach((plugin) => {
+      const { id } = plugin;
+      this.commands[id] = nx.mix(
+        NxSlateDefaults.commands(this, plugin),
+        plugin.commands
+      );
+    });
   }
 
   /**
@@ -187,6 +204,20 @@ export default class ReactRteSlate extends Component {
     });
   };
 
+  handleKeyDown = (inEvent) => {
+    // todo: refactor
+    const { plugins } = this.props;
+    plugins.forEach((plugin) => {
+      plugin.events.keydown(this, inEvent);
+      if (plugin.events.keydown === nx.noop && plugin.hotkey) {
+        const cmd = this.commands[plugin.id];
+        if (cmd.isHotkey(inEvent)) {
+          cmd.toggle();
+        }
+      }
+    });
+  };
+
   render() {
     const {
       className,
@@ -211,6 +242,7 @@ export default class ReactRteSlate extends Component {
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}
             renderElement={this.renderElement}
+            onKeyDown={this.handleKeyDown}
             {...props}
           />
         </Slate>
