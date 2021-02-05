@@ -120,8 +120,7 @@ export default class ReactRteSlate extends Component {
    */
   renderElement = (inProps) => {
     const { element, children, attributes } = inProps;
-    const { plugins } = this.props;
-    const plugin = plugins.find((plg) => plg.id === element.type);
+    const plugin = this.getActivePlugin(element);
     const style = NxCssText.css2obj(
       nx.get(attributes, 'ref.current.style.cssText')
     );

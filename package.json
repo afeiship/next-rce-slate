@@ -81,7 +81,11 @@
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "@jswork/next": "^1.0.5",
+    "classnames": "^2.2.6",
+    "slate": "^0.59.0",
+    "slate-react": "^0.59.0"
   },
   "dependencies": {
     "@jswork/next-compose": "^1.0.0",
@@ -89,10 +93,7 @@
     "@jswork/next-slate-defaults": "^1.0.1",
     "@jswork/next-slate-deserialize": "^1.0.7",
     "@jswork/next-slate-serialize": "^1.0.6",
-    "@jswork/noop": "^1.0.0",
-    "classnames": "^2.2.6",
-    "slate": "^0.59.0",
-    "slate-react": "^0.59.0"
+    "@jswork/noop": "^1.0.0"
   },
   "publishConfig": {
     "access": "public",
