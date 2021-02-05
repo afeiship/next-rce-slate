@@ -8,6 +8,7 @@ import { jsx } from 'slate-hyperscript';
 
 export default {
   name: 'underline',
+  type: 'format',
   importer: (el, children) => {
     const nodeName = el.nodeName.toLowerCase();
     if (nodeName === 'u') {
