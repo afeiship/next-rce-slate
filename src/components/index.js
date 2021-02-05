@@ -212,7 +212,7 @@ export default class ReactRteSlate extends Component {
       if (plugin.events.keydown === nx.noop && plugin.hotkey) {
         const cmd = this.commands[plugin.id];
         if (cmd.isHotkey(inEvent)) {
-          cmd.toggle();
+          cmd.toggle(true);
         }
       }
     });
