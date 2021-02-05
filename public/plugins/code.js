@@ -16,9 +16,9 @@ export default NxSlatePlugin.define({
         return jsx('text', { code: true }, children);
       }
     },
-    output: ({ el }) => {
+    output: ({ el, text }) => {
       const code = document.createElement('code');
-      code.appendChild(el);
+      code.innerText = text;
       return code;
     }
   },

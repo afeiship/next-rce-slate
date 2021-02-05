@@ -49,7 +49,7 @@ class App extends React.Component {
   constructor(inProps) {
     super(inProps);
     this.state = {
-      value: `<p style="text-align:right;">Are you ok?</p><blockquote><span style="font-weight: bold;">hello world</span></blockquote><p style=""><i><u><span style="font-weight: bold;">Are</span></u></i> you ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
+      value: `<p style="text-align:right;">Are <code>you</code> ok?</p><blockquote><span style="font-weight: bold;">hello world</span></blockquote><p style=""><i><u><span style="font-weight: bold;">Are</span></u></i> you ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
     };
   }
 
