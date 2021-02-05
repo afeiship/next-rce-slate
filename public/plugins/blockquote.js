@@ -21,7 +21,6 @@ export default NxSlatePlugin.define({
     }
   },
   render: (_, { attributes, children, element }) => {
-    console.log('element', element, attributes, children);
     return <blockquote {...attributes}>{children}</blockquote>;
   }
 });

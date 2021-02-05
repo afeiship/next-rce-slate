@@ -6,7 +6,7 @@ import { createEditor, Editor, Element, Transforms } from 'slate';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
-import NxDeslateSerialize from '@jswork/next-slate-deserialize';
+import NxSlateDeserialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
 import NxCssText from '@jswork/next-css-text';
 import NxSlatePlugin from '@jswork/next-slate-plugin';
@@ -44,7 +44,7 @@ export default class ReactRteSlate extends Component {
      */
     onPluginChange: PropTypes.func,
     /**
-     * The hanlder when editor init.
+     * The handler when editor init.
      */
     onInit: PropTypes.func,
     /**
@@ -61,35 +61,57 @@ export default class ReactRteSlate extends Component {
     plugins: []
   };
 
-  get withDecorators() {
+  /**
+   * @schema: decorator(instance)
+   */
+  get withDecorator() {
     const { plugins } = this.props;
-    const instances = plugins.map((plugin) => plugin.decorator.instance);
+    const instances = plugins.map((plugin) => plugin.decorator);
     return nxCompose(withReact, ...instances);
   }
 
   constructor(inProps) {
     super(inProps);
+    this.initialStatics();
     const { onInit } = inProps;
     const html = inProps.value;
-    const composite = this.withDecorators;
-    const value = this.handleImporter(html);
+    const composite = this.withDecorator;
+    const value = this.fromHtml(html);
     this.editor = composite(createEditor());
     this.state = { value };
     onInit({ target: { value: this.editor } });
 
-    window.editor = this.editor;
-    window.Editor = Editor;
-    window.ReactEditor = ReactEditor;
-    window.Transforms = Transforms;
+    // window.editor = this.editor;
+    // window.Editor = Editor;
+    // window.ReactEditor = ReactEditor;
+    // window.Transforms = Transforms;
   }
 
   shouldComponentUpdate(inProps) {
     const html = inProps.value;
-    const value = this.handleExporter(this.state.value);
+    const value = this.toHtml(this.state.value);
     if (html !== value) {
-      this.setState({ value: this.handleImporter(html) });
+      this.setState({ value: this.fromHtml(html) });
     }
     return true;
+  }
+
+  /**
+   * Get actived plugin by node.
+   * @param inNode
+   * @returns {*}
+   */
+  getActivePlugin(inNode) {
+    const { plugins } = this.props;
+    return NxSlatePlugin.actived(inNode, plugins);
+  }
+
+  /**
+   * @schema: statics
+   */
+  initialStatics() {
+    const { plugins } = this.props;
+    plugins.forEach((plugin) => nx.mix(Editor, plugin.statics));
   }
 
   /**
@@ -130,12 +152,10 @@ export default class ReactRteSlate extends Component {
     );
   };
 
-  getActivePlugin(inNode) {
-    const { plugins } = this.props;
-    return NxSlatePlugin.actived(inNode, plugins);
-  }
-
-  handleImporter(inValue) {
+  /**
+   * @schema: serialize(input)
+   */
+  fromHtml(inValue) {
     const { plugins } = this.props;
     const handlers = plugins.map((plugin) => plugin.serialize.input);
     const process = (node, children) => {
@@ -143,10 +163,13 @@ export default class ReactRteSlate extends Component {
       const input = handler || NxSlateDefaults.importer;
       return input(node, children);
     };
-    return NxDeslateSerialize.parse(inValue, { process });
+    return NxSlateDeserialize.parse(inValue, { process });
   }
 
-  handleExporter = (inValue) => {
+  /**
+   * @schema: serialize(output)
+   */
+  toHtml = (inValue) => {
     return NxSlateSerialize.parse(inValue, {
       process: (node, children) => {
         const actived = this.getActivePlugin(node);
@@ -166,9 +189,8 @@ export default class ReactRteSlate extends Component {
   };
 
   handleChange = (inEvent) => {
-    console.log('event:', inEvent);
     const { onChange } = this.props;
-    const value = this.handleExporter(inEvent);
+    const value = this.toHtml(inEvent);
     const target = { value: inEvent };
     this.setState(target, () => {
       onChange({ target: { value } });
@@ -188,13 +210,12 @@ export default class ReactRteSlate extends Component {
       plugins,
       ...props
     } = this.props;
-    const _value = this.state.value;
 
     return (
       <section
         data-component={CLASS_NAME}
         className={classNames(CLASS_NAME, className)}>
-        <Slate editor={this.editor} value={_value} onChange={this.handleChange}>
+        <Slate editor={this.editor} value={this.state.value} onChange={this.handleChange}>
           {header}
           <Editable
             placeholder={placeholder}
