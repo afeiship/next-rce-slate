@@ -2,18 +2,13 @@ import noop from '@jswork/noop';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createEditor, Editor, Text, Node, Transforms } from 'slate';
+import { createEditor, Editor, Transforms } from 'slate';
 import nxCompose from '@jswork/next-compose';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxDeslateSerialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
-import {
-  Slate,
-  Editable,
-  withReact,
-  DefaultElement,
-  ReactEditor
-} from 'slate-react';
+import NxCssText from '@jswork/next-css-text';
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import isHotkey from 'is-hotkey';
 
 const CLASS_NAME = 'react-rte-slate';
@@ -123,16 +118,23 @@ export default class ReactRteSlate extends Component {
     return true;
   }
 
+  getOldStyle(inRef) {
+    const { current } = inRef;
+    if (!current) return null;
+    const css = current.style.cssText;
+    return NxCssText.css2obj(css);
+  }
+
   renderElement = (inProps) => {
     const { element, children, attributes } = inProps;
     const { plugins } = this.props;
     const plugin = plugins.find((plg) => plg.name === element.type);
+    const style = this.getOldStyle(attributes.ref);
     const newProps = {
       element,
       children,
-      attributes: { ...attributes, style: element.style }
+      attributes: { ...attributes, style: { ...style, ...element.style } }
     };
-    // if (!plugin) return <DefaultElement {...newProps} />;
     return plugin.hooks.element(this, newProps);
   };
 
