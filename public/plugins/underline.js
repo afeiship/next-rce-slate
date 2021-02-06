@@ -10,6 +10,7 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 export default NxSlatePlugin.define({
   id: 'underline',
   type: 'format',
+  hotkey: 'mod+u',
   serialize: {
     input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();

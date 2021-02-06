@@ -75,7 +75,7 @@ export default class ReactRteSlate extends Component {
     this.editor = composite(createEditor());
     this.state = { value };
     this.initialSchema();
-    onInit({ target: { value: this.editor } });
+    onInit({ target: { context: this, value: this.editor } });
   }
 
   shouldComponentUpdate(inProps) {
