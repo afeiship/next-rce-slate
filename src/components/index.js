@@ -158,7 +158,7 @@ export default class ReactRteSlate extends Component {
       const style = NxSlateDefaults.style(node.style.cssText);
       const args = [{ el: node, style }, children];
       const handler = handlers.find((fn) => fn.apply(null, args));
-      const input = handler || NxSlateDefaults.importer;
+      const input = handler || NxSlateDefaults.input;
       return input.apply(null, args);
     };
     return NxSlateDeserialize.parse(inValue, { process });
