@@ -10,14 +10,10 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 export default NxSlatePlugin.define({
   id: 'backgroundColor',
   serialize: {
-    input: (el, children) => {
+    input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 'span' && el.style.backgroundColor) {
-        return jsx(
-          'text',
-          { backgroundColor: el.style.backgroundColor },
-          children
-        );
+        return jsx('text', { backgroundColor: el.style.backgroundColor }, children);
       }
     },
     output: ({ el }, node) => {

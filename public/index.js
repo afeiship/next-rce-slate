@@ -50,7 +50,7 @@ class App extends React.Component {
   constructor(inProps) {
     super(inProps);
     this.state = {
-      value: `<p style="text-align:right;">Are <code>you</code> ok?</p><blockquote><span style="font-weight: bold;">hello world</span></blockquote><p style=""><i><u><span style="font-weight: bold;">Are</span></u></i> <span style="color: rgb(255, 0, 0);">you</span> ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
+      value: `<p style="text-align:right;">Are <code>you</code> ok?</p><blockquote style="text-align:right;"><span style="font-weight: bold;">hello world</span></blockquote><p><i><u><span style="font-weight: bold;">Are</span></u></i> <span style="color: rgb(255, 0, 0);">you</span> ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`
     };
   }
 
@@ -63,7 +63,7 @@ class App extends React.Component {
   };
 
   handleClick = (e) => {
-    this.setState({ value: '<p>Are you ok?</p>' });
+    this.setState({ value: '<p style="text-align:right;">Are you ok?</p>' });
   };
 
   render() {
@@ -100,7 +100,7 @@ class App extends React.Component {
           onInit={this.handleInit}
           onChange={(e) => {
             this.setState({ value: e.target.value });
-            // console.log('html:', e.target.value);
+            console.log('html:', e.target.value);
           }}
           className="mb-5"
         />

@@ -22,7 +22,7 @@ Transforms.setNodes(editor, { type:'paragraph' })
 export default NxSlatePlugin.define({
   id: 'numbered-list',
   serialize: {
-    input: (el, children) => {
+    input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 'ol') {
         return jsx('element', { type: 'numbered-list' }, children);

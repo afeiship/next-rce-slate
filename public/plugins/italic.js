@@ -15,7 +15,7 @@ export default NxSlatePlugin.define({
     }
   },
   serialize: {
-    input: (el, children) => {
+    input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 'i') {
         return jsx('text', { italic: true }, children);

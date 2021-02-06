@@ -11,7 +11,7 @@ export default NxSlatePlugin.define({
   id: 'underline',
   type: 'format',
   serialize: {
-    input: (el, children) => {
+    input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 'u') {
         return jsx('text', { underline: true }, children);

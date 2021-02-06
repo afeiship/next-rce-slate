@@ -10,14 +10,14 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 export default NxSlatePlugin.define({
   id: 'blockquote',
   serialize: {
-    input: (el, children) => {
+    input: ({ el, style }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 'blockquote') {
-        return jsx('element', { type: 'blockquote' }, children);
+        return jsx('element', { type: 'blockquote', style }, children);
       }
     },
-    output: (node, children) => {
-      return `<blockquote>${children}</blockquote>`;
+    output: ({ style }, children) => {
+      return `<blockquote${style}>${children}</blockquote>`;
     }
   },
   render: (_, { attributes, children, element }) => {

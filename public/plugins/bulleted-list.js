@@ -27,7 +27,7 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 export default NxSlatePlugin.define({
   id: 'bulleted-list',
   serialize: {
-    input: (el, children) => {
+    input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 'ul') {
         return jsx('element', { type: 'bulleted-list' }, children);

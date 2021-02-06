@@ -7,6 +7,7 @@ import { Slate, Editable, withReact } from 'slate-react';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
 import nxDeepAssign from '@jswork/next-deep-assign';
+import nxIsEmpty from '@jswork/next-is-empty';
 import nxCompactObject from '@jswork/next-compact-object';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
 import NxSlateDeserialize from '@jswork/next-slate-deserialize';
@@ -73,7 +74,7 @@ export default class ReactRteSlate extends Component {
     this.commands = {};
     this.editor = composite(createEditor());
     this.state = { value };
-    this.initialCommands();
+    this.initialSchema();
     onInit({ target: { value: this.editor } });
   }
 
@@ -105,17 +106,12 @@ export default class ReactRteSlate extends Component {
   }
 
   /**
-   * @schema: commands
+   * @schema:(commands/events)
    */
-  initialCommands() {
+  initialSchema() {
     const { plugins } = this.props;
-    plugins.forEach((plugin) => {
-      const { id } = plugin;
-      this.commands[id] = nx.mix(
-        NxSlateDefaults.commands(this, plugin),
-        plugin.commands
-      );
-    });
+    NxSlateDefaults.commands(this, plugins);
+    NxSlateDefaults.events(this, plugins);
   }
 
   /**
@@ -125,20 +121,13 @@ export default class ReactRteSlate extends Component {
   renderElement = (inProps) => {
     const { element, children, attributes } = inProps;
     const plugin = this.getActivePlugin(element);
-    const style = NxCssText.css2obj(
-      nx.get(attributes, 'ref.current.style.cssText')
+    const style = NxCssText.css2obj(nx.get(attributes, 'ref.current.style.cssText'));
+    const attrs = nx.mix(
+      null,
+      attributes,
+      nxCompactObject({ style: nx.mix(style, element.style) }, nxIsEmpty)
     );
-    const props = {
-      element,
-      children,
-      attributes: nx.mix(
-        null,
-        attributes,
-        nxCompactObject({
-          style: nx.mix(style, element.style)
-        })
-      )
-    };
+    const props = { element, children, attributes: attrs };
     return plugin.render(this, props);
   };
 
@@ -166,9 +155,11 @@ export default class ReactRteSlate extends Component {
     const { plugins } = this.props;
     const handlers = plugins.map((plugin) => plugin.serialize.input);
     const process = (node, children) => {
-      const handler = handlers.find((fn) => fn(node, children));
+      const style = NxSlateDefaults.style(node.style.cssText);
+      const args = [{ el: node, style }, children];
+      const handler = handlers.find((fn) => fn.apply(null, args));
       const input = handler || NxSlateDefaults.importer;
-      return input(node, children);
+      return input.apply(null, args);
     };
     return NxSlateDeserialize.parse(inValue, { process });
   }
@@ -190,7 +181,10 @@ export default class ReactRteSlate extends Component {
           }, el);
           return target.outerHTML;
         }
-        return actived.serialize.output(node, children);
+        return actived.serialize.output(
+          { ...node, style: NxSlateDefaults.style(node.style) },
+          children
+        );
       }
     });
   };
@@ -205,16 +199,9 @@ export default class ReactRteSlate extends Component {
   };
 
   handleKeyDown = (inEvent) => {
-    // todo: refactor
     const { plugins } = this.props;
     plugins.forEach((plugin) => {
       plugin.events.keydown(this, inEvent);
-      if (plugin.events.keydown === nx.noop && plugin.hotkey) {
-        const cmd = this.commands[plugin.id];
-        if (cmd.isHotkey(inEvent)) {
-          cmd.toggle(true);
-        }
-      }
     });
   };
 
@@ -231,13 +218,8 @@ export default class ReactRteSlate extends Component {
     } = this.props;
 
     return (
-      <section
-        data-component={CLASS_NAME}
-        className={classNames(CLASS_NAME, className)}>
-        <Slate
-          editor={this.editor}
-          value={this.state.value}
-          onChange={this.handleChange}>
+      <section data-component={CLASS_NAME} className={classNames(CLASS_NAME, className)}>
+        <Slate editor={this.editor} value={this.state.value} onChange={this.handleChange}>
           <Editable
             placeholder={placeholder}
             renderLeaf={this.renderLeaf}

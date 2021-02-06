@@ -9,7 +9,7 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 export default NxSlatePlugin.define({
   id: 'strikethrough',
   serialize: {
-    input: (el, children) => {
+    input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
       if (nodeName === 's') {
         return jsx('text', { strikethrough: true }, children);
