@@ -71,10 +71,8 @@ export default class ReactRteSlate extends Component {
     const html = inProps.value;
     const composite = this.withDecorator;
     const value = this.fromHtml(html);
-    this.commands = {};
     this.editor = composite(createEditor());
     this.state = { value };
-    this.initialSchema();
     onInit({ target: { context: this, value: this.editor } });
   }
 
@@ -103,15 +101,6 @@ export default class ReactRteSlate extends Component {
   initialStatics() {
     const { plugins } = this.props;
     plugins.forEach((plugin) => nx.mix(Editor, plugin.statics));
-  }
-
-  /**
-   * @schema:(commands/events)
-   */
-  initialSchema() {
-    const { plugins } = this.props;
-    NxSlateDefaults.commands(this, plugins);
-    NxSlateDefaults.events(this, plugins);
   }
 
   /**
@@ -200,9 +189,7 @@ export default class ReactRteSlate extends Component {
 
   handleKeyDown = (inEvent) => {
     const { plugins } = this.props;
-    plugins.forEach((plugin) => {
-      plugin.events.keydown(this, inEvent);
-    });
+    plugins.forEach((plugin) => plugin.events.keydown(this, inEvent));
   };
 
   render() {
