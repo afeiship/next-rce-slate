@@ -101,7 +101,7 @@ class App extends React.Component {
           Update a value.
         </button>
 
-        <button className="button is-primary mb-2" onClick={this.handleClick2}>
+        <button className="button is-danger mb-2" onClick={this.handleClick2}>
           Update plugins.
         </button>
         {this.headerView}
