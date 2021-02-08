@@ -79,11 +79,11 @@ export default class ReactRteSlate extends Component {
   }
 
   shouldComponentUpdate(inProps) {
-    const { value, plugins } = inProps;
+    const { value, plugins, onChange } = inProps;
     const oldHtml = this.toHtml(this.state.value);
     if (value !== oldHtml) {
       const nodes = this.fromHtml(value);
-      this.setState({ value: nodes });
+      this.handleChange(nodes);
     }
 
     if (!deepEqual(plugins, this.props.plugins)) {
