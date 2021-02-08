@@ -79,14 +79,14 @@ export default class ReactRteSlate extends Component {
   }
 
   shouldComponentUpdate(inProps) {
-    const html = inProps.value;
-    const value = this.toHtml(this.state.value);
-    if (html !== value) {
-      this.setState({ value: this.fromHtml(html) });
+    const { value, plugins } = inProps;
+    const oldHtml = this.toHtml(this.state.value);
+    if (value !== oldHtml) {
+      this.setState({ value: this.fromHtml(value) });
     }
 
-    if (!deepEqual(inProps.plugins, this.props.plugins)) {
-      this.manager.setOption({ entities: inProps.plugins });
+    if (!deepEqual(plugins, this.props.plugins)) {
+      this.manager.setOption({ entities: plugins });
       this.forceUpdate();
     }
 
