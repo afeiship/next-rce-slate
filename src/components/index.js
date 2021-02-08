@@ -6,7 +6,6 @@ import { createEditor, Editor, Element } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import nx from '@jswork/next';
 import nxCompose from '@jswork/next-compose';
-import nxDeepAssign from '@jswork/next-deep-assign';
 import nxIsEmpty from '@jswork/next-is-empty';
 import nxCompactObject from '@jswork/next-compact-object';
 import NxSlateSerialize from '@jswork/next-slate-serialize';
