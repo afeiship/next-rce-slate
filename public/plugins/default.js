@@ -22,10 +22,14 @@ export default NxSlatePlugin.define({
     },
     output: (node, children) => {
       const { style } = node;
-      return `<p${style}>${children}</p>`;
+      return `<div${style} class='react-rte__default'>${children}</div>`;
     }
   },
   render: (_, { attributes, children, element }) => {
-    return <p {...attributes}>{children}</p>;
+    return (
+      <div className="react-rte__default" {...attributes}>
+        {children}
+      </div>
+    );
   }
 });

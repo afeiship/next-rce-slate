@@ -13,6 +13,8 @@ import NxSlateDeserialize from '@jswork/next-slate-deserialize';
 import NxSlateDefaults from '@jswork/next-slate-defaults';
 import NxCssText from '@jswork/next-css-text';
 import NxSlatePlugin from '@jswork/next-slate-plugin';
+import NxPluginManager from '@jswork/next-plugin-manager';
+import deepEqual from 'fast-deep-equal';
 
 const CLASS_NAME = 'react-rte-slate';
 
@@ -66,13 +68,14 @@ export default class ReactRteSlate extends Component {
   constructor(inProps) {
     super(inProps);
     this.initialStatics();
-    const { onInit } = inProps;
+    const { onInit, plugins } = inProps;
     const html = inProps.value;
     const composite = this.withDecorator;
     const value = this.fromHtml(html);
     this.editor = composite(createEditor());
     this.state = { value };
-    onInit({ target: { context: this, value: this.editor } });
+    this.manager = NxPluginManager.getInstance(plugins);
+    onInit({ target: { manager: this.manager, value: this.editor } });
   }
 
   shouldComponentUpdate(inProps) {
@@ -81,6 +84,12 @@ export default class ReactRteSlate extends Component {
     if (html !== value) {
       this.setState({ value: this.fromHtml(html) });
     }
+
+    if (!deepEqual(inProps.plugins, this.props.plugins)) {
+      this.manager.setOption({ entities: inProps.plugins });
+      this.forceUpdate();
+    }
+
     return true;
   }
 
@@ -91,7 +100,7 @@ export default class ReactRteSlate extends Component {
    */
   getActivePlugin(inNode) {
     const { plugins } = this.props;
-    return NxSlatePlugin.actived(inNode, plugins);
+    return NxSlatePlugin.actived(inNode, plugins) || this.manager.get('default');
   }
 
   /**
