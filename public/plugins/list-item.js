@@ -16,8 +16,8 @@ export default NxSlatePlugin.define({
         return jsx('element', { type: 'list-item' }, children);
       }
     },
-    output: (node, children) => {
-      return `<li>${children}</li>`;
+    output: ({ style }, children) => {
+      return `<li${style}>${children}</li>`;
     }
   },
   render: (_, { attributes, children, element }) => {

@@ -4,11 +4,11 @@ import NxSlatePlugin from '@jswork/next-slate-plugin';
 
 /**
  * @usage:
- * Editor.addMark(editor,'backgroundColor', 'lightgreen');
+ * Editor.addMark(editor,'background-color', 'lightgreen');
  */
 
 export default NxSlatePlugin.define({
-  id: 'backgroundColor',
+  id: 'background-color',
   serialize: {
     input: ({ el }, children) => {
       const nodeName = el.nodeName.toLowerCase();
@@ -16,15 +16,15 @@ export default NxSlatePlugin.define({
         return jsx('text', { backgroundColor: el.style.backgroundColor }, children);
       }
     },
-    output: ({ el }, node) => {
-      el.style.backgroundColor = node.backgroundColor;
+    output: (node, children) => {
+      const el = node.el;
+      el.style.backgroundColor = node['background-color'];
       return el;
     }
   },
   render: (_, { attributes, children, leaf }) => {
-    const { backgroundColor } = leaf;
     return (
-      <span style={{ backgroundColor }} {...attributes}>
+      <span style={{ backgroundColor: leaf['background-color'] }} {...attributes}>
         {children}
       </span>
     );

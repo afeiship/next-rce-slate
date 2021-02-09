@@ -35,6 +35,15 @@ __GENERATE_DAPP__
 ## documentation
 - https://afeiship.github.io/react-rte-slate/
 
+## plugins
+- [x] slate-plugin-default
+- [x] slate-plugin-bold
+- [x] slate-plugin-underline
+- [x] slate-plugin-color
+- [x] slate-plugin-italic
+- [x] slate-plugin-code
+- [x] slate-plugin-strikethrough
+
 ## todo list
 - [ ] 最后 export 的html里可能会有一个多余的空的 span 标签
 - [ ] paste html 如果<p><blockquote>xxx</p> 会无法成功
