@@ -12,6 +12,7 @@ Rakefile
 bin
 src
 docs
+documentation
 build
 docs
 public
