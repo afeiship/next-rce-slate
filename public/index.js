@@ -32,7 +32,9 @@ class App extends React.Component {
         <Button
           active={Bold.commands.is(editor)}
           tooltip="加粗"
-          onClick={(e) => {
+          onMouseDown={(e) => {
+            console.log('e:', e);
+            // e.preventDefault();
             Bold.commands.toggle(editor, true);
           }}>
           <i className="wsui-icon-bold" />
@@ -118,8 +120,8 @@ class App extends React.Component {
         <button className="button is-danger mb-2" onClick={this.handleClick2}>
           Update plugins.
         </button>
+        { this.headerView }
         <ReactRteSlate
-          header={this.headerView}
           placeholder="type your text."
           plugins={this.state.plugins}
           value={this.state.value}
