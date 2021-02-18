@@ -42,24 +42,21 @@ npm install -S @jswork/react-rte-slate
   import ReactDOM from 'react-dom';
   import ReactRteSlate from '@jswork/react-rte-slate';
   import { Toolbar, ButtonGroup, Button } from '@jswork/react-rte-ui';
-  import Bold from './plugins/bold';
-  import Italic from './plugins/italic';
-  import Underline from './plugins/underline';
-  import Strikethrough from './plugins/strikethrough';
-  import Code from './plugins/code';
-  import Heading from './plugins/heading';
-  import Blockquote from './plugins/blockquote';
-  import Color from './plugins/color';
-  import BackgroundColor from './plugins/background-color';
-  import BulletedList from './plugins/bulleted-list';
-  import NumberedList from './plugins/numbered-list';
-  import ListItem from './plugins/list-item';
-  import PasteHtml from './plugins/paste-html';
-  import ForceLayout from './plugins/force-layout';
-  import BetterDelete from './plugins/better-delete';
-  import ExtEditor from './plugins/ext-editor';
-  import Paragraph from './plugins/paragraph';
-  import Default from './plugins/default';
+  import Bold from '@jswork/slate-plugin-bold';
+  import Italic from '@jswork/slate-plugin-italic';
+  import Underline from '@jswork/slate-plugin-underline';
+  import Strikethrough from '@jswork/slate-plugin-strikethrough';
+  import Code from '@jswork/slate-plugin-code';
+  import Heading from '@jswork/slate-plugin-heading';
+  import Blockquote from '@jswork/slate-plugin-blockquote';
+  import Color from '@jswork/slate-plugin-color';
+  import BackgroundColor from '@jswork/slate-plugin-background-color';
+  import BulletedList from '@jswork/slate-plugin-bulleted-list';
+  import NumberedList from '@jswork/slate-plugin-numbered-list';
+  import ListItem from '@jswork/slate-plugin-list-item';
+  import Paragraph from '@jswork/slate-plugin-paragraph';
+  import Default from '@jswork/slate-plugin-default';
+
   import './assets/style.scss';
   import { ReactEditor } from 'slate-react';
   import { createEditor, Editor, Element, Transforms } from 'slate';
@@ -67,22 +64,44 @@ npm install -S @jswork/react-rte-slate
   // Alignment: Transforms.setNodes(editor, { style: { textAlign: 'right' } });
   class App extends React.Component {
     get headerView() {
+      const editor = this.editor;
+      if (!editor) return null;
       return (
         <Toolbar className="wsui-rte-icons">
-          <ButtonGroup>
-            <Button tooltip="左对齐">
-              <i className="wsui-icon-align_left" />
-            </Button>
-            <Button tooltip="居中" active>
-              <i className="wsui-icon-align_center" />
-            </Button>
-            <Button tooltip="右对齐">
-              <i className="wsui-icon-align_right" />
-            </Button>
-            <Button tooltip="右对齐">
-              <i className="wsui-icon-align_justify" />
-            </Button>
-          </ButtonGroup>
+          <Button
+            active={Bold.commands.is(editor)}
+            tooltip="加粗"
+            onMouseDown={(e) => {
+              console.log('e:', e);
+              // e.preventDefault();
+              Bold.commands.toggle(editor, true);
+            }}>
+            <i className="wsui-icon-bold" />
+          </Button>
+          <Button
+            active={Italic.commands.is(editor)}
+            tooltip="倾斜"
+            onClick={(e) => {
+              Italic.commands.toggle(editor, true);
+            }}>
+            <i className="wsui-icon-italic" />
+          </Button>
+          <Button
+            active={Strikethrough.commands.is(editor)}
+            tooltip="删除线"
+            onClick={(e) => {
+              Strikethrough.commands.toggle(editor, true);
+            }}>
+            <i className="wsui-icon-strikethrough" />
+          </Button>
+          <Button
+            active={Underline.commands.is(editor)}
+            tooltip="下滑线"
+            onClick={(e) => {
+              Underline.commands.toggle(editor, true);
+            }}>
+            <i className="wsui-icon-underline" />
+          </Button>
         </Toolbar>
       );
     }
@@ -107,7 +126,6 @@ npm install -S @jswork/react-rte-slate
           // PasteHtml,
           // // ForceLayout,
           // BetterDelete,
-          ExtEditor,
           Paragraph
         ]
       };
@@ -127,9 +145,7 @@ npm install -S @jswork/react-rte-slate
 
     handleClick2 = (e) => {
       this.setState({
-        plugins: [
-          Default,
-        ]
+        plugins: [Default]
       });
     };
 
@@ -143,7 +159,7 @@ npm install -S @jswork/react-rte-slate
           <button className="button is-danger mb-2" onClick={this.handleClick2}>
             Update plugins.
           </button>
-          {this.headerView}
+          { this.headerView }
           <ReactRteSlate
             placeholder="type your text."
             plugins={this.state.plugins}
