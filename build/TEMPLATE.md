@@ -43,17 +43,19 @@ __GENERATE_DAPP__
 - [x] slate-plugin-italic
 - [x] slate-plugin-code
 - [x] slate-plugin-strikethrough
+- [x] slate-plugin-heading
+- [x] slate-plugin-font-size
 
 ## todo list
-- [ ] 最后 export 的html里可能会有一个多余的空的 span 标签
-- [ ] paste html 如果<p><blockquote>xxx</p> 会无法成功
-- [x] mark/block 元素的 exporter 参数暂时不统一
+- [ ] 最后 `export` 的html里可能会有一个多余的空的 `span` 标签
+- [ ] `paste html` 如果 `<p><blockquote>xxx</p>` 会无法成功
+- [x] `mark/block` 元素的 `exporter` 参数暂时不统一
 - [ ] 清空文档
 - [ ] 最近2个为空，即插入一个新行
-- [ ] shift+enter 强行插入新行
-- [ ] 将一个block 分成两个block
-- [ ] 删除的时候，只剩下一个 li 标签，比较奇怪。
-- [x] 如何在不同的标签上添加 style，text-align: left/right/center 类似对齐功能的完美实现
+- [ ] `shift+enter` 强行插入新行
+- [ ] 将一个 `block` 分成两个 `block`
+- [ ] 删除的时候，只剩下一个 `li` 标签，比较奇怪。
+- [x] 如何在不同的标签上添加 `style，text-align: left/right/center` 类似对齐功能的完美实现
 
 ## resources
 - https://stackoverflow.com/questions/65288303/in-slate-styling-an-element-without-changing-his-type
