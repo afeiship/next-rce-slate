@@ -8,13 +8,11 @@ import React from 'react';
 
 export default (props) => {
   const { editor } = props;
-  return <Toolbar className='wsui-rte-icons'>
-    <ButtonGroup>
-      <Bold editor={editor} />
-      <Italic editor={editor} />
-      <Strikethrough editor={editor} />
-      <Underline editor={editor} />
-      <Code editor={editor} />
-    </ButtonGroup>
-  </Toolbar>;
+  return <ButtonGroup>
+    <Bold editor={editor} />
+    <Italic editor={editor} />
+    <Strikethrough editor={editor} />
+    <Underline editor={editor} />
+    <Code editor={editor} />
+  </ButtonGroup>;
 }

@@ -2,6 +2,7 @@ import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactRteSlate from '../src/main';
+import { Editor } from 'slate';
 import Bold from '@jswork/slate-plugin-bold';
 import Italic from '@jswork/slate-plugin-italic';
 import Underline from '@jswork/slate-plugin-underline';
@@ -16,18 +17,19 @@ import NumberedList from '@jswork/slate-plugin-numbered-list';
 import ListItem from '@jswork/slate-plugin-list-item';
 import Paragraph from '@jswork/slate-plugin-paragraph';
 import Default from '@jswork/slate-plugin-default';
-
+import { Toolbar } from '@jswork/react-rte-ui';
 import './assets/style.scss';
 import BasicStyles from './components/basic-styles';
+import ColorBar from './components/color';
 
-// Alignment: Transforms.setNodes(editor, { style: { textAlign: 'right' } });
 class App extends React.Component {
   get headerView() {
     const editor = this.editor;
     return (
-      <>
+      <Toolbar className="wsui-rte-icons">
         <BasicStyles editor={editor} />
-      </>
+        <ColorBar editor={editor} />
+      </Toolbar>
     );
   }
 
@@ -59,6 +61,7 @@ class App extends React.Component {
   handleInit = (e) => {
     this.editor = e.target.value;
     window.editor = this.editor;
+    window.Editor = Editor;
   };
 
   handleClick1 = (e) => {
@@ -73,25 +76,24 @@ class App extends React.Component {
 
   render() {
     return (
-      <ReactDemokit className='p-3 app-container' url='https://github.com/afeiship/react-rte-slate'>
-        <button className='button is-primary mb-2 mr-2' onClick={this.handleClick1}>
+      <ReactDemokit className="p-3 app-container" url="https://github.com/afeiship/react-rte-slate">
+        <button className="button is-primary mb-2 mr-2" onClick={this.handleClick1}>
           Update a value.
         </button>
 
-        <button className='button is-danger mb-2' onClick={this.handleClick2}>
+        <button className="button is-danger mb-2" onClick={this.handleClick2}>
           Update plugins.
         </button>
         {this.headerView}
         <ReactRteSlate
-          placeholder='type your text.'
+          placeholder="type your text."
           plugins={this.state.plugins}
           value={this.state.value}
           onInit={this.handleInit}
           onChange={(e) => {
             this.setState({ value: e.target.value });
-            console.log('html:', e.target.value);
           }}
-          className='mb-5'
+          className="mb-5"
         />
       </ReactDemokit>
     );
