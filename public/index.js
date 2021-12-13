@@ -2,7 +2,6 @@ import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactRteSlate from '../src/main';
-import { Toolbar, ButtonGroup, Button } from '@jswork/react-rte-ui';
 import Bold from '@jswork/slate-plugin-bold';
 import Italic from '@jswork/slate-plugin-italic';
 import Underline from '@jswork/slate-plugin-underline';
@@ -19,58 +18,23 @@ import Paragraph from '@jswork/slate-plugin-paragraph';
 import Default from '@jswork/slate-plugin-default';
 
 import './assets/style.scss';
-import { ReactEditor } from 'slate-react';
-import { createEditor, Editor, Element, Transforms } from 'slate';
+import BasicStyles from './components/basic-styles';
 
 // Alignment: Transforms.setNodes(editor, { style: { textAlign: 'right' } });
 class App extends React.Component {
   get headerView() {
     const editor = this.editor;
-    // if (!editor) return null;
     return (
-      <Toolbar className="wsui-rte-icons">
-        <Button
-          active={Bold.commands.is(editor)}
-          tooltip="加粗"
-          onMouseDown={(e) => {
-            console.log('e:', e);
-            // e.preventDefault();
-            Bold.commands.toggle(editor, true);
-          }}>
-          <i className="wsui-icon-bold" />
-        </Button>
-        <Button
-          active={Italic.commands.is(editor)}
-          tooltip="倾斜"
-          onClick={(e) => {
-            Italic.commands.toggle(editor, true);
-          }}>
-          <i className="wsui-icon-italic" />
-        </Button>
-        <Button
-          active={Strikethrough.commands.is(editor)}
-          tooltip="删除线"
-          onClick={(e) => {
-            Strikethrough.commands.toggle(editor, true);
-          }}>
-          <i className="wsui-icon-strikethrough" />
-        </Button>
-        <Button
-          active={Underline.commands.is(editor)}
-          tooltip="下滑线"
-          onClick={(e) => {
-            Underline.commands.toggle(editor, true);
-          }}>
-          <i className="wsui-icon-underline" />
-        </Button>
-      </Toolbar>
+      <>
+        <BasicStyles editor={editor} />
+      </>
     );
   }
 
   constructor(inProps) {
     super(inProps);
     this.state = {
-      value: `<p style="text-align:right;">Are <code>you</code> ok?</p><blockquote style="text-align:right;"><span style="font-weight: bold;">hello world</span></blockquote><p><i><u><span style="font-weight: bold;">Are</span></u></i> <span style="color: rgb(255, 0, 0);">you</span> ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`,
+      value: `<p style='text-align:right;'>Are <code>you</code> ok?</p><blockquote style='text-align:right;'><span style='font-weight: bold;'>hello world</span></blockquote><p><i><u><span style='font-weight: bold;'>Are</span></u></i> <span style='color: rgb(255, 0, 0);'>you</span> ok?</p><ul><li><u><span>thanks</span></u></li><li>and you?</li></ul>`,
       plugins: [
         Bold,
         Italic,
@@ -95,9 +59,6 @@ class App extends React.Component {
   handleInit = (e) => {
     this.editor = e.target.value;
     window.editor = this.editor;
-    window.Editor = Editor;
-    window.ReactEditor = ReactEditor;
-    window.Transforms = Transforms;
   };
 
   handleClick1 = (e) => {
@@ -112,17 +73,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <ReactDemokit className="p-3 app-container" url="https://github.com/afeiship/react-rte-slate">
-        <button className="button is-primary mb-2 mr-2" onClick={this.handleClick1}>
+      <ReactDemokit className='p-3 app-container' url='https://github.com/afeiship/react-rte-slate'>
+        <button className='button is-primary mb-2 mr-2' onClick={this.handleClick1}>
           Update a value.
         </button>
 
-        <button className="button is-danger mb-2" onClick={this.handleClick2}>
+        <button className='button is-danger mb-2' onClick={this.handleClick2}>
           Update plugins.
         </button>
-        { this.headerView }
+        {this.headerView}
         <ReactRteSlate
-          placeholder="type your text."
+          placeholder='type your text.'
           plugins={this.state.plugins}
           value={this.state.value}
           onInit={this.handleInit}
@@ -130,7 +91,7 @@ class App extends React.Component {
             this.setState({ value: e.target.value });
             console.log('html:', e.target.value);
           }}
-          className="mb-5"
+          className='mb-5'
         />
       </ReactDemokit>
     );
