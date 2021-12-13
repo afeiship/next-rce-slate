@@ -26,7 +26,7 @@ import { createEditor, Editor, Element, Transforms } from 'slate';
 class App extends React.Component {
   get headerView() {
     const editor = this.editor;
-    if (!editor) return null;
+    // if (!editor) return null;
     return (
       <Toolbar className="wsui-rte-icons">
         <Button

@@ -87,7 +87,7 @@ export default class ReactRteSlate extends Component {
     }
 
     if (!deepEqual(plugins, this.props.plugins)) {
-      this.manager.setOption({ entities: plugins });
+      this.manager.entities = plugins;
       this.forceUpdate();
     }
 
