@@ -58,6 +58,7 @@
     "@jswork/react-input": "^1.0.2",
     "@jswork/react-markdown-props": "^1.0.1",
     "@jswork/react-rte-ui": "^1.0.0",
+    "@jswork/react-select": "^1.0.3",
     "@jswork/slate-plugin-background-color": "^1.0.4",
     "@jswork/slate-plugin-blockquote": "^1.0.2",
     "@jswork/slate-plugin-bold": "^1.0.2",

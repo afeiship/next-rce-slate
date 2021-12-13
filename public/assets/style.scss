@@ -57,10 +57,40 @@
       padding: 10px;
       background: #eee;
     }
+
+
+    pre {
+      position: relative;
+      color: #353535;
+      background: hsla(0, 0%, 78%, .3);
+      border: 1px solid #c4c4c4;
+      padding: 14px;
+      border-radius: 2px;
+      text-align: left;
+      direction: ltr;
+      tab-size: 4;
+      white-space: pre-wrap;
+      font-style: normal;
+      min-width: 200px;
+
+      code {
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
+    }
   }
 }
 
 .react-rte__toolbar {
   display: flex;
   align-items: center;
+
+  .react-input {
+    &[type="color"] {
+      width: 26px;
+      margin-right: 2px;
+    }
+  }
 }

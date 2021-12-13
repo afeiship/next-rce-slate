@@ -17,10 +17,12 @@ import NumberedList from '@jswork/slate-plugin-numbered-list';
 import ListItem from '@jswork/slate-plugin-list-item';
 import Paragraph from '@jswork/slate-plugin-paragraph';
 import Default from '@jswork/slate-plugin-default';
+import CodeBlock from '../public/plugins/code-block';
 import { Toolbar } from '@jswork/react-rte-ui';
 import './assets/style.scss';
 import BasicStyles from './components/basic-styles';
 import ColorBar from './components/color';
+import CodeBlockBar from './components/codeblock';
 
 class App extends React.Component {
   get headerView() {
@@ -29,6 +31,7 @@ class App extends React.Component {
       <Toolbar className="wsui-rte-icons">
         <BasicStyles editor={editor} />
         <ColorBar editor={editor} />
+        <CodeBlockBar editor={editor} />
       </Toolbar>
     );
   }
@@ -43,6 +46,7 @@ class App extends React.Component {
         Underline,
         Strikethrough,
         Code,
+        CodeBlock,
         Heading,
         Blockquote,
         Color,
